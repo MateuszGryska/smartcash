@@ -6,15 +6,17 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 
 const StyledAppBar = styled(AppBar)`
-  background: ${({ theme }) => theme.primary.main};
+  background: ${({ theme }) => theme.palette.primary.main};
 `;
 
 const Topbar = () => {
-  const [notifications] = useState(['text', 'text2', 'text23']);
+  const [notifications] = useState([]);
   return (
     <StyledAppBar>
       <Toolbar>
-        <Typography variant="h3">SmartCash</Typography>
+        <Typography variant="h3" color="white">
+          SmartCash
+        </Typography>
         <Hidden mdDown>
           <Grid container direction="row" justify="space-between" alignItems="center" />
           <IconButton color="inherit">
