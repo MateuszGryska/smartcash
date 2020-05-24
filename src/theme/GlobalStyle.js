@@ -19,6 +19,8 @@ const GlobalStyle = createGlobalStyle`
     font-family: "Roboto", sans-serif;
     padding: 0;
     margin: 0;
+    background-color: #f4f6f8;
+
   }
 
   a {

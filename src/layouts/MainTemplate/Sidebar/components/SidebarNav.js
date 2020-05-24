@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
 
@@ -43,7 +44,13 @@ const SidebarNav = ({ className, pages }) => {
     <List className={clsx(classes.root, className)}>
       {pages.map((page) => (
         <ListItem className={classes.item} disableGutters key={page.title}>
-          <Button activeClassName={classes.active} className={classes.button}>
+          <Button
+            activeClassName={classes.active}
+            className={classes.button}
+            component={NavLink}
+            to={page.href}
+            exact={page.exact}
+          >
             <div className={classes.icon}>{page.icon}</div>
             {page.title}
           </Button>

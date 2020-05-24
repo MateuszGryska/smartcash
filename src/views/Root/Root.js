@@ -14,19 +14,19 @@ import WalletsView from '../WalletsView/WalletsView';
 function Root() {
   return (
     <MuiThemeProvider theme={theme}>
-      <MainTemplate>
-        <BrowserRouter>
+      <BrowserRouter>
+        <MainTemplate>
           <Switch>
             <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
-            <Route path={routes.dashboard} component={DashboardView} />
-            <Route path={routes.expenses} component={ExpensesView} />
-            <Route path={routes.budget} component={BudgetView} />
-            <Route path={routes.wallets} component={WalletsView} />
-            <Route path={routes.settings} component={SettingsView} />
+            <Route exact path={routes.dashboard} component={DashboardView} />
+            <Route exact path={routes.expenses} component={ExpensesView} />
+            <Route exact path={routes.budget} component={BudgetView} />
+            <Route exact path={routes.wallets} component={WalletsView} />
+            <Route exact path={routes.settings} component={SettingsView} />
             <Redirect to={routes.home} />
           </Switch>
-        </BrowserRouter>
-      </MainTemplate>
+        </MainTemplate>
+      </BrowserRouter>
     </MuiThemeProvider>
   );
 }

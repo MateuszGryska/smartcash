@@ -37,6 +37,7 @@ const pages = [
   {
     title: 'Dashboard',
     href: '/dashboard',
+    exact: true,
     icon: <DashboardIcon />,
   },
   {
