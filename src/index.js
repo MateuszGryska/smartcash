@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { StylesProvider } from '@material-ui/core/styles';
-import Root from './views/Root';
+import Root from './views/Root/Root';
 
 import * as serviceWorker from './serviceWorker';
 
