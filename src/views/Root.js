@@ -1,8 +1,14 @@
 import React from 'react';
-import MainLayout from '../layouts/MainLayout/MainLayout';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import MainTemplate from '../layouts/MainTemplate/MainTemplate';
+import theme from '../theme/mainTheme';
 
 function Root() {
-  return <MainLayout>Test</MainLayout>;
+  return (
+    <MuiThemeProvider theme={theme}>
+      <MainTemplate>test</MainTemplate>
+    </MuiThemeProvider>
+  );
 }
 
 export default Root;
