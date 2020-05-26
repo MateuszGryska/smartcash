@@ -4,9 +4,9 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Card,
   CardActions,
-  CardHeader,
   CardContent,
   Button,
+  Checkbox,
   Divider,
   Table,
   TableBody,
@@ -15,18 +15,28 @@ import {
   TableRow,
   Tooltip,
   TableSortLabel,
+  IconButton,
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import EditIcon from '@material-ui/icons/Edit';
 
 import mockData from './data';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   content: {
     padding: 0,
   },
   inner: {
-    minWidth: 800,
+    minWidth: 1050,
+  },
+  nameContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  avatar: {
+    marginRight: theme.spacing(2),
   },
   actions: {
     justifyContent: 'flex-end',
@@ -38,20 +48,14 @@ const ExpensesList = () => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <CardHeader
-        action={
-          <Button color="primary" size="large" variant="outlined">
-            New one
-          </Button>
-        }
-        title="Latest Incomes/Outcomes"
-      />
-      <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
             <Table>
               <TableHead>
+                <TableCell>
+                  <Checkbox />
+                </TableCell>
                 <TableCell sortDirection="desc">
                   <Tooltip enterDelay={300} title="Sort">
                     <TableSortLabel active direction="desc">
@@ -68,11 +72,22 @@ const ExpensesList = () => {
               <TableBody>
                 {bilanceItems.map((item) => (
                   <TableRow hover key={item.id}>
+                    <TableCell>
+                      <Checkbox />
+                    </TableCell>
                     <TableCell>{item.date}</TableCell>
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.wallet}</TableCell>
                     <TableCell>{item.price}</TableCell>
                     <TableCell>{item.category}</TableCell>
+                    <TableCell>
+                      <IconButton edge="end" size="medium">
+                        <MoreVertIcon />
+                      </IconButton>
+                      <IconButton edge="end" size="medium">
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
