@@ -25,7 +25,7 @@ const BilanceChart = () => {
     <Card className={classes.root}>
       <CardHeader
         action={
-          <Button size="small" variant="text">
+          <Button size="large" variant="text">
             Last 7 days <ArrowDropDownIcon />
           </Button>
         }
@@ -38,7 +38,7 @@ const BilanceChart = () => {
         </div>
       </CardContent>
       <CardActions className={classes.actions}>
-        <Button color="primary" size="small" variant="text">
+        <Button color="primary" size="large" variant="text">
           Overview <ArrowRightIcon />
         </Button>
       </CardActions>
