@@ -3,7 +3,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
-import SmallCard from './components/SmallCard';
+import SmallCard from './components/SmartCard.js/SmallCard';
+import BilanceChart from './components/BilanceChart/BilanceChart';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +28,9 @@ const DashboardView = () => {
         </Grid>
         <Grid item lg={3} sm={6} xl={3} xs={12}>
           <SmallCard title="Total" amount="$2330" />
+        </Grid>
+        <Grid item lg={8} md={12} xl={9} xs={12}>
+          <BilanceChart />
         </Grid>
       </Grid>
     </div>
