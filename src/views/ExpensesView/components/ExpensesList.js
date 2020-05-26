@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BilanceList = () => {
+const ExpensesList = () => {
   const [bilanceItems] = useState(mockData);
   const classes = useStyles();
   return (
@@ -63,6 +63,7 @@ const BilanceList = () => {
                 <TableCell>Wallet</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Category</TableCell>
+                <TableCell>Actions</TableCell>
               </TableHead>
               <TableBody>
                 {bilanceItems.map((item) => (
@@ -89,4 +90,4 @@ const BilanceList = () => {
   );
 };
 
-export default BilanceList;
+export default ExpensesList;

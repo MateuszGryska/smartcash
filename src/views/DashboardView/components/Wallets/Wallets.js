@@ -21,8 +21,6 @@ import mockData from './data';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
-    position: 'relative',
-    paddingBottom: '30px',
   },
   content: {
     padding: 0,
@@ -34,9 +32,6 @@ const useStyles = makeStyles((theme) => ({
   },
   actions: {
     justifyContent: 'flex-end',
-    position: 'absolute',
-    bottom: '0',
-    right: '0',
   },
 }));
 
@@ -63,6 +58,7 @@ const WalletsCart = () => {
           ))}
         </List>
       </CardContent>
+      <Divider />
       <CardActions className={classes.actions}>
         <Button color="primary" size="large" variant="text">
           View all <ArrowRightIcon />

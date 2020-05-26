@@ -37,6 +37,8 @@ const BilanceChart = () => {
           <Bar data={data} options={options} />
         </div>
       </CardContent>
+      <Divider />
+
       <CardActions className={classes.actions}>
         <Button color="primary" size="large" variant="text">
           Overview <ArrowRightIcon />
