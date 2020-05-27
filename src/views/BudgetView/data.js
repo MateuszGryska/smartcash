@@ -1,0 +1,58 @@
+export default [
+  {
+    id: 'sssss',
+    categoryName: 'Food',
+    categoryType: 'outcome',
+    sumAll: '$3222',
+    updatedAt: '2 hours ago',
+  },
+  {
+    id: 's232323ssss',
+    categoryName: 'House',
+    categoryType: 'outcome',
+    sumAll: '$3222',
+    updatedAt: '2 hours ago',
+  },
+  {
+    id: 'sss434445ss',
+    categoryName: 'Alcohol',
+    categoryType: 'outcome',
+    sumAll: '$3222',
+    updatedAt: '2 hours ago',
+  },
+  {
+    id: 'ss453345sss',
+    categoryName: 'School debt',
+    categoryType: 'outcome',
+    sumAll: '$3222',
+    updatedAt: '2 hours ago',
+  },
+  {
+    id: 'sss3434444ss',
+    categoryName: 'salary',
+    categoryType: 'income',
+    sumAll: '$3222',
+    updatedAt: '2 hours ago',
+  },
+  {
+    id: 'sss2222343ss',
+    categoryName: 'return',
+    categoryType: 'income',
+    sumAll: '$3222',
+    updatedAt: '2 hours ago',
+  },
+  {
+    id: 'ss31312sss',
+    categoryName: 'investment',
+    categoryType: 'income',
+    sumAll: '$3222',
+    updatedAt: '2 hours ago',
+  },
+  {
+    id: 'ss12312sss',
+    categoryName: 'second salary',
+    categoryType: 'income',
+    sumAll: '$2222',
+    updatedAt: '2 hours ago',
+  },
+];
