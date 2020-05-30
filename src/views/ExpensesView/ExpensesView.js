@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import ExpensesList from './components/ExpensesList';
 import Toolbar from './components/Toolbar';
-
+import UserTemplate from '../../templates/UserTemplate/UserTemplate';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,12 +16,14 @@ const useStyles = makeStyles((theme) => ({
 const ExpensesView = () => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <Toolbar />
-      <div className={classes.content}>
-        <ExpensesList />
+    <UserTemplate>
+      <div className={classes.root}>
+        <Toolbar />
+        <div className={classes.content}>
+          <ExpensesList />
+        </div>
       </div>
-    </div>
+    </UserTemplate>
   );
 };
 

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/styles';
-import GlobalStyle from '../../theme/GlobalStyle';
 
 import Topbar from './Topbar';
 import Sidebar from './Sidebar';
@@ -12,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: 56,
     height: '100%',
+
     [theme.breakpoints.up('sm')]: {
       paddingTop: 64,
     },
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MainTemplate = ({ children }) => {
+const UserTemplate = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -50,7 +50,6 @@ const MainTemplate = ({ children }) => {
         [classes.shiftContent]: isDesktop,
       })}
     >
-      <GlobalStyle />
       <Topbar onSidebarOpen={handleSidebarOpen} />
       <Sidebar
         onClose={handleSidebarClose}
@@ -65,4 +64,4 @@ const MainTemplate = ({ children }) => {
   );
 };
 
-export default MainTemplate;
+export default UserTemplate;
