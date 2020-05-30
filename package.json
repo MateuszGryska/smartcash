@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.1.2",
     "chart.js": "^2.9.3",
     "clsx": "^1.1.0",
+    "formik": "^2.1.4",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.1",
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^9.5.0",
+    "@types/yup": "^0.29.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
