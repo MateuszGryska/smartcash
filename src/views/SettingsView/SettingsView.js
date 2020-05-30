@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
   },
+  passwordSection: {
+    marginTop: '20px',
+  },
 }));
 
 const SettingsView = () => {
@@ -20,11 +23,11 @@ const SettingsView = () => {
         <Grid item lg={4} md={6} xl={4} xs={12}>
           <AccountDetails />
         </Grid>
-        <Grid container spacing="4">
+        <Grid item lg={8} md={6} xl={8} xs={12}>
           <Grid item lg={8} md={6} xl={8} xs={12}>
             <ProfileDetails />
           </Grid>
-          <Grid item lg={8} md={6} xl={8} xs={12}>
+          <Grid className={classes.passwordSection} item lg={8} md={6} xl={8} xs={12}>
             <PasswordSection />
           </Grid>
         </Grid>
