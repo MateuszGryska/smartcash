@@ -24,10 +24,10 @@ const SettingsView = () => {
           <AccountDetails />
         </Grid>
         <Grid item lg={8} md={6} xl={8} xs={12}>
-          <Grid item lg={8} md={6} xl={8} xs={12}>
+          <Grid item>
             <ProfileDetails />
           </Grid>
-          <Grid className={classes.passwordSection} item lg={8} md={6} xl={8} xs={12}>
+          <Grid className={classes.passwordSection} item>
             <PasswordSection />
           </Grid>
         </Grid>
