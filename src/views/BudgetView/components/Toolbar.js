@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = () => {
+const Toolbar = ({ handleOpen }) => {
   const classes = useStyles();
 
   return (
@@ -34,7 +34,7 @@ const Toolbar = () => {
       <div className={classes.row}>
         <SearchInput className={classes.searchInput} placeholder="Search..." />
         <div className={classes.spacer} />
-        <Button color="primary" variant="contained">
+        <Button color="primary" variant="contained" onClick={handleOpen}>
           New category
         </Button>
       </div>

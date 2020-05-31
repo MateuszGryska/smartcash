@@ -5,6 +5,7 @@ import Toolbar from './components/Toolbar';
 import MoneyCard from './components/MoneyCard';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
 import mockData from './data';
+import ActiveModal from '../../components/ActiveModal/ActiveModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,12 +18,12 @@ const useStyles = makeStyles((theme) => ({
 
 const WalletsView = () => {
   const classes = useStyles();
-
+  const [isModalVisible, setModalVisibility] = useState(false);
   const [wallets] = useState(mockData);
   return (
     <UserTemplate>
       <div className={classes.root}>
-        <Toolbar />
+        <Toolbar handleOpen={() => setModalVisibility(true)} />
         <div className={classes.content}>
           <Grid container spacing="4">
             {wallets.map(({ id, accountName, moneyValue, updatedAt }) => (
@@ -37,6 +38,11 @@ const WalletsView = () => {
             ))}
           </Grid>
         </div>
+        <ActiveModal
+          open={isModalVisible}
+          handleClose={() => setModalVisibility(false)}
+          type="add"
+        />
       </div>
     </UserTemplate>
   );

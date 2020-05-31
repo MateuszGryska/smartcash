@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { Link } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Card,
@@ -17,6 +18,8 @@ import {
   TableSortLabel,
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ActiveModal from '../../../../components/ActiveModal/ActiveModal';
+
 
 import mockData from './data';
 
@@ -35,12 +38,18 @@ const useStyles = makeStyles(() => ({
 
 const BilanceList = () => {
   const [bilanceItems] = useState(mockData);
+  const [isModalVisible, setModalVisibility] = useState(false);
   const classes = useStyles();
   return (
     <Card className={classes.root}>
       <CardHeader
         action={
-          <Button color="primary" size="large" variant="outlined">
+          <Button
+            color="primary"
+            size="large"
+            variant="outlined"
+            onClick={() => setModalVisibility(true)}
+          >
             New one
           </Button>
         }
@@ -81,10 +90,16 @@ const BilanceList = () => {
       </CardContent>
       <Divider />
       <CardActions className={classes.actions}>
-        <Button size="large" color="primary" variant="text">
+        <Button size="large" color="primary" variant="text" component={Link} to="/expenses">
           View all <ArrowRightIcon />
         </Button>
       </CardActions>
+      <ActiveModal
+        pageType="expenses"
+        open={isModalVisible}
+        handleClose={() => setModalVisibility(false)}
+        type="edit"
+      />
     </Card>
   );
 };

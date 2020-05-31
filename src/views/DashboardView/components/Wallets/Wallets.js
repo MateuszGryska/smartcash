@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { Link } from 'react-router-dom';
 import {
   Card,
   CardHeader,
@@ -60,7 +61,7 @@ const WalletsCart = () => {
       </CardContent>
       <Divider />
       <CardActions className={classes.actions}>
-        <Button color="primary" size="large" variant="text">
+        <Button color="primary" size="large" variant="text" component={Link} to="/wallets">
           View all <ArrowRightIcon />
         </Button>
       </CardActions>

@@ -5,6 +5,7 @@ import Toolbar from './components/Toolbar';
 import MoneyCard from './components/MoneyCard';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
 import mockData from './data';
+import ActiveModal from '../../components/ActiveModal/ActiveModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 const BudgetView = () => {
   const classes = useStyles();
   const [bilanceItems] = useState(mockData);
+  const [isModalVisible, setModalVisibility] = useState(false);
 
   const incomes = bilanceItems.filter((item) => {
     return item.categoryType === 'income';
@@ -31,7 +33,7 @@ const BudgetView = () => {
   return (
     <UserTemplate>
       <div className={classes.root}>
-        <Toolbar />
+        <Toolbar handleOpen={() => setModalVisibility(true)} />
         <div>
           <Grid container spacing="4" className={classes.gridContainer}>
             {incomes.map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (
@@ -61,6 +63,11 @@ const BudgetView = () => {
             ))}
           </Grid>
         </div>
+        <ActiveModal
+          open={isModalVisible}
+          handleClose={() => setModalVisibility(false)}
+          type="add"
+        />
       </div>
     </UserTemplate>
   );

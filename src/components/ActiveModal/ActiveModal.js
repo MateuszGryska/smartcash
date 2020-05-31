@@ -117,8 +117,8 @@ const ActiveModal = ({ open, handleClose, type, pageType }) => {
               />
               <TextField
                 margin="dense"
-                id="price"
-                label="Price"
+                id="moneyPrice"
+                label="Value"
                 type="text"
                 variant="outlined"
                 fullWidth
