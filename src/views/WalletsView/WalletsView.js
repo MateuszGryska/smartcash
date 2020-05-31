@@ -20,22 +20,33 @@ const WalletsView = () => {
   const classes = useStyles();
   const [isModalVisible, setModalVisibility] = useState(false);
   const [wallets] = useState(mockData);
+  const [searchItem, setSearchItem] = useState('');
+
+  const handleSearchInputChange = (e) => {
+    setSearchItem(e.target.value);
+  };
+
   return (
     <UserTemplate>
       <div className={classes.root}>
-        <Toolbar handleOpen={() => setModalVisibility(true)} />
+        <Toolbar
+          handleOpen={() => setModalVisibility(true)}
+          handleSearchInputChange={handleSearchInputChange}
+        />
         <div className={classes.content}>
           <Grid container spacing="4">
-            {wallets.map(({ id, accountName, moneyValue, updatedAt }) => (
-              <Grid item lg={4} sm={6} xl={4} xs={12}>
-                <MoneyCard
-                  accountName={accountName}
-                  key={id}
-                  moneyValue={moneyValue}
-                  updatedAt={updatedAt}
-                />
-              </Grid>
-            ))}
+            {wallets
+              .filter((item) => item.accountName.toLowerCase().includes(searchItem.toLowerCase()))
+              .map(({ id, accountName, moneyValue, updatedAt }) => (
+                <Grid item lg={4} sm={6} xl={4} xs={12}>
+                  <MoneyCard
+                    accountName={accountName}
+                    key={id}
+                    moneyValue={moneyValue}
+                    updatedAt={updatedAt}
+                  />
+                </Grid>
+              ))}
           </Grid>
         </div>
         <ActiveModal

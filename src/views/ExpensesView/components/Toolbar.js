@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = ({ handleOpen }) => {
+const Toolbar = ({ handleOpen, handleSearchInputChange }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -39,7 +39,11 @@ const Toolbar = ({ handleOpen }) => {
         </Button>
       </div>
       <div className={classes.row}>
-        <SearchInput className={classes.searchInput} placeholder="Search..." />
+        <SearchInput
+          className={classes.searchInput}
+          onChange={handleSearchInputChange}
+          placeholder="Search..."
+        />
       </div>
     </div>
   );

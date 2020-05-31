@@ -21,6 +21,11 @@ const BudgetView = () => {
   const classes = useStyles();
   const [bilanceItems] = useState(mockData);
   const [isModalVisible, setModalVisibility] = useState(false);
+  const [searchItem, setSearchItem] = useState('');
+
+  const handleSearchInputChange = (e) => {
+    setSearchItem(e.target.value);
+  };
 
   const incomes = bilanceItems.filter((item) => {
     return item.categoryType === 'income';
@@ -33,34 +38,41 @@ const BudgetView = () => {
   return (
     <UserTemplate>
       <div className={classes.root}>
-        <Toolbar handleOpen={() => setModalVisibility(true)} />
+        <Toolbar
+          handleSearchInputChange={handleSearchInputChange}
+          handleOpen={() => setModalVisibility(true)}
+        />
         <div>
           <Grid container spacing="4" className={classes.gridContainer}>
-            {incomes.map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (
-              <Grid item lg={4} sm={6} xl={4} xs={12}>
-                <MoneyCard
-                  categoryName={categoryName}
-                  key={id}
-                  categoryType={categoryType}
-                  sumAll={sumAll}
-                  updatedAt={updatedAt}
-                />
-              </Grid>
-            ))}
+            {incomes
+              .filter((item) => item.categoryName.toLowerCase().includes(searchItem.toLowerCase()))
+              .map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (
+                <Grid item lg={4} sm={6} xl={4} xs={12}>
+                  <MoneyCard
+                    categoryName={categoryName}
+                    key={id}
+                    categoryType={categoryType}
+                    sumAll={sumAll}
+                    updatedAt={updatedAt}
+                  />
+                </Grid>
+              ))}
           </Grid>
           <Divider />
           <Grid container spacing="4" className={classes.gridContainer}>
-            {outcomes.map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (
-              <Grid item lg={4} sm={6} xl={4} xs={12}>
-                <MoneyCard
-                  categoryName={categoryName}
-                  key={id}
-                  categoryType={categoryType}
-                  sumAll={sumAll}
-                  updatedAt={updatedAt}
-                />
-              </Grid>
-            ))}
+            {outcomes
+              .filter((item) => item.categoryName.toLowerCase().includes(searchItem.toLowerCase()))
+              .map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (
+                <Grid item lg={4} sm={6} xl={4} xs={12}>
+                  <MoneyCard
+                    categoryName={categoryName}
+                    key={id}
+                    categoryType={categoryType}
+                    sumAll={sumAll}
+                    updatedAt={updatedAt}
+                  />
+                </Grid>
+              ))}
           </Grid>
         </div>
         <ActiveModal

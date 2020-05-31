@@ -39,7 +39,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ExpensesList = () => {
+const ExpensesList = ({ searchItem }) => {
   const [bilanceItems] = useState(mockData);
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -120,6 +120,7 @@ const ExpensesList = () => {
               </TableHead>
               <TableBody>
                 {bilanceItems
+                  .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((item) => (
                     <TableRow

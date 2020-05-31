@@ -26,13 +26,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = ({ handleOpen }) => {
+const Toolbar = ({ handleOpen, handleSearchInputChange }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <div className={classes.row}>
-        <SearchInput className={classes.searchInput} placeholder="Search..." />
+        <SearchInput
+          className={classes.searchInput}
+          onChange={handleSearchInputChange}
+          placeholder="Search..."
+        />
         <div className={classes.spacer} />
         <Button color="primary" variant="contained" onClick={handleOpen}>
           New wallet

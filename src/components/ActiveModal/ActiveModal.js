@@ -129,7 +129,7 @@ const ActiveModal = ({ open, handleClose, type, pageType }) => {
                 Cancel
               </Button>
               <Button onClick={handleClose} color="primary">
-                Edit
+                {type === 'add' ? 'Add' : 'Edit'}
               </Button>
             </DialogActions>
           </>

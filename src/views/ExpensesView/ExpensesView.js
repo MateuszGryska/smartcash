@@ -15,14 +15,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ExpensesView = () => {
+  const [searchItem, setSearchItem] = useState('');
+
+  const handleSearchInputChange = (e) => {
+    setSearchItem(e.target.value);
+  };
   const [isModalVisible, setModalVisibility] = useState(false);
   const classes = useStyles();
   return (
     <UserTemplate>
       <div className={classes.root}>
-        <Toolbar handleOpen={() => setModalVisibility(true)} />
+        <Toolbar
+          handleOpen={() => setModalVisibility(true)}
+          handleSearchInputChange={handleSearchInputChange}
+        />
         <div className={classes.content}>
-          <ExpensesList />
+          <ExpensesList searchItem={searchItem} />
         </div>
         <ActiveModal
           pageType="expenses"
