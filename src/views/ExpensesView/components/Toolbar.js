@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
-
+import ActiveModal from '../../../components/ActiveModal/ActiveModal';
 import SearchInput from '../../../components/SearchInput/SearchInput';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,20 +28,26 @@ const useStyles = makeStyles((theme) => ({
 
 const Toolbar = () => {
   const classes = useStyles();
-
+  const [isModalVisible, setModalVisibility] = useState(false);
   return (
     <div className={classes.root}>
       <div className={classes.row}>
         <span className={classes.spacer} />
         <Button className={classes.importButton}>Import</Button>
         <Button className={classes.exportButton}>Export</Button>
-        <Button color="primary" variant="contained">
+        <Button onClick={() => setModalVisibility(true)} color="primary" variant="contained">
           Add expense
         </Button>
       </div>
       <div className={classes.row}>
         <SearchInput className={classes.searchInput} placeholder="Search..." />
       </div>
+      <ActiveModal
+        pageType="expenses"
+        open={isModalVisible}
+        handleClose={() => setModalVisibility(false)}
+        type="edit"
+      />
     </div>
   );
 };

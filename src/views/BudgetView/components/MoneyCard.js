@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -14,6 +14,7 @@ import {
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
+import ActiveModal from '../../../components/ActiveModal/ActiveModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MoneyCard = ({ categoryName, categoryType, sumAll, updatedAt }) => {
+  const [isModalVisible, setModalVisibility] = useState(false);
   const classes = useStyles();
   return (
     <Card>
@@ -65,12 +67,17 @@ const MoneyCard = ({ categoryName, categoryType, sumAll, updatedAt }) => {
             <IconButton>
               <MoreVertIcon />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => setModalVisibility(true)}>
               <EditIcon />
             </IconButton>
           </Grid>
         </Grid>
       </CardActions>
+      <ActiveModal
+        open={isModalVisible}
+        handleClose={() => setModalVisibility(false)}
+        type="edit"
+      />
     </Card>
   );
 };
