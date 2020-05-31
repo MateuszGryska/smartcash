@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import 'typeface-roboto';
+import { StylesProvider } from '@material-ui/core/styles';
+import Root from './views/Root/Root';
 
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <StylesProvider injectFirst>
+      <Root />
+    </StylesProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

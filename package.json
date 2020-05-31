@@ -5,10 +5,17 @@
   "dependencies": {
     "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.10.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/user-event": "^7.1.2",
+    "chart.js": "^2.9.3",
+    "clsx": "^1.1.0",
+    "formik": "^2.1.4",
     "react": "^16.13.1",
+    "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.1",
+    "react-perfect-scrollbar": "^1.5.8",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "styled-components": "^5.1.0",
     "typeface-roboto": "0.0.75"
@@ -36,6 +43,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^9.5.0",
+    "@types/yup": "^0.29.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
