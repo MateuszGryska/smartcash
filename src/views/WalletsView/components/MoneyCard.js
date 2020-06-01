@@ -8,6 +8,8 @@ import {
   Grid,
   IconButton,
   Divider,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -29,6 +31,16 @@ const useStyles = makeStyles((theme) => ({
 
 const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const classes = useStyles();
   return (
     <Card>
@@ -52,7 +64,7 @@ const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <IconButton>
+            <IconButton onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
             <IconButton onClick={() => setModalVisibility(true)}>
@@ -66,6 +78,15 @@ const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
         handleClose={() => setModalVisibility(false)}
         type="edit"
       />
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Delete</MenuItem>
+      </Menu>
     </Card>
   );
 };

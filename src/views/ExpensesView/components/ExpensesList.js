@@ -11,16 +11,13 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
   Tooltip,
   TableSortLabel,
-  IconButton,
   TablePagination,
 } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import EditIcon from '@material-ui/icons/Edit';
 
 import mockData from './data';
+import ExpensesListItem from './ExpensesListItem';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -123,34 +120,15 @@ const ExpensesList = ({ searchItem }) => {
                   .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((item) => (
-                    <TableRow
-                      className={classes.tableRow}
-                      hover
-                      key={item.id}
-                      selected={selectedItems.indexOf(item.id) !== -1}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selectedItems.indexOf(item.id) !== -1}
-                          color="primary"
-                          onChange={(event) => handleSelectOne(event, item.id)}
-                          value="true"
-                        />
-                      </TableCell>
-                      <TableCell>{item.date}</TableCell>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell>{item.wallet}</TableCell>
-                      <TableCell>{item.price}</TableCell>
-                      <TableCell>{item.category}</TableCell>
-                      <TableCell>
-                        <IconButton edge="end" size="medium">
-                          <MoreVertIcon />
-                        </IconButton>
-                        <IconButton edge="end" size="medium">
-                          <EditIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
+                    <ExpensesListItem
+                      id={item.id}
+                      selectedItems={selectedItems}
+                      date={item.date}
+                      wallet={item.wallet}
+                      price={item.price}
+                      category={item.category}
+                      handleSelectOne={handleSelectOne}
+                    />
                   ))}
               </TableBody>
             </Table>
