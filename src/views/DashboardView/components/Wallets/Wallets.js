@@ -9,13 +9,9 @@ import {
   Button,
   Divider,
   List,
-  ListItem,
-  Typography,
-  ListItemText,
-  IconButton,
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import WalletItem from './WalletItem';
 
 import mockData from './data';
 
@@ -47,15 +43,14 @@ const WalletsCart = () => {
       <CardContent className={classes.content}>
         <List>
           {wallets.map((wallet, i) => (
-            <ListItem key={wallet.id} divider={i < wallets.length - 1}>
-              <Typography variant="h3" className={classes.walletValue}>
-                $5000
-              </Typography>
-              <ListItemText primary={wallet.name} secondary={`Updated ${wallet.updatedAt}`} />
-              <IconButton edge="end" size="large">
-                <MoreVertIcon />
-              </IconButton>
-            </ListItem>
+            <WalletItem
+              id={wallet.id}
+              i={i}
+              name={wallet.name}
+              updateAt={wallet.updatedAt}
+              bilance={wallet.bilance}
+              walletsLength={wallets.length}
+            />
           ))}
         </List>
       </CardContent>
