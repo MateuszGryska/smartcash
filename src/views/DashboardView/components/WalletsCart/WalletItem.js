@@ -30,7 +30,7 @@ const WalletItem = ({ id, i, name, updatedAt, bilance, walletsLength }) => {
         {bilance}
       </Typography>
       <ListItemText primary={name} secondary={`Updated ${updatedAt}`} />
-      <IconButton edge="end" size="large" onClick={handleClick}>
+      <IconButton edge="end" size="medium" onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
       <Menu

@@ -46,8 +46,8 @@ const Topbar = ({ className, onSidebarOpen, ...rest }) => {
         </Hidden>
         <Hidden lgUp>
           <div className={classes.flexGrow} />
-          <IconButton color="inherit">
-            <MenuIcon fontSize="large" onClick={onSidebarOpen} />
+          <IconButton color="inherit" onClick={onSidebarOpen}>
+            <MenuIcon fontSize="large" />
           </IconButton>
         </Hidden>
       </Toolbar>

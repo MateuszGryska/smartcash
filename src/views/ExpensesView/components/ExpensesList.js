@@ -11,6 +11,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TableRow,
   Tooltip,
   TableSortLabel,
   TablePagination,
@@ -92,28 +93,30 @@ const ExpensesList = ({ searchItem }) => {
           <div className={classes.inner}>
             <Table>
               <TableHead>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedItems.length === bilanceItems.length}
-                    color="primary"
-                    indeterminate={
-                      selectedItems.length > 0 && selectedItems.length < bilanceItems.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell>
-                <TableCell sortDirection="desc">
-                  <Tooltip enterDelay={300} title="Sort">
-                    <TableSortLabel active direction="desc">
-                      Date
-                    </TableSortLabel>
-                  </Tooltip>
-                </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Wallet</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableRow>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={selectedItems.length === bilanceItems.length}
+                      color="primary"
+                      indeterminate={
+                        selectedItems.length > 0 && selectedItems.length < bilanceItems.length
+                      }
+                      onChange={handleSelectAll}
+                    />
+                  </TableCell>
+                  <TableCell sortDirection="desc">
+                    <Tooltip enterDelay={300} title="Sort">
+                      <TableSortLabel active direction="desc">
+                        Date
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Wallet</TableCell>
+                  <TableCell>Price</TableCell>
+                  <TableCell>Category</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
               </TableHead>
               <TableBody>
                 {bilanceItems

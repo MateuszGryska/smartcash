@@ -18,19 +18,19 @@ export default [
     bilance: '$4000',
   },
   {
-    id: 'Revolut',
+    id: 'gggfffff',
     name: 'Revolut',
     updatedAt: '9 hours ago',
     bilance: '$4000',
   },
   {
-    id: 'Cash',
+    id: 'Casdsffadasasssh',
     name: 'Cash',
     updatedAt: '9 hours ago',
     bilance: '$4000',
   },
   {
-    id: 'Cash',
+    id: 'gggfgfddsfsfs',
     name: 'Cash',
     updatedAt: '9 hours ago',
     bilance: '$4000',

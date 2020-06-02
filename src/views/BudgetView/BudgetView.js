@@ -33,7 +33,6 @@ const BudgetView = () => {
   const outcomes = bilanceItems.filter((item) => {
     return item.categoryType === 'outcome';
   });
-  console.log(incomes, outcomes);
 
   return (
     <UserTemplate>
@@ -43,7 +42,7 @@ const BudgetView = () => {
           handleOpen={() => setModalVisibility(true)}
         />
         <div>
-          <Grid container spacing="4" className={classes.gridContainer}>
+          <Grid container spacing={4} className={classes.gridContainer}>
             {incomes
               .filter((item) => item.categoryName.toLowerCase().includes(searchItem.toLowerCase()))
               .map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (
@@ -59,7 +58,7 @@ const BudgetView = () => {
               ))}
           </Grid>
           <Divider />
-          <Grid container spacing="4" className={classes.gridContainer}>
+          <Grid container spacing={4} className={classes.gridContainer}>
             {outcomes
               .filter((item) => item.categoryName.toLowerCase().includes(searchItem.toLowerCase()))
               .map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (

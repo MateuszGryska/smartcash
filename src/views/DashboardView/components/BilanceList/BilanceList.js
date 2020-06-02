@@ -20,7 +20,6 @@ import {
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ActiveModal from '../../../../components/ActiveModal/ActiveModal';
 
-
 import mockData from './data';
 
 const useStyles = makeStyles(() => ({
@@ -61,17 +60,19 @@ const BilanceList = () => {
           <div className={classes.inner}>
             <Table>
               <TableHead>
-                <TableCell sortDirection="desc">
-                  <Tooltip enterDelay={300} title="Sort">
-                    <TableSortLabel active direction="desc">
-                      Date
-                    </TableSortLabel>
-                  </Tooltip>
-                </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Wallet</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Category</TableCell>
+                <TableRow>
+                  <TableCell sortDirection="desc">
+                    <Tooltip enterDelay={300} title="Sort">
+                      <TableSortLabel active direction="desc">
+                        Date
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Wallet</TableCell>
+                  <TableCell>Price</TableCell>
+                  <TableCell>Category</TableCell>
+                </TableRow>
               </TableHead>
               <TableBody>
                 {bilanceItems.map((item) => (

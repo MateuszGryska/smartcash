@@ -34,7 +34,7 @@ const WalletsView = () => {
           handleSearchInputChange={handleSearchInputChange}
         />
         <div className={classes.content}>
-          <Grid container spacing="4">
+          <Grid container spacing={4}>
             {wallets
               .filter((item) => item.accountName.toLowerCase().includes(searchItem.toLowerCase()))
               .map(({ id, accountName, moneyValue, updatedAt }) => (
