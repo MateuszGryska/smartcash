@@ -27,7 +27,7 @@ const DashboardView = () => {
             <SmallCard title="Income" amount="$4600" />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Outcome" amount="$2434" />
+            <SmallCard title="Expense" amount="$2434" />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <SmallCard title="Total" amount="$2330" />

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   income: {
     color: theme.palette.success.main,
   },
-  outcome: {
+  expense: {
     color: theme.palette.error.main,
   },
   statsIcon: {
@@ -58,7 +58,7 @@ const MoneyCard = ({ categoryName, categoryType, sumAll, updatedAt }) => {
             align="center"
             gutterBottom
             variant="h1"
-            className={clsx(categoryType === 'income' ? classes.income : classes.outcome)}
+            className={clsx(categoryType === 'income' ? classes.income : classes.expense)}
           >
             {sumAll}
           </Typography>

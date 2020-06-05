@@ -52,7 +52,7 @@ const BilanceList = () => {
             New one
           </Button>
         }
-        title="Latest Incomes/Outcomes"
+        title="Latest Incomes/Expenses"
       />
       <Divider />
       <CardContent className={classes.content}>

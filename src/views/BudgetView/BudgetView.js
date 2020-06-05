@@ -30,8 +30,8 @@ const BudgetView = () => {
   const incomes = bilanceItems.filter((item) => {
     return item.categoryType === 'income';
   });
-  const outcomes = bilanceItems.filter((item) => {
-    return item.categoryType === 'outcome';
+  const expenses = bilanceItems.filter((item) => {
+    return item.categoryType === 'expense';
   });
 
   return (
@@ -59,7 +59,7 @@ const BudgetView = () => {
           </Grid>
           <Divider />
           <Grid container spacing={4} className={classes.gridContainer}>
-            {outcomes
+            {expenses
               .filter((item) => item.categoryName.toLowerCase().includes(searchItem.toLowerCase()))
               .map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (
                 <Grid item lg={4} sm={6} xl={4} xs={12}>

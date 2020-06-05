@@ -30,7 +30,7 @@ const BilanceChart = () => {
             Last 7 days <ArrowDropDownIcon />
           </Button>
         }
-        title="Incomes and outcomes"
+        title="Incomes and expenses"
       />
       <Divider />
       <CardContent>

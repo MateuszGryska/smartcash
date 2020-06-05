@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     height: 56,
     width: 56,
   },
-  avatarOutcome: {
+  avatarExpense: {
     backgroundColor: theme.palette.error.main,
     height: 56,
     width: 56,
@@ -81,9 +81,9 @@ const SmallCard = ({ title, amount }) => {
         <MoneyIcon className={classes.icon} />
       </Avatar>
     );
-  } else if (title === 'Income' || title === 'Outcome') {
+  } else if (title === 'Income' || title === 'Expense') {
     currentIcon = (
-      <Avatar className={clsx(title === 'Income' ? classes.avatarIncome : classes.avatarOutcome)}>
+      <Avatar className={clsx(title === 'Income' ? classes.avatarIncome : classes.avatarExpense)}>
         <ShowChartIcon className={classes.icon} />
       </Avatar>
     );
