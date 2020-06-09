@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Divider } from '@material-ui/core';
+import { Grid, Divider, Typography } from '@material-ui/core';
 import Toolbar from './components/Toolbar';
 import MoneyCard from './components/MoneyCard';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
@@ -73,6 +73,11 @@ const BudgetView = () => {
                 </Grid>
               ))}
           </Grid>
+          {incomes === 0 && expenses === 0 ? (
+            <Typography variant="h1" align="center">
+              You dont have any wallets yet! Add new one!
+            </Typography>
+          ) : null}
         </div>
         <ActiveModal
           open={isModalVisible}

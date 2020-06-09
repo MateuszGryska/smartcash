@@ -40,6 +40,7 @@ const WalletItem = ({ id, i, name, updatedAt, bilance, walletsLength }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <MenuItem onClick={handleClose}>Edit</MenuItem>
         <MenuItem onClick={handleClose}>Delete</MenuItem>
       </Menu>
     </ListItem>

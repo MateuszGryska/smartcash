@@ -34,8 +34,7 @@ export const ProfileDetailsSchema = Yup.object().shape({
   phoneNumber: Yup.string()
     .matches(phoneNumberRegex, 'Phone number is not valid')
     .min(8, 'Too short.')
-    .max(10, 'Too long.')
-    .required('Must enter a phone number'),
+    .max(10, 'Too long.'),
   country: Yup.string()
     .min(2, 'Too short.')
     .max(25, 'Too long.')
