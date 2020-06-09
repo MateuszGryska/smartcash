@@ -2,7 +2,7 @@ const initialState = {
   data: [
     {
       name: 'user1',
-      password: '',
+      password: 'haslo123',
       firstName: 'Matthew',
       lastName: 'Example',
       wallets: [
@@ -18,12 +18,22 @@ const initialState = {
             sum: 5000,
             incomesInCategory: [],
           },
+          {
+            name: 'second income category',
+            sum: 5000,
+            incomesInCategory: [],
+          },
         ],
         expenses: [
           {
             name: 'first expense category',
             sum: 4000,
             expensesInCategory: [],
+          },
+          {
+            name: 'second expense category',
+            sum: 5000,
+            incomesInCategory: [],
           },
         ],
       },

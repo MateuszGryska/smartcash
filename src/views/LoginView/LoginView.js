@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid, CardHeader, CardContent, Typography, TextField, Button } from '@material-ui/core';
 import { Formik } from 'formik';
 import AuthTemplate from '../../templates/AuthTemplate/AuthTemplate';
+import { LoginSchema } from '../../validation';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -39,11 +40,12 @@ const LoginView = () => {
       />
       <Formik
         initialValues={{ email: '', password: '' }}
+        validationSchema={LoginSchema}
         onSubmit={(values) => {
           console.log(values);
         }}
       >
-        {({ values, handleChange, handleBlur }) => (
+        {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
           <CardContent className={classes.contentBody}>
             <Grid container spacing="2">
               <Grid item md={12} xs={12}>
@@ -57,6 +59,8 @@ const LoginView = () => {
                   onBlur={handleBlur}
                   value={values.email}
                   variant="outlined"
+                  error={errors.email && touched.email}
+                  helperText={errors.email && touched.email ? errors.email : null}
                 />
               </Grid>
               <Grid item md={12} xs={12}>
@@ -70,10 +74,18 @@ const LoginView = () => {
                   onBlur={handleBlur}
                   value={values.password}
                   variant="outlined"
+                  error={errors.password && touched.password}
+                  helperText={errors.password && touched.password ? errors.password : null}
                 />
               </Grid>
               <Grid item md={12} xs={12}>
-                <Button fullWidth color="primary" variant="contained" type="submit">
+                <Button
+                  fullWidth
+                  color="primary"
+                  variant="contained"
+                  type="submit"
+                  disabled={!isValid}
+                >
                   Sign in
                 </Button>
               </Grid>

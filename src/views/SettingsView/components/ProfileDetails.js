@@ -10,6 +10,7 @@ import {
   TextField,
 } from '@material-ui/core';
 import { Formik, Form } from 'formik';
+import { ProfileDetailsSchema } from '../../../validation';
 
 const ProfileDetails = () => {
   return (
@@ -25,18 +26,18 @@ const ProfileDetails = () => {
           phoneNumber: '',
           country: '',
         }}
+        validationSchema={ProfileDetailsSchema}
         onSubmit={(values) => {
           console.log(values);
         }}
       >
-        {({ values, handleChange, handleBlur, isSubmitting }) => (
+        {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
           <Form>
             <CardContent>
               <Grid container spacing={3}>
                 <Grid item md={6} xs={12}>
                   <TextField
                     fullWidth
-                    helperText="Please specify the first name"
                     label="First name"
                     margin="dense"
                     name="firstName"
@@ -45,6 +46,8 @@ const ProfileDetails = () => {
                     required
                     value={values.firstName}
                     variant="outlined"
+                    error={errors.firstName && touched.firstName}
+                    helperText={errors.firstName && touched.firstName ? errors.firstName : null}
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
@@ -58,6 +61,8 @@ const ProfileDetails = () => {
                     required
                     value={values.lastName}
                     variant="outlined"
+                    error={errors.lastName && touched.lastName}
+                    helperText={errors.lastName && touched.lastName ? errors.lastName : null}
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
@@ -72,6 +77,8 @@ const ProfileDetails = () => {
                     required
                     value={values.email}
                     variant="outlined"
+                    error={errors.email && touched.email}
+                    helperText={errors.email && touched.email ? errors.email : null}
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
@@ -85,6 +92,10 @@ const ProfileDetails = () => {
                     type="number"
                     value={values.phoneNumber}
                     variant="outlined"
+                    error={errors.phoneNumber && touched.phoneNumber}
+                    helperText={
+                      errors.phoneNumber && touched.phoneNumber ? errors.phoneNumber : null
+                    }
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
@@ -97,13 +108,15 @@ const ProfileDetails = () => {
                     onBlur={handleBlur}
                     value={values.country}
                     variant="outlined"
+                    error={errors.country && touched.country}
+                    helperText={errors.country && touched.country ? errors.country : null}
                   />
                 </Grid>
               </Grid>
             </CardContent>
             <Divider />
             <CardActions>
-              <Button color="primary" variant="contained" type="submit" disabled={isSubmitting}>
+              <Button color="primary" variant="contained" type="submit" disabled={!isValid}>
                 Save details
               </Button>
             </CardActions>

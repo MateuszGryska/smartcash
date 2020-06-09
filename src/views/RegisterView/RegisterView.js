@@ -5,6 +5,7 @@ import { Grid, CardHeader, CardContent, Typography, TextField, Button } from '@m
 import { Formik } from 'formik';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AuthTemplate from '../../templates/AuthTemplate/AuthTemplate';
+import { RegisterSchema } from '../../validation';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
   },
   contentBody: {
+    paddingTop: theme.spacing(2),
     padding: theme.spacing(4),
   },
   recoverPasswordText: {
@@ -46,12 +48,19 @@ const RegisterView = () => {
         subheader="Sign up on the internal platform"
       />
       <Formik
-        initialValues={{ firstName: '', lastName: '', email: '', password: '' }}
+        initialValues={{
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        }}
+        validationSchema={RegisterSchema}
         onSubmit={(values) => {
           console.log(values);
         }}
       >
-        {({ values, handleChange, handleBlur }) => (
+        {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
           <CardContent className={classes.contentBody}>
             <Grid container spacing="2">
               <Grid item md={12} xs={12}>
@@ -65,6 +74,8 @@ const RegisterView = () => {
                   onBlur={handleBlur}
                   value={values.firstName}
                   variant="outlined"
+                  error={errors.firstName && touched.firstName}
+                  helperText={errors.firstName && touched.firstName ? errors.firstName : null}
                 />
               </Grid>
               <Grid item md={12} xs={12}>
@@ -78,6 +89,8 @@ const RegisterView = () => {
                   onBlur={handleBlur}
                   value={values.lastName}
                   variant="outlined"
+                  error={errors.lastName && touched.lastName}
+                  helperText={errors.lastName && touched.lastName ? errors.lastName : null}
                 />
               </Grid>
               <Grid item md={12} xs={12}>
@@ -91,6 +104,8 @@ const RegisterView = () => {
                   onBlur={handleBlur}
                   value={values.email}
                   variant="outlined"
+                  error={errors.email && touched.email}
+                  helperText={errors.email && touched.email ? errors.email : null}
                 />
               </Grid>
               <Grid item md={12} xs={12}>
@@ -104,10 +119,37 @@ const RegisterView = () => {
                   onBlur={handleBlur}
                   value={values.password}
                   variant="outlined"
+                  error={errors.password && touched.password}
+                  helperText={errors.password && touched.password ? errors.password : null}
                 />
               </Grid>
               <Grid item md={12} xs={12}>
-                <Button fullWidth color="primary" variant="contained" type="submit">
+                <TextField
+                  fullWidth
+                  label="Confirm password"
+                  type="password"
+                  margin="none"
+                  name="confirmPassword"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.confirmPassword}
+                  variant="outlined"
+                  error={errors.confirmPassword && touched.confirmPassword}
+                  helperText={
+                    errors.confirmPassword && touched.confirmPassword
+                      ? errors.confirmPassword
+                      : null
+                  }
+                />
+              </Grid>
+              <Grid item md={12} xs={12}>
+                <Button
+                  fullWidth
+                  color="primary"
+                  variant="contained"
+                  type="submit"
+                  disabled={!isValid}
+                >
                   Sign up now
                 </Button>
               </Grid>
