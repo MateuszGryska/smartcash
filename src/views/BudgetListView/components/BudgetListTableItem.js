@@ -5,7 +5,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import ActiveModal from '../../../components/ActiveModal/ActiveModal';
 
-const ExpensesListItem = ({
+const BudgetListTableItem = ({
   id,
   selectedItems,
   date,
@@ -67,4 +67,4 @@ const ExpensesListItem = ({
   );
 };
 
-export default ExpensesListItem;
+export default BudgetListTableItem;

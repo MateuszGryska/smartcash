@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MoneyCard = ({ categoryName, categoryType, sumAll, updatedAt }) => {
+const BudgetCategoryCard = ({ categoryName, categoryType, sumAll, updatedAt }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -104,4 +104,4 @@ const MoneyCard = ({ categoryName, categoryType, sumAll, updatedAt }) => {
   );
 };
 
-export default MoneyCard;
+export default BudgetCategoryCard;

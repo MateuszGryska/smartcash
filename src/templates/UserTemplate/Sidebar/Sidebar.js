@@ -41,13 +41,13 @@ const pages = [
     icon: <DashboardIcon />,
   },
   {
-    title: 'Expenses',
-    href: '/expenses',
+    title: 'Budget List',
+    href: '/budgetlist',
     icon: <AccountBalanceIcon />,
   },
   {
-    title: 'Budget',
-    href: '/budget',
+    title: 'Budget Categories',
+    href: '/budgetcategories',
     icon: <AttachMoneyIcon />,
   },
   {

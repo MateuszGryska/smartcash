@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 
 import mockData from './data';
-import ExpensesListItem from './ExpensesListItem';
+import BudgetListTableItem from './BudgetListTableItem';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ExpensesList = ({ searchItem }) => {
+const BudgetListTable = ({ searchItem }) => {
   const [bilanceItems] = useState(mockData);
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -123,8 +123,9 @@ const ExpensesList = ({ searchItem }) => {
                   .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((item) => (
-                    <ExpensesListItem
+                    <BudgetListTableItem
                       id={item.id}
+                      name={item.name}
                       selectedItems={selectedItems}
                       date={item.date}
                       wallet={item.wallet}
@@ -154,4 +155,4 @@ const ExpensesList = ({ searchItem }) => {
   );
 };
 
-export default ExpensesList;
+export default BudgetListTable;

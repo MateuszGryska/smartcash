@@ -8,9 +8,9 @@ import theme from '../../theme/mainTheme';
 import { routes } from '../../routes';
 import store from '../../store';
 
-import BudgetView from '../BudgetView/BudgetView';
+import BudgetCategoriesView from '../BudgetCategoriesView/BudgetCategoriesView';
 import DashboardView from '../DashboardView/DashboardView';
-import ExpensesView from '../ExpensesView/ExpensesView';
+import BudgetListView from '../BudgetListView/BudgetListView';
 import SettingsView from '../SettingsView/SettingsView';
 import WalletsView from '../WalletsView/WalletsView';
 import LoginView from '../LoginView/LoginView';
@@ -32,8 +32,8 @@ function Root() {
             <Switch>
               <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
               <Route exact path={routes.dashboard} component={DashboardView} />
-              <Route exact path={routes.expenses} component={ExpensesView} />
-              <Route exact path={routes.budget} component={BudgetView} />
+              <Route exact path={routes.budgetlist} component={BudgetListView} />
+              <Route exact path={routes.budgetcategories} component={BudgetCategoriesView} />
               <Route exact path={routes.wallets} component={WalletsView} />
               <Route exact path={routes.settings} component={SettingsView} />
               <Route exact path={routes.login} component={LoginView} />

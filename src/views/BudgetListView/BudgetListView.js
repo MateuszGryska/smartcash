@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import ExpensesList from './components/ExpensesList';
+import BudgetListTable from './components/BudgetListTable';
 import Toolbar from './components/Toolbar';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
 import ActiveModal from '../../components/ActiveModal/ActiveModal';
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpensesView = () => {
+const BudgetListView = () => {
   const [searchItem, setSearchItem] = useState('');
 
   const handleSearchInputChange = (e) => {
@@ -30,7 +30,7 @@ const ExpensesView = () => {
           handleSearchInputChange={handleSearchInputChange}
         />
         <div className={classes.content}>
-          <ExpensesList searchItem={searchItem} />
+          <BudgetListTable searchItem={searchItem} />
         </div>
         <ActiveModal
           pageType="expenses"
@@ -43,4 +43,4 @@ const ExpensesView = () => {
   );
 };
 
-export default ExpensesView;
+export default BudgetListView;
