@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -8,11 +9,14 @@ import {
   Grid,
   IconButton,
   Divider,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
+import ActiveModal from '../../../components/ActiveModal/ActiveModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -27,6 +31,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
+  const [isModalVisible, setModalVisibility] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const classes = useStyles();
   return (
     <Card>
@@ -50,17 +65,37 @@ const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <IconButton>
+            <IconButton onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => setModalVisibility(true)}>
               <EditIcon />
             </IconButton>
           </Grid>
         </Grid>
       </CardActions>
+      <ActiveModal
+        open={isModalVisible}
+        handleClose={() => setModalVisibility(false)}
+        type="edit"
+      />
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Delete</MenuItem>
+      </Menu>
     </Card>
   );
+};
+
+MoneyCard.propTypes = {
+  moneyValue: PropTypes.string.isRequired,
+  accountName: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string.isRequired,
 };
 
 export default MoneyCard;

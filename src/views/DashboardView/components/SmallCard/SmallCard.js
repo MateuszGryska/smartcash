@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     height: 56,
     width: 56,
   },
-  avatarOutcome: {
+  avatarExpense: {
     backgroundColor: theme.palette.error.main,
     height: 56,
     width: 56,
@@ -81,9 +82,9 @@ const SmallCard = ({ title, amount }) => {
         <MoneyIcon className={classes.icon} />
       </Avatar>
     );
-  } else if (title === 'Income' || title === 'Outcome') {
+  } else if (title === 'Income' || title === 'Expense') {
     currentIcon = (
-      <Avatar className={clsx(title === 'Income' ? classes.avatarIncome : classes.avatarOutcome)}>
+      <Avatar className={clsx(title === 'Income' ? classes.avatarIncome : classes.avatarExpense)}>
         <ShowChartIcon className={classes.icon} />
       </Avatar>
     );
@@ -104,7 +105,7 @@ const SmallCard = ({ title, amount }) => {
               {title}
             </Typography>
             <Typography variant="h3" className={clsx(title === 'Total' ? classes.total : null)}>
-              {amount}
+              ${amount}
             </Typography>
           </Grid>
           <Grid item>{currentIcon}</Grid>
@@ -131,6 +132,11 @@ const SmallCard = ({ title, amount }) => {
       </CardContent>
     </Card>
   );
+};
+
+SmallCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  amount: PropTypes.string.isRequired,
 };
 
 export default SmallCard;

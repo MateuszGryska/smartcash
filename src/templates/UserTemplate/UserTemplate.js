@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/styles';
@@ -62,6 +63,10 @@ const UserTemplate = ({ children }) => {
       </main>
     </div>
   );
+};
+
+UserTemplate.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default UserTemplate;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -14,13 +15,11 @@ import {
   TableRow,
   Tooltip,
   TableSortLabel,
-  IconButton,
   TablePagination,
 } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import EditIcon from '@material-ui/icons/Edit';
 
 import mockData from './data';
+import BudgetListTableItem from './BudgetListTableItem';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -39,7 +38,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ExpensesList = () => {
+const BudgetListTable = ({ searchItem }) => {
   const [bilanceItems] = useState(mockData);
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -95,61 +94,46 @@ const ExpensesList = () => {
           <div className={classes.inner}>
             <Table>
               <TableHead>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedItems.length === bilanceItems.length}
-                    color="primary"
-                    indeterminate={
-                      selectedItems.length > 0 && selectedItems.length < bilanceItems.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell>
-                <TableCell sortDirection="desc">
-                  <Tooltip enterDelay={300} title="Sort">
-                    <TableSortLabel active direction="desc">
-                      Date
-                    </TableSortLabel>
-                  </Tooltip>
-                </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Wallet</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableRow>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={selectedItems.length === bilanceItems.length}
+                      color="primary"
+                      indeterminate={
+                        selectedItems.length > 0 && selectedItems.length < bilanceItems.length
+                      }
+                      onChange={handleSelectAll}
+                    />
+                  </TableCell>
+                  <TableCell sortDirection="desc">
+                    <Tooltip enterDelay={300} title="Sort">
+                      <TableSortLabel active direction="desc">
+                        Date
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Wallet</TableCell>
+                  <TableCell>Price</TableCell>
+                  <TableCell>Category</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
               </TableHead>
               <TableBody>
                 {bilanceItems
+                  .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((item) => (
-                    <TableRow
-                      className={classes.tableRow}
-                      hover
-                      key={item.id}
-                      selected={selectedItems.indexOf(item.id) !== -1}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selectedItems.indexOf(item.id) !== -1}
-                          color="primary"
-                          onChange={(event) => handleSelectOne(event, item.id)}
-                          value="true"
-                        />
-                      </TableCell>
-                      <TableCell>{item.date}</TableCell>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell>{item.wallet}</TableCell>
-                      <TableCell>{item.price}</TableCell>
-                      <TableCell>{item.category}</TableCell>
-                      <TableCell>
-                        <IconButton edge="end" size="medium">
-                          <MoreVertIcon />
-                        </IconButton>
-                        <IconButton edge="end" size="medium">
-                          <EditIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
+                    <BudgetListTableItem
+                      id={item.id}
+                      name={item.name}
+                      selectedItems={selectedItems}
+                      date={item.date}
+                      wallet={item.wallet}
+                      price={item.price}
+                      category={item.category}
+                      handleSelectOne={handleSelectOne}
+                    />
                   ))}
               </TableBody>
             </Table>
@@ -172,4 +156,12 @@ const ExpensesList = () => {
   );
 };
 
-export default ExpensesList;
+BudgetListTable.propTypes = {
+  searchItem: PropTypes.string,
+};
+
+BudgetListTable.defaultProps = {
+  searchItem: '',
+};
+
+export default BudgetListTable;

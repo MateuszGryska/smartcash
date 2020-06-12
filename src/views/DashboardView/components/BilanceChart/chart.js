@@ -4,7 +4,7 @@ export const data = {
   labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug'],
   datasets: [
     {
-      label: 'Outcome',
+      label: 'Expense',
       backgroundColor: palette.error.main,
       data: [18, 5, 19, 27, 29, 19, 20],
     },

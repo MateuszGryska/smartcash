@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography, Card } from '@material-ui/core';
 
@@ -55,6 +56,10 @@ const AuthTemplate = ({ children }) => {
       </Grid>
     </div>
   );
+};
+
+AuthTemplate.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default AuthTemplate;

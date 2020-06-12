@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography } from '@material-ui/core';
@@ -31,6 +32,14 @@ const Profile = ({ className }) => {
       </Typography>
     </div>
   );
+};
+
+Profile.propTypes = {
+  className: PropTypes.string,
+};
+
+Profile.defaultProps = {
+  className: '',
 };
 
 export default Profile;

@@ -1,8 +1,8 @@
 export const routes = {
   home: '/',
   dashboard: '/dashboard',
-  budget: '/budget',
-  expenses: '/expenses',
+  budgetcategories: '/budgetcategories',
+  budgetlist: '/budgetlist',
   settings: '/settings',
   wallets: '/wallets',
   login: '/login',

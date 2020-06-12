@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -58,6 +59,15 @@ const SidebarNav = ({ className, pages }) => {
       ))}
     </List>
   );
+};
+
+SidebarNav.propTypes = {
+  className: PropTypes.string,
+  pages: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+SidebarNav.defaultProps = {
+  className: '',
 };
 
 export default SidebarNav;

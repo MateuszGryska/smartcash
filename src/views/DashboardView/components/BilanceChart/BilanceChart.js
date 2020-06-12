@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { Link } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import { Card, CardHeader, CardContent, CardActions, Divider, Button } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -29,7 +30,7 @@ const BilanceChart = () => {
             Last 7 days <ArrowDropDownIcon />
           </Button>
         }
-        title="Incomes and outcomes"
+        title="Incomes and expenses"
       />
       <Divider />
       <CardContent>
@@ -40,7 +41,7 @@ const BilanceChart = () => {
       <Divider />
 
       <CardActions className={classes.actions}>
-        <Button color="primary" size="large" variant="text">
+        <Button color="primary" size="large" variant="text" component={Link} to="/expenses">
           Overview <ArrowRightIcon />
         </Button>
       </CardActions>
