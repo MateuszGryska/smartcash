@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Drawer, Divider } from '@material-ui/core';
@@ -80,6 +81,19 @@ const Sidebar = ({ onClose, open, variant, className }) => {
       </div>
     </Drawer>
   );
+};
+
+Sidebar.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool,
+  variant: PropTypes.string,
+  className: PropTypes.string,
+};
+
+Sidebar.defaultProps = {
+  open: false,
+  variant: 'temporary',
+  className: '',
 };
 
 export default Sidebar;

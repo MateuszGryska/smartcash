@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 
@@ -45,6 +46,11 @@ const Toolbar = ({ handleOpen, handleSearchInputChange }) => {
       <div className={classes.row} />
     </div>
   );
+};
+
+Toolbar.propTypes = {
+  handleOpen: PropTypes.func.isRequired,
+  handleSearchInputChange: PropTypes.func.isRequired,
 };
 
 export default Toolbar;

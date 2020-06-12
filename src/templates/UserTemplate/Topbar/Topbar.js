@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Typography, Hidden, IconButton, Badge } from '@material-ui/core';
@@ -53,6 +54,15 @@ const Topbar = ({ className, onSidebarOpen, ...rest }) => {
       </Toolbar>
     </AppBar>
   );
+};
+
+Topbar.propTypes = {
+  className: PropTypes.string,
+  onSidebarOpen: PropTypes.func.isRequired,
+};
+
+Topbar.defaultProps = {
+  className: '',
 };
 
 export default Topbar;

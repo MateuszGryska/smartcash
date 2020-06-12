@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { ListItem, Typography, ListItemText, IconButton, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -45,6 +46,15 @@ const WalletItem = ({ id, i, name, updatedAt, bilance, walletsLength }) => {
       </Menu>
     </ListItem>
   );
+};
+
+WalletItem.propTypes = {
+  id: PropTypes.string.isRequired,
+  i: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string.isRequired,
+  bilance: PropTypes.string.isRequired,
+  walletsLength: PropTypes.number.isRequired,
 };
 
 export default WalletItem;

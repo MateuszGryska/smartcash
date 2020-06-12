@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import { Paper, Input } from '@material-ui/core';
@@ -24,15 +25,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchInput = ({ className, style, onChange, ...rest }) => {
+const SearchInput = ({ className, onChange, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <Paper {...rest} className={clsx(classes.root, className)} style={style}>
+    <Paper {...rest} className={clsx(classes.root, className)}>
       <SearchIcon className={classes.icon} />
       <Input {...rest} className={classes.input} disableUnderline onChange={onChange} />
     </Paper>
   );
+};
+
+SearchInput.propTypes = {
+  className: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+};
+
+SearchInput.defaultProps = {
+  className: '',
 };
 
 export default SearchInput;

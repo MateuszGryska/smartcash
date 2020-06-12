@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Checkbox, TableCell, TableRow, IconButton, Menu, MenuItem } from '@material-ui/core';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -65,6 +66,17 @@ const BudgetListTableItem = ({
       </Menu>
     </TableRow>
   );
+};
+
+BudgetListTableItem.propTypes = {
+  id: PropTypes.string.isRequired,
+  selectedItems: PropTypes.arrayOf(PropTypes.string).isRequired,
+  date: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  wallet: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  handleSelectOne: PropTypes.func.isRequired,
 };
 
 export default BudgetListTableItem;

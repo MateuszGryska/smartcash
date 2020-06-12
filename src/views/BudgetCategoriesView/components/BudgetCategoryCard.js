@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -102,6 +103,13 @@ const BudgetCategoryCard = ({ categoryName, categoryType, sumAll, updatedAt }) =
       </Menu>
     </Card>
   );
+};
+
+BudgetCategoryCard.propTypes = {
+  categoryName: PropTypes.string.isRequired,
+  categoryType: PropTypes.string.isRequired,
+  sumAll: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string.isRequired,
 };
 
 export default BudgetCategoryCard;

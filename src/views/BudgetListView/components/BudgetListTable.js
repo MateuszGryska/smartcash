@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -153,6 +154,14 @@ const BudgetListTable = ({ searchItem }) => {
       </CardActions>
     </Card>
   );
+};
+
+BudgetListTable.propTypes = {
+  searchItem: PropTypes.string,
+};
+
+BudgetListTable.defaultProps = {
+  searchItem: '',
 };
 
 export default BudgetListTable;

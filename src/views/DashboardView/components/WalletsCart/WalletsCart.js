@@ -47,7 +47,7 @@ const WalletsCart = () => {
               id={wallet.id}
               i={i}
               name={wallet.name}
-              updateAt={wallet.updatedAt}
+              updatedAt={wallet.updatedAt}
               bilance={wallet.bilance}
               walletsLength={wallets.length}
             />

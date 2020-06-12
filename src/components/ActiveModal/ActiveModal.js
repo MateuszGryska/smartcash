@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Dialog,
   TextField,
@@ -137,6 +138,17 @@ const ActiveModal = ({ open, handleClose, type, pageType }) => {
       </Dialog>
     </>
   );
+};
+
+ActiveModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  type: PropTypes.oneOf(['add', 'edit']).isRequired,
+  pageType: PropTypes.string,
+};
+
+ActiveModal.defaultProps = {
+  pageType: '',
 };
 
 export default ActiveModal;

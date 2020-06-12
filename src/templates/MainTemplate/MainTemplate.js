@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import GlobalStyle from '../../theme/GlobalStyle';
 
 const MainTemplate = ({ children }) => {
@@ -8,6 +9,10 @@ const MainTemplate = ({ children }) => {
       {children}
     </main>
   );
+};
+
+MainTemplate.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default MainTemplate;

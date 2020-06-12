@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -89,6 +90,12 @@ const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
       </Menu>
     </Card>
   );
+};
+
+MoneyCard.propTypes = {
+  moneyValue: PropTypes.string.isRequired,
+  accountName: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string.isRequired,
 };
 
 export default MoneyCard;
