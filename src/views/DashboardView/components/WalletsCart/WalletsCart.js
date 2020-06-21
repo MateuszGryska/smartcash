@@ -45,7 +45,7 @@ const WalletsCart = () => {
           {wallets.map((wallet, i) => (
             <WalletItem
               id={wallet.id}
-              i={i}
+              index={i}
               name={wallet.name}
               updatedAt={wallet.updatedAt}
               bilance={wallet.bilance}

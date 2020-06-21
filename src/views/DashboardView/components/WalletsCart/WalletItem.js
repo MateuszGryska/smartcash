@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletItem = ({ id, i, name, updatedAt, bilance, walletsLength }) => {
+const WalletItem = ({ id, index, name, updatedAt, bilance, walletsLength }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
 
@@ -26,7 +26,7 @@ const WalletItem = ({ id, i, name, updatedAt, bilance, walletsLength }) => {
   };
 
   return (
-    <ListItem key={id} divider={i < walletsLength - 1}>
+    <ListItem key={id} divider={index < walletsLength - 1}>
       <Typography variant="h3" className={classes.walletValue}>
         {bilance}
       </Typography>
@@ -50,7 +50,7 @@ const WalletItem = ({ id, i, name, updatedAt, bilance, walletsLength }) => {
 
 WalletItem.propTypes = {
   id: PropTypes.string.isRequired,
-  i: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   updatedAt: PropTypes.string.isRequired,
   bilance: PropTypes.string.isRequired,

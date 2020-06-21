@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Dialog,
@@ -8,135 +8,62 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-  Select,
-  FormControl,
-  MenuItem,
-  InputLabel,
 } from '@material-ui/core';
+import { Formik, Form } from 'formik';
+import { ActiveModalSchema } from '../../validation';
 
-const ActiveModal = ({ open, handleClose, type, pageType }) => {
-  const [wallet, setWallet] = useState('');
-  const [category, setCategory] = useState('');
-
-  const handleWalletChange = (event) => {
-    setWallet(event.target.value);
-  };
-  const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
-  };
-
+const ActiveModal = ({ open, handleClose, type }) => {
   return (
-    <>
-      <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
-        {pageType === 'expenses' ? (
+    <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
+      <Formik
+        initialValues={{ name: '' }}
+        validationSchema={ActiveModalSchema}
+        onSubmit={(values) => {
+          console.log(values);
+        }}
+      >
+        {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
           <>
-            <DialogTitle id="max-width-dialog-title">Add new expense.</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                To add new expense, please enter all data and value here.
-              </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Name"
-                type="text"
-                variant="outlined"
-                fullWidth
-              />
-              <TextField
-                margin="dense"
-                id="price"
-                label="Price"
-                type="text"
-                variant="outlined"
-                fullWidth
-              />
-              <FormControl variant="outlined" fullWidth margin="dense">
-                <InputLabel id="demo-simple-select-outlined-label">Wallet</InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={wallet}
-                  onChange={handleWalletChange}
-                  label="Wallet"
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl variant="outlined" fullWidth margin="dense">
-                <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={category}
-                  onChange={handleCategoryChange}
-                  label="Category"
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleClose} color="primary">
-                Add
-              </Button>
-            </DialogActions>
-          </>
-        ) : (
-          <>
-            <DialogTitle id="max-width-dialog-title">
-              {type === 'add' ? 'Add new item' : 'Edit item'}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                {type === 'add'
-                  ? 'To add new item, please enter your title and value here.'
-                  : 'To edit item, please change your title and value here.'}
-              </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Name"
-                type="text"
-                variant="outlined"
-                fullWidth
-              />
-              <TextField
-                margin="dense"
-                id="moneyPrice"
-                label="Value"
-                type="text"
-                variant="outlined"
-                fullWidth
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleClose} color="primary">
-                {type === 'add' ? 'Add' : 'Edit'}
-              </Button>
-            </DialogActions>
+            <Form>
+              <DialogTitle id="max-width-dialog-title">
+                {type === 'add' ? 'Add new item' : 'Edit item'}
+              </DialogTitle>
+
+              <DialogContent>
+                <DialogContentText>
+                  {type === 'add'
+                    ? 'To add new item, please enter your title and value here.'
+                    : 'To edit item, please change your title and value here.'}
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  name="name"
+                  label="Name"
+                  type="text"
+                  variant="outlined"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.name}
+                  error={errors.name && touched.name}
+                  helperText={errors.name && touched.name ? errors.name : null}
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={handleClose} color="primary" type="submit" disabled={!isValid}>
+                  {type === 'add' ? 'Add' : 'Edit'}
+                </Button>
+              </DialogActions>
+            </Form>
           </>
         )}
-      </Dialog>
-    </>
+      </Formik>
+    </Dialog>
   );
 };
 
@@ -144,11 +71,6 @@ ActiveModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['add', 'edit']).isRequired,
-  pageType: PropTypes.string,
-};
-
-ActiveModal.defaultProps = {
-  pageType: '',
 };
 
 export default ActiveModal;

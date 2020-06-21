@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import BudgetListTable from './components/BudgetListTable';
 import Toolbar from './components/Toolbar';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
-import ActiveModal from '../../components/ActiveModal/ActiveModal';
+import BudgetActiveModal from '../../components/BudgetActiveModal/BudgetActiveModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,12 +32,7 @@ const BudgetListView = () => {
         <div className={classes.content}>
           <BudgetListTable searchItem={searchItem} />
         </div>
-        <ActiveModal
-          pageType="expenses"
-          open={isModalVisible}
-          handleClose={() => setModalVisibility(false)}
-          type="edit"
-        />
+        <BudgetActiveModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
       </div>
     </UserTemplate>
   );

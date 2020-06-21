@@ -83,3 +83,31 @@ export const RegisterSchema = Yup.object().shape({
 export const ResetSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email.').required('The email is required.'),
 });
+
+export const BudgetActiveModalSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Too short')
+    .max(25, 'Too long.')
+    .trim()
+    .matches(
+      /^[_A-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]*((-|\s)*[_A-zĄĆĘŁŃÓŚŹŻąćęłńóśźż])*$/g,
+      'Special characters are not allowed',
+    )
+    .required('Name is required.'),
+  amount: Yup.number().positive('Amount must be positive.').required('Amount is required.'),
+  type: Yup.string().required('Type is required!'),
+  wallet: Yup.string().required('Wallet is required!'),
+  category: Yup.string().required('Category is required!'),
+});
+
+export const ActiveModalSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Too short')
+    .max(25, 'Too long.')
+    .trim()
+    .matches(
+      /^[_A-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]*((-|\s)*[_A-zĄĆĘŁŃÓŚŹŻąćęłńóśźż])*$/g,
+      'Special characters are not allowed',
+    )
+    .required('Name is required.'),
+});
