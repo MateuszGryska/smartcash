@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography } from '@material-ui/core';
 import Toolbar from './components/Toolbar';
-import MoneyCard from './components/MoneyCard';
+import WalletCard from './components/WalletCard';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
-import mockData from './data';
-import ActiveModal from '../../components/ActiveModal/ActiveModal';
+
+import WalletsModal from './components/WalletsModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,10 +17,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletsView = () => {
+const WalletsView = ({ wallets }) => {
   const classes = useStyles();
   const [isModalVisible, setModalVisibility] = useState(false);
-  const [wallets] = useState(mockData);
   const [searchItem, setSearchItem] = useState('');
 
   const handleSearchInputChange = (e) => {
@@ -37,15 +37,10 @@ const WalletsView = () => {
           {wallets.length > 0 ? (
             <Grid container spacing={4}>
               {wallets
-                .filter((item) => item.accountName.toLowerCase().includes(searchItem.toLowerCase()))
-                .map(({ id, accountName, moneyValue, updatedAt }) => (
+                .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
+                .map(({ id, name, sum, date }) => (
                   <Grid item lg={4} sm={6} xl={4} xs={12}>
-                    <MoneyCard
-                      accountName={accountName}
-                      key={id}
-                      moneyValue={moneyValue}
-                      updatedAt={updatedAt}
-                    />
+                    <WalletCard name={name} key={id} sum={sum} date={date} />
                   </Grid>
                 ))}
             </Grid>
@@ -55,14 +50,19 @@ const WalletsView = () => {
             </Typography>
           )}
         </div>
-        <ActiveModal
+        <WalletsModal
           open={isModalVisible}
+          pageType="wallets"
           handleClose={() => setModalVisibility(false)}
-          type="add"
         />
       </div>
     </UserTemplate>
   );
 };
 
-export default WalletsView;
+const mapStateToProps = (state) => {
+  const { wallets } = state;
+  return { wallets };
+};
+
+export default connect(mapStateToProps)(WalletsView);

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Divider, Typography } from '@material-ui/core';
 import Toolbar from './components/Toolbar';
 import BudgetCategoryCard from './components/BudgetCategoryCard';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
-import mockData from './data';
-import ActiveModal from '../../components/ActiveModal/ActiveModal';
+import CategoriesModal from './components/CategoriesModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,9 +17,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BudgetCategoriesView = () => {
+const BudgetCategoriesView = ({ categories }) => {
   const classes = useStyles();
-  const [bilanceItems] = useState(mockData);
+  // const [bilanceItems] = useState(categories);
   const [isModalVisible, setModalVisibility] = useState(false);
   const [searchItem, setSearchItem] = useState('');
 
@@ -27,11 +27,11 @@ const BudgetCategoriesView = () => {
     setSearchItem(e.target.value);
   };
 
-  const incomes = bilanceItems.filter((item) => {
-    return item.categoryType === 'income';
+  const incomes = categories.filter((item) => {
+    return item.type === 'income';
   });
-  const expenses = bilanceItems.filter((item) => {
-    return item.categoryType === 'expense';
+  const expenses = categories.filter((item) => {
+    return item.type === 'expense';
   });
 
   return (
@@ -44,32 +44,20 @@ const BudgetCategoriesView = () => {
         <div>
           <Grid container spacing={4} className={classes.gridContainer}>
             {incomes
-              .filter((item) => item.categoryName.toLowerCase().includes(searchItem.toLowerCase()))
-              .map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (
+              .filter((category) => category.name.toLowerCase().includes(searchItem.toLowerCase()))
+              .map(({ id, name, type, sum, date }) => (
                 <Grid item lg={4} sm={6} xl={4} xs={12}>
-                  <BudgetCategoryCard
-                    categoryName={categoryName}
-                    key={id}
-                    categoryType={categoryType}
-                    sumAll={sumAll}
-                    updatedAt={updatedAt}
-                  />
+                  <BudgetCategoryCard name={name} key={id} type={type} sum={sum} date={date} />
                 </Grid>
               ))}
           </Grid>
           <Divider />
           <Grid container spacing={4} className={classes.gridContainer}>
             {expenses
-              .filter((item) => item.categoryName.toLowerCase().includes(searchItem.toLowerCase()))
-              .map(({ id, categoryName, categoryType, sumAll, updatedAt }) => (
+              .filter((category) => category.name.toLowerCase().includes(searchItem.toLowerCase()))
+              .map(({ id, name, type, sum, date }) => (
                 <Grid item lg={4} sm={6} xl={4} xs={12}>
-                  <BudgetCategoryCard
-                    categoryName={categoryName}
-                    key={id}
-                    categoryType={categoryType}
-                    sumAll={sumAll}
-                    updatedAt={updatedAt}
-                  />
+                  <BudgetCategoryCard name={name} key={id} type={type} sum={sum} date={date} />
                 </Grid>
               ))}
           </Grid>
@@ -79,8 +67,9 @@ const BudgetCategoriesView = () => {
             </Typography>
           ) : null}
         </div>
-        <ActiveModal
+        <CategoriesModal
           open={isModalVisible}
+          pageType="budgetcategories"
           handleClose={() => setModalVisibility(false)}
           type="add"
         />
@@ -89,4 +78,9 @@ const BudgetCategoriesView = () => {
   );
 };
 
-export default BudgetCategoriesView;
+const mapStateToProps = (state) => {
+  const { categories } = state;
+  return { categories };
+};
+
+export default connect(mapStateToProps)(BudgetCategoriesView);

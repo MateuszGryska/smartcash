@@ -16,7 +16,7 @@ import {
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
-import ActiveModal from '../../../components/ActiveModal/ActiveModal';
+import EditModal from '../../../components/EditModal/EditModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
+const WalletCard = ({ sum, name, date }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -48,11 +48,11 @@ const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
       <CardContent>
         <div>
           <Typography align="center" gutterBottom variant="h1">
-            {moneyValue}
+            ${sum}
           </Typography>
         </div>
         <Typography align="center" gutterBottom variant="h4">
-          {accountName}
+          {name}
         </Typography>
       </CardContent>
       <Divider />
@@ -61,7 +61,7 @@ const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
           <Grid item className={classes.statsItem}>
             <AccessTimeIcon className={classes.statsIcon} />
             <Typography display="inline" variant="body2">
-              {updatedAt}
+              {date}
             </Typography>
           </Grid>
           <Grid item>
@@ -74,11 +74,7 @@ const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
           </Grid>
         </Grid>
       </CardActions>
-      <ActiveModal
-        open={isModalVisible}
-        handleClose={() => setModalVisibility(false)}
-        type="edit"
-      />
+      <EditModal open={isModalVisible} handleClose={() => setModalVisibility(false)} type="edit" />
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -92,10 +88,10 @@ const MoneyCard = ({ moneyValue, accountName, updatedAt }) => {
   );
 };
 
-MoneyCard.propTypes = {
-  moneyValue: PropTypes.string.isRequired,
-  accountName: PropTypes.string.isRequired,
-  updatedAt: PropTypes.string.isRequired,
+WalletCard.propTypes = {
+  sum: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
 };
 
-export default MoneyCard;
+export default WalletCard;

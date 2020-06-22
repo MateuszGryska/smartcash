@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 import {
@@ -12,8 +13,6 @@ import {
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import WalletItem from './WalletItem';
-
-import mockData from './data';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletsCart = () => {
-  const [wallets] = useState(mockData);
+const WalletsCard = ({ wallets }) => {
+  const [allWallets] = useState(wallets);
 
   const classes = useStyles();
   return (
@@ -42,14 +41,14 @@ const WalletsCart = () => {
       <Divider />
       <CardContent className={classes.content}>
         <List>
-          {wallets.map((wallet, i) => (
+          {allWallets.map((wallet, i) => (
             <WalletItem
               id={wallet.id}
               index={i}
               name={wallet.name}
-              updatedAt={wallet.updatedAt}
-              bilance={wallet.bilance}
-              walletsLength={wallets.length}
+              sum={wallet.sum}
+              date={wallet.date}
+              walletsLength={allWallets.length}
             />
           ))}
         </List>
@@ -64,4 +63,9 @@ const WalletsCart = () => {
   );
 };
 
-export default WalletsCart;
+const mapStateToProps = (state) => {
+  const { wallets } = state;
+  return { wallets };
+};
+
+export default connect(mapStateToProps)(WalletsCard);

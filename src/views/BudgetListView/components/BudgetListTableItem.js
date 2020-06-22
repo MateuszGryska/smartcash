@@ -4,7 +4,7 @@ import { Checkbox, TableCell, TableRow, IconButton, Menu, MenuItem } from '@mate
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
-import ActiveModal from '../../../components/ActiveModal/ActiveModal';
+import EditModal from '../../../components/EditModal/EditModal';
 
 const BudgetListTableItem = ({
   id,
@@ -12,7 +12,7 @@ const BudgetListTableItem = ({
   date,
   name,
   wallet,
-  price,
+  amount,
   category,
   handleSelectOne,
 }) => {
@@ -40,7 +40,7 @@ const BudgetListTableItem = ({
       <TableCell>{date}</TableCell>
       <TableCell>{name}</TableCell>
       <TableCell>{wallet}</TableCell>
-      <TableCell>{price}</TableCell>
+      <TableCell>${amount}</TableCell>
       <TableCell>{category}</TableCell>
       <TableCell>
         <IconButton edge="end" size="medium" onClick={handleClick}>
@@ -50,11 +50,7 @@ const BudgetListTableItem = ({
           <EditIcon />
         </IconButton>
       </TableCell>
-      <ActiveModal
-        open={isModalVisible}
-        handleClose={() => setModalVisibility(false)}
-        type="edit"
-      />
+      <EditModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -74,7 +70,7 @@ BudgetListTableItem.propTypes = {
   date: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   wallet: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
+  amount: PropTypes.number.isRequired,
   category: PropTypes.string.isRequired,
   handleSelectOne: PropTypes.func.isRequired,
 };

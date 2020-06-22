@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -18,7 +19,6 @@ import {
   TablePagination,
 } from '@material-ui/core';
 
-import mockData from './data';
 import BudgetListTableItem from './BudgetListTableItem';
 
 const useStyles = makeStyles(() => ({
@@ -38,8 +38,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BudgetListTable = ({ searchItem }) => {
-  const [bilanceItems] = useState(mockData);
+const BudgetListTable = ({ searchItem, budgetElements }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
@@ -50,7 +49,7 @@ const BudgetListTable = ({ searchItem }) => {
     let selectedItems;
 
     if (event.target.checked) {
-      selectedItems = bilanceItems.map((data) => data.id);
+      selectedItems = budgetElements.map((data) => data.id);
     } else {
       selectedItems = [];
     }
@@ -97,10 +96,10 @@ const BudgetListTable = ({ searchItem }) => {
                 <TableRow>
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedItems.length === bilanceItems.length}
+                      checked={selectedItems.length === budgetElements.length}
                       color="primary"
                       indeterminate={
-                        selectedItems.length > 0 && selectedItems.length < bilanceItems.length
+                        selectedItems.length > 0 && selectedItems.length < budgetElements.length
                       }
                       onChange={handleSelectAll}
                     />
@@ -114,13 +113,13 @@ const BudgetListTable = ({ searchItem }) => {
                   </TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Wallet</TableCell>
-                  <TableCell>Price</TableCell>
+                  <TableCell>Amount</TableCell>
                   <TableCell>Category</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {bilanceItems
+                {budgetElements
                   .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((item) => (
@@ -130,7 +129,7 @@ const BudgetListTable = ({ searchItem }) => {
                       selectedItems={selectedItems}
                       date={item.date}
                       wallet={item.wallet}
-                      price={item.price}
+                      amount={item.amount}
                       category={item.category}
                       handleSelectOne={handleSelectOne}
                     />
@@ -144,7 +143,7 @@ const BudgetListTable = ({ searchItem }) => {
       <CardActions className={classes.actions}>
         <TablePagination
           component="div"
-          count={bilanceItems.length}
+          count={budgetElements.length}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handleRowsPerPageChange}
           page={page}
@@ -164,4 +163,9 @@ BudgetListTable.defaultProps = {
   searchItem: '',
 };
 
-export default BudgetListTable;
+const mapStateToProps = (state) => {
+  const { budgetElements } = state;
+  return { budgetElements };
+};
+
+export default connect(mapStateToProps)(BudgetListTable);

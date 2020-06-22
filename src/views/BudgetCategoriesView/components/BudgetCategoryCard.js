@@ -17,7 +17,7 @@ import {
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
-import ActiveModal from '../../../components/ActiveModal/ActiveModal';
+import CategoriesModal from './CategoriesModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BudgetCategoryCard = ({ categoryName, categoryType, sumAll, updatedAt }) => {
+const BudgetCategoryCard = ({ name, type, sum, date }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -59,13 +59,13 @@ const BudgetCategoryCard = ({ categoryName, categoryType, sumAll, updatedAt }) =
             align="center"
             gutterBottom
             variant="h1"
-            className={clsx(categoryType === 'income' ? classes.income : classes.expense)}
+            className={clsx(type === 'income' ? classes.income : classes.expense)}
           >
-            {sumAll}
+            ${sum}
           </Typography>
         </div>
         <Typography align="center" gutterBottom variant="h4">
-          {categoryName}
+          {name}
         </Typography>
       </CardContent>
       <Divider />
@@ -74,7 +74,7 @@ const BudgetCategoryCard = ({ categoryName, categoryType, sumAll, updatedAt }) =
           <Grid item className={classes.statsItem}>
             <AccessTimeIcon className={classes.statsIcon} />
             <Typography display="inline" variant="body2">
-              {updatedAt}
+              {date}
             </Typography>
           </Grid>
           <Grid item>
@@ -87,7 +87,7 @@ const BudgetCategoryCard = ({ categoryName, categoryType, sumAll, updatedAt }) =
           </Grid>
         </Grid>
       </CardActions>
-      <ActiveModal
+      <CategoriesModal
         open={isModalVisible}
         handleClose={() => setModalVisibility(false)}
         type="edit"
@@ -106,10 +106,10 @@ const BudgetCategoryCard = ({ categoryName, categoryType, sumAll, updatedAt }) =
 };
 
 BudgetCategoryCard.propTypes = {
-  categoryName: PropTypes.string.isRequired,
-  categoryType: PropTypes.string.isRequired,
-  sumAll: PropTypes.string.isRequired,
-  updatedAt: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  sum: PropTypes.number.isRequired,
+  date: PropTypes.string.isRequired,
 };
 
 export default BudgetCategoryCard;

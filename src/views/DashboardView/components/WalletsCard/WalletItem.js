@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletItem = ({ id, index, name, updatedAt, bilance, walletsLength }) => {
+const WalletItem = ({ id, index, name, date, sum, walletsLength }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
 
@@ -28,9 +28,9 @@ const WalletItem = ({ id, index, name, updatedAt, bilance, walletsLength }) => {
   return (
     <ListItem key={id} divider={index < walletsLength - 1}>
       <Typography variant="h3" className={classes.walletValue}>
-        {bilance}
+        ${sum}
       </Typography>
-      <ListItemText primary={name} secondary={`Updated ${updatedAt}`} />
+      <ListItemText primary={name} secondary={`Updated ${date}`} />
       <IconButton edge="end" size="medium" onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
@@ -52,8 +52,8 @@ WalletItem.propTypes = {
   id: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  updatedAt: PropTypes.string.isRequired,
-  bilance: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  sum: PropTypes.string.isRequired,
   walletsLength: PropTypes.number.isRequired,
 };
 

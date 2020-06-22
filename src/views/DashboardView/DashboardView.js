@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
 import SmallCard from './components/SmallCard/SmallCard';
 import BilanceChart from './components/BilanceChart/BilanceChart';
-import WalletsCart from './components/WalletsCart/WalletsCart';
+import WalletsCard from './components/WalletsCard/WalletsCard';
 import BilanceList from './components/BilanceList/BilanceList';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ const DashboardView = () => {
             <BilanceChart />
           </Grid>
           <Grid item lg={4} md={12} xl={3} xs={12}>
-            <WalletsCart />
+            <WalletsCard />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <BilanceList />

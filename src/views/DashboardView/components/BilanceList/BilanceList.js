@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -18,9 +19,7 @@ import {
   TableSortLabel,
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import ActiveModal from '../../../../components/ActiveModal/ActiveModal';
-
-import mockData from './data';
+import BudgetListModal from '../../../BudgetListView/components/BudgetListModal';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -35,8 +34,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BilanceList = () => {
-  const [bilanceItems] = useState(mockData);
+const BilanceList = ({ budgetElements }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const classes = useStyles();
   return (
@@ -70,17 +68,17 @@ const BilanceList = () => {
                   </TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Wallet</TableCell>
-                  <TableCell>Price</TableCell>
+                  <TableCell>Amount</TableCell>
                   <TableCell>Category</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {bilanceItems.map((item) => (
+                {budgetElements.map((item) => (
                   <TableRow hover key={item.id}>
                     <TableCell>{item.date}</TableCell>
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.wallet}</TableCell>
-                    <TableCell>{item.price}</TableCell>
+                    <TableCell>{item.amount}</TableCell>
                     <TableCell>{item.category}</TableCell>
                   </TableRow>
                 ))}
@@ -91,11 +89,11 @@ const BilanceList = () => {
       </CardContent>
       <Divider />
       <CardActions className={classes.actions}>
-        <Button size="large" color="primary" variant="text" component={Link} to="/expenses">
+        <Button size="large" color="primary" variant="text" component={Link} to="/budgetlist">
           View all <ArrowRightIcon />
         </Button>
       </CardActions>
-      <ActiveModal
+      <BudgetListModal
         pageType="expenses"
         open={isModalVisible}
         handleClose={() => setModalVisibility(false)}
@@ -105,4 +103,9 @@ const BilanceList = () => {
   );
 };
 
-export default BilanceList;
+const mapStateToProps = (state) => {
+  const { budgetElements } = state;
+  return { budgetElements };
+};
+
+export default connect(mapStateToProps)(BilanceList);
