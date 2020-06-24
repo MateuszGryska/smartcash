@@ -22,7 +22,7 @@ const CategoriesModal = ({ open, handleClose, addElement }) => {
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
-        initialValues={{ name: '', type: '', sum: 0 }}
+        initialValues={{ name: '', type: '' }}
         validationSchema={CategoriesModalSchema}
         onSubmit={(values) => {
           addElement('categories', values);

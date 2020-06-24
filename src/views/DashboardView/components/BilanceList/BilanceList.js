@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
@@ -15,11 +15,15 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
   Tooltip,
   TableSortLabel,
+  LinearProgress,
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import BudgetListModal from '../../../BudgetListView/components/BudgetListModal';
+
+import { fetchDataByUserId as fetchDataByUserIdAction } from '../../../../actions';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -34,7 +38,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BilanceList = ({ budgetElements }) => {
+const BilanceList = ({ budgetElements, fetchDataByUserId }) => {
+  useEffect(() => {
+    fetchDataByUserId();
+  }, [fetchDataByUserId]);
+
   const [isModalVisible, setModalVisibility] = useState(false);
   const classes = useStyles();
   return (
@@ -53,40 +61,52 @@ const BilanceList = ({ budgetElements }) => {
         title="Latest Incomes/Expenses"
       />
       <Divider />
-      <CardContent className={classes.content}>
-        <PerfectScrollbar>
-          <div className={classes.inner}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sortDirection="desc">
-                    <Tooltip enterDelay={300} title="Sort">
-                      <TableSortLabel active direction="desc">
-                        Date
-                      </TableSortLabel>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Wallet</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Category</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {budgetElements.map((item) => (
-                  <TableRow hover key={item.id}>
-                    <TableCell>{item.date}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.wallet}</TableCell>
-                    <TableCell>{item.amount}</TableCell>
-                    <TableCell>{item.category}</TableCell>
+      {!budgetElements ? (
+        <LinearProgress />
+      ) : (
+        <CardContent className={classes.content}>
+          <PerfectScrollbar>
+            <div className={classes.inner}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sortDirection="desc">
+                      <Tooltip enterDelay={300} title="Sort">
+                        <TableSortLabel active direction="desc">
+                          Date
+                        </TableSortLabel>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Wallet</TableCell>
+                    <TableCell>Amount</TableCell>
+                    <TableCell>Category</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </PerfectScrollbar>
-      </CardContent>
+                </TableHead>
+
+                <TableBody>
+                  {budgetElements.length > 0 ? (
+                    budgetElements.map((item) => (
+                      <TableRow hover key={item.id}>
+                        <TableCell>{item.date}</TableCell>
+                        <TableCell>{item.name}</TableCell>
+                        <TableCell>{item.wallet}</TableCell>
+                        <TableCell>${item.amount}</TableCell>
+                        <TableCell>{item.category}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <Typography align="center" variant="h3">
+                      You dont have any data, add new one!
+                    </Typography>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </PerfectScrollbar>
+        </CardContent>
+      )}
+
       <Divider />
       <CardActions className={classes.actions}>
         <Button size="large" color="primary" variant="text" component={Link} to="/budgetlist">
@@ -108,4 +128,8 @@ const mapStateToProps = (state) => {
   return { budgetElements };
 };
 
-export default connect(mapStateToProps)(BilanceList);
+const mapDispatchToProps = (dispatch) => ({
+  fetchDataByUserId: () => dispatch(fetchDataByUserIdAction('budgetElements', 'budgetElements')),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BilanceList);

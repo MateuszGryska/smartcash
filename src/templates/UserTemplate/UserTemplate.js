@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/styles';
-
 import Topbar from './Topbar';
 import Sidebar from './Sidebar';
 import Footer from './Footer';

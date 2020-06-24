@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -28,7 +29,8 @@ const Profile = ({ className }) => {
     <div className={clsx(classes.root, className)}>
       <Avatar className={classes.avatar} alt="Person Avatar" src={avatar} />
       <Typography className={classes.name} variant="h4">
-        Joe Example
+        {/* {`${users[0].firstName} ${users[0].lastName}`} */}
+        Joe example
       </Typography>
     </div>
   );
@@ -42,4 +44,9 @@ Profile.defaultProps = {
   className: '',
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+  const { users } = state;
+  return { users };
+};
+
+export default connect(mapStateToProps)(Profile);

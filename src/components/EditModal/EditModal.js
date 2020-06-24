@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// import { connect } from 'react-redux';
 import {
   Dialog,
   TextField,
@@ -10,30 +11,27 @@ import {
   Button,
 } from '@material-ui/core';
 import { Formik, Form } from 'formik';
-import { ActiveModalSchema } from '../../validation';
+// import { addElement as addElementAction } from '../../actions/index';
+import { CategoriesModalSchema } from '../../validation';
 
-const ActiveModal = ({ open, handleClose, type }) => {
+const EditModal = ({ open, handleClose, addElement }) => {
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
         initialValues={{ name: '' }}
-        validationSchema={ActiveModalSchema}
+        validationSchema={CategoriesModalSchema}
         onSubmit={(values) => {
-          console.log(values);
+          addElement('categories', values);
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
           <>
             <Form>
-              <DialogTitle id="max-width-dialog-title">
-                {type === 'add' ? 'Add new item' : 'Edit item'}
-              </DialogTitle>
+              <DialogTitle id="max-width-dialog-title">Edit element</DialogTitle>
 
               <DialogContent>
                 <DialogContentText>
-                  {type === 'add'
-                    ? 'To add new item, please enter your title and value here.'
-                    : 'To edit item, please change your title and value here.'}
+                  To edit item, please change your title and value here.
                 </DialogContentText>
                 <TextField
                   autoFocus
@@ -56,7 +54,7 @@ const ActiveModal = ({ open, handleClose, type }) => {
                   Cancel
                 </Button>
                 <Button onClick={handleClose} color="primary" type="submit" disabled={!isValid}>
-                  {type === 'add' ? 'Add' : 'Edit'}
+                  Edit
                 </Button>
               </DialogActions>
             </Form>
@@ -67,10 +65,15 @@ const ActiveModal = ({ open, handleClose, type }) => {
   );
 };
 
-ActiveModal.propTypes = {
+EditModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  type: PropTypes.oneOf(['add', 'edit']).isRequired,
+  // addElement: PropTypes.func.isRequired,
 };
 
-export default ActiveModal;
+// const mapDispatchToProps = (dispatch) => ({
+//   addElement: (itemType, content) => dispatch(addElementAction(itemType, content)),
+// });
+
+// export default connect(null, mapDispatchToProps)(EditModal);
+export default EditModal;

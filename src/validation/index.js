@@ -70,7 +70,7 @@ export const ResetSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email.').required('The email is required.'),
 });
 
-export const BudgetActiveModalSchema = Yup.object().shape({
+export const BudgetListModalSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Too short')
     .max(25, 'Too long.')
@@ -83,7 +83,17 @@ export const BudgetActiveModalSchema = Yup.object().shape({
   category: Yup.string().required('Category is required!'),
 });
 
-export const ActiveModalSchema = Yup.object().shape({
+export const WalletsModalSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Too short')
+    .max(25, 'Too long.')
+    .trim()
+    .matches(stringRegex, 'Special characters are not allowed')
+    .required('Name is required.'),
+  sum: Yup.number().positive('Bilance must be positive.').required('Bilance is required.'),
+});
+
+export const CategoriesModalSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Too short')
     .max(25, 'Too long.')
