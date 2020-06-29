@@ -1,18 +1,10 @@
-import {
-  ADD_ITEM_START,
-  ADD_ITEM_SUCCESS,
-  EDIT_USER_SUCCESS,
-  FETCH_DATA_SUCCESS,
-  AUTH_SUCCESS,
-  SIGNUP_SUCCESS,
-  DELETE_ITEM_SUCCESS,
-  FETCH_DATA_START,
-  FETCH_DATA_FAILURE,
-} from '../actions';
+import { itemTypes, authTypes } from '../actions/types';
 
 const initialState = {
   userId: '5eef32769a68458ec7090f4f',
   budgetElements: [],
+  categories: [],
+  wallets: [],
   // userId: '',
   isLoading: false,
   error: null,
@@ -20,24 +12,24 @@ const initialState = {
 
 const RootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_ITEM_START:
+    case itemTypes.ADD_ITEM_START:
       return {
         ...state,
         isLoading: true,
       };
     /* eslint-disable no-underscore-dangle */
-    case AUTH_SUCCESS:
+    case authTypes.AUTH_SUCCESS:
       return {
         ...state,
         userID: action.payload.data._id,
       };
-    case SIGNUP_SUCCESS:
+    case authTypes.SIGNUP_SUCCESS:
       return {
         ...state,
         userID: action.payload.data.user._id,
       };
 
-    case ADD_ITEM_SUCCESS:
+    case itemTypes.ADD_ITEM_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -46,33 +38,48 @@ const RootReducer = (state = initialState, action) => {
           action.payload.data[action.payload.itemType],
         ],
       };
-    case EDIT_USER_SUCCESS:
+    case authTypes.EDIT_USER_SUCCESS:
       return {
         ...state,
         users: [...state.users, action.payload],
       };
-    case FETCH_DATA_START:
+    case itemTypes.FETCH_DATA_START:
       return {
         ...state,
         isLoading: true,
       };
-    case FETCH_DATA_SUCCESS:
+    case itemTypes.FETCH_DATA_SUCCESS:
       return {
         ...state,
         [action.payload.itemType]: [...action.payload.data[action.payload.itemType]],
         isLoading: false,
+        error: null,
       };
-    case FETCH_DATA_FAILURE:
+    case itemTypes.FETCH_DATA_FAILURE:
       return {
         ...state,
         error: action.payload.error,
         isLoading: false,
       };
-    case DELETE_ITEM_SUCCESS:
+    case itemTypes.DELETE_ITEM_SUCCESS:
       return {
         ...state,
         [action.payload.itemType]: [
           ...state[action.payload.itemType].filter((item) => item._id !== action.payload.id),
+        ],
+      };
+    case itemTypes.UPDATE_ITEM_START:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case itemTypes.UPDATE_ITEM_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        [action.payload.itemType]: [
+          ...state[action.payload.itemType].filter((item) => item.id !== action.payload.id),
+          action.payload.data[action.payload.itemType],
         ],
       };
     default:

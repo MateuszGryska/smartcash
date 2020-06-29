@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletsView = ({ wallets, fetchDataByUserId }) => {
+const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
   useEffect(() => {
     fetchDataByUserId();
   }, [fetchDataByUserId]);
@@ -36,6 +36,39 @@ const WalletsView = ({ wallets, fetchDataByUserId }) => {
     setSearchItem(e.target.value);
   };
 
+  let renderData;
+  if (isLoading) {
+    renderData = (
+      <div className={classes.loading}>
+        <CircularProgress />
+      </div>
+    );
+  } else if (error !== null || !wallets) {
+    renderData = (
+      <Typography align="center" variant="h3">
+        You dont have any wallets! Add new one!
+      </Typography>
+    );
+  } else if (wallets.length > 0) {
+    renderData = (
+      <Grid container spacing={4}>
+        {wallets
+          .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
+          .map(({ _id: id, name, sum, date }) => (
+            <Grid item lg={4} sm={6} xl={4} xs={12} key={id}>
+              <WalletCard name={name} id={id} sum={sum} date={date} />
+            </Grid>
+          ))}
+      </Grid>
+    );
+  } else {
+    renderData = (
+      <Typography align="center" variant="h3">
+        You dont have any wallets, add new one!
+      </Typography>
+    );
+  }
+
   return (
     <UserTemplate>
       <div className={classes.root}>
@@ -43,44 +76,23 @@ const WalletsView = ({ wallets, fetchDataByUserId }) => {
           handleOpen={() => setModalVisibility(true)}
           handleSearchInputChange={handleSearchInputChange}
         />
-        {!wallets ? (
-          <div className={classes.loading}>
-            <CircularProgress />
-          </div>
-        ) : (
-          <>
-            <div className={classes.content}>
-              {wallets.length > 0 ? (
-                <Grid container spacing={4}>
-                  {wallets
-                    .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
-                    .map(({ _id: id, name, sum, date }) => (
-                      <Grid item lg={4} sm={6} xl={4} xs={12} key={id}>
-                        <WalletCard name={name} id={id} sum={sum} date={date} />
-                      </Grid>
-                    ))}
-                </Grid>
-              ) : (
-                <Typography variant="h1" align="center">
-                  You dont have any wallets yet! Add new one!
-                </Typography>
-              )}
-            </div>
-            <WalletsModal
-              open={isModalVisible}
-              pageType="wallets"
-              handleClose={() => setModalVisibility(false)}
-            />
-          </>
-        )}
+
+        <>
+          <div className={classes.content}>{renderData}</div>
+          <WalletsModal
+            open={isModalVisible}
+            pageType="wallets"
+            handleClose={() => setModalVisibility(false)}
+          />
+        </>
       </div>
     </UserTemplate>
   );
 };
 
 const mapStateToProps = (state) => {
-  const { wallets } = state;
-  return { wallets };
+  const { wallets, error, isLoading } = state;
+  return { wallets, error, isLoading };
 };
 
 const mapDispatchToProps = (dispatch) => ({

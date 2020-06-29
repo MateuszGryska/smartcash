@@ -18,7 +18,7 @@ import {
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
-import CategoriesModal from './CategoriesModal';
+import EditCategoryModal from './EditCategoryModal';
 
 import { deleteElement as deleteElementAction } from '../../../actions';
 
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
-  const [isModalVisible, setModalVisibility] = useState(false);
+  const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -85,16 +85,18 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
             <IconButton onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
-            <IconButton onClick={() => setModalVisibility(true)}>
+            <IconButton onClick={() => setEditModalVisibility(true)}>
               <EditIcon />
             </IconButton>
           </Grid>
         </Grid>
       </CardActions>
-      <CategoriesModal
-        open={isModalVisible}
-        handleClose={() => setModalVisibility(false)}
-        type="edit"
+      <EditCategoryModal
+        open={isEditModalVisible}
+        handleClose={() => setEditModalVisibility(false)}
+        name={name}
+        type={type}
+        id={id}
       />
       <Menu
         id="simple-menu"

@@ -97,21 +97,21 @@ const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId, error,
     setRowsPerPage(event.target.value);
   };
 
-  let renderValue;
+  let renderData;
   if (isLoading) {
-    renderValue = (
+    renderData = (
       <div className={classes.loading}>
         <CircularProgress />
       </div>
     );
   } else if (error !== null || !budgetElements) {
-    renderValue = (
-      <Typography align="center" variant="h1">
+    renderData = (
+      <Typography align="center" variant="h3">
         You dont have any data! Add new one!
       </Typography>
     );
   } else if (budgetElements.length > 0) {
-    renderValue = (
+    renderData = (
       <>
         <CardContent className={classes.content}>
           <PerfectScrollbar>
@@ -180,14 +180,14 @@ const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId, error,
       </>
     );
   } else {
-    renderValue = (
+    renderData = (
       <Typography align="center" variant="h3">
         You dont have any data, add new one!
       </Typography>
     );
   }
 
-  return <Card className={classes.root}>{renderValue}</Card>;
+  return <Card className={classes.root}>{renderData}</Card>;
 };
 
 BudgetListTable.propTypes = {

@@ -17,7 +17,7 @@ import {
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
-import EditModal from '../../../components/EditModal/EditModal';
+import EditWalletModal from './EditWalletModal';
 
 import { deleteElement as deleteElementAction } from '../../../actions';
 
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WalletCard = ({ sum, name, date, deleteElement, id }) => {
-  const [isModalVisible, setModalVisibility] = useState(false);
+  const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -72,13 +72,19 @@ const WalletCard = ({ sum, name, date, deleteElement, id }) => {
             <IconButton onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
-            <IconButton onClick={() => setModalVisibility(true)}>
+            <IconButton onClick={() => setEditModalVisibility(true)}>
               <EditIcon />
             </IconButton>
           </Grid>
         </Grid>
       </CardActions>
-      <EditModal open={isModalVisible} handleClose={() => setModalVisibility(false)} type="edit" />
+      <EditWalletModal
+        open={isEditModalVisible}
+        handleClose={() => setEditModalVisibility(false)}
+        id={id}
+        name={name}
+        sum={sum}
+      />
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}

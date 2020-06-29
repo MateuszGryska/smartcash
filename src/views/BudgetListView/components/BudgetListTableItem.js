@@ -5,7 +5,7 @@ import { Checkbox, TableCell, TableRow, IconButton, Menu, MenuItem } from '@mate
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
-import EditModal from '../../../components/EditModal/EditModal';
+import EditBudgetElementModal from './EditBudgetElementModal';
 
 import { deleteElement as deleteElementAction } from '../../../actions';
 
@@ -15,12 +15,13 @@ const BudgetListTableItem = ({
   date,
   name,
   wallet,
+  type,
   amount,
   category,
   handleSelectOne,
   deleteElement,
 }) => {
-  const [isModalVisible, setModalVisibility] = useState(false);
+  const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -51,11 +52,20 @@ const BudgetListTableItem = ({
         <IconButton edge="end" size="medium" onClick={handleClick}>
           <MoreVertIcon />
         </IconButton>
-        <IconButton edge="end" size="medium" onClick={() => setModalVisibility(true)}>
+        <IconButton edge="end" size="medium" onClick={() => setEditModalVisibility(true)}>
           <EditIcon />
         </IconButton>
       </TableCell>
-      <EditModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
+      <EditBudgetElementModal
+        name={name}
+        id={id}
+        wallet={wallet}
+        amount={amount}
+        category={category}
+        type={type}
+        open={isEditModalVisible}
+        handleClose={() => setEditModalVisibility(false)}
+      />
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
