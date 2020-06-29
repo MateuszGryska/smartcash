@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Checkbox, TableCell, TableRow, IconButton, Menu, MenuItem } from '@material-ui/core';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import EditModal from '../../../components/EditModal/EditModal';
+
+import { deleteElement as deleteElementAction } from '../../../actions';
 
 const BudgetListTableItem = ({
   id,
@@ -15,6 +18,7 @@ const BudgetListTableItem = ({
   amount,
   category,
   handleSelectOne,
+  deleteElement,
 }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -24,6 +28,7 @@ const BudgetListTableItem = ({
   };
 
   const handleClose = () => {
+    deleteElement('budgetElements', id);
     setAnchorEl(null);
   };
 
@@ -75,4 +80,8 @@ BudgetListTableItem.propTypes = {
   handleSelectOne: PropTypes.func.isRequired,
 };
 
-export default BudgetListTableItem;
+const mapDispatchToProps = (dispatch) => ({
+  deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+});
+
+export default connect(null, mapDispatchToProps)(BudgetListTableItem);

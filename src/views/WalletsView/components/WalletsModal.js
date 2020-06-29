@@ -9,6 +9,8 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  FormHelperText,
+  FormControl,
 } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import { addElement as addElementAction } from '../../../actions/index';
@@ -33,35 +35,39 @@ const WalletsModal = ({ open, handleClose, addElement }) => {
                 <DialogContentText>
                   To add new wallet, please enter your name and bilance here.
                 </DialogContentText>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  name="name"
-                  label="Name"
-                  type="text"
-                  variant="outlined"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name}
-                  error={errors.name && touched.name}
-                  helperText={errors.name && touched.name ? errors.name : null}
-                  fullWidth
-                />
-                <TextField
-                  margin="dense"
-                  id="sum"
-                  name="sum"
-                  label="Bilance"
-                  type="text"
-                  variant="outlined"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.sum}
-                  error={errors.sum && touched.sum}
-                  helperText={errors.sum && touched.sum ? errors.sum : null}
-                  fullWidth
-                />
+                <FormControl variant="outlined" fullWidth margin="dense">
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    name="name"
+                    label="Name"
+                    type="text"
+                    variant="outlined"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.name}
+                    error={errors.name && touched.name}
+                  />
+                  <FormHelperText>
+                    {errors.name && touched.name ? errors.name : null}
+                  </FormHelperText>
+                </FormControl>
+                <FormControl variant="outlined" fullWidth margin="dense">
+                  <TextField
+                    margin="dense"
+                    id="sum"
+                    name="sum"
+                    label="Bilance"
+                    type="text"
+                    variant="outlined"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.sum}
+                    error={errors.sum && touched.sum}
+                  />
+                  <FormHelperText>{errors.sum && touched.sum ? errors.sum : null}</FormHelperText>
+                </FormControl>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary">

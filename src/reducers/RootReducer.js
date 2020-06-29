@@ -5,12 +5,17 @@ import {
   FETCH_DATA_SUCCESS,
   AUTH_SUCCESS,
   SIGNUP_SUCCESS,
+  DELETE_ITEM_SUCCESS,
+  FETCH_DATA_START,
+  FETCH_DATA_FAILURE,
 } from '../actions';
 
 const initialState = {
   userId: '5eef32769a68458ec7090f4f',
+  budgetElements: [],
   // userId: '',
   isLoading: false,
+  error: null,
 };
 
 const RootReducer = (state = initialState, action) => {
@@ -31,10 +36,11 @@ const RootReducer = (state = initialState, action) => {
         ...state,
         userID: action.payload.data.user._id,
       };
-    /* eslint-enable */
+
     case ADD_ITEM_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         [action.payload.itemType]: [
           ...state[action.payload.itemType],
           action.payload.data[action.payload.itemType],
@@ -45,14 +51,33 @@ const RootReducer = (state = initialState, action) => {
         ...state,
         users: [...state.users, action.payload],
       };
+    case FETCH_DATA_START:
+      return {
+        ...state,
+        isLoading: true,
+      };
     case FETCH_DATA_SUCCESS:
       return {
         ...state,
         [action.payload.itemType]: [...action.payload.data[action.payload.itemType]],
+        isLoading: false,
+      };
+    case FETCH_DATA_FAILURE:
+      return {
+        ...state,
+        error: action.payload.error,
+        isLoading: false,
+      };
+    case DELETE_ITEM_SUCCESS:
+      return {
+        ...state,
+        [action.payload.itemType]: [
+          ...state[action.payload.itemType].filter((item) => item._id !== action.payload.id),
+        ],
       };
     default:
       return state;
   }
 };
-
+/* eslint-enable */
 export default RootReducer;

@@ -55,8 +55,8 @@ const WalletsView = ({ wallets, fetchDataByUserId }) => {
                   {wallets
                     .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
                     .map(({ _id: id, name, sum, date }) => (
-                      <Grid item lg={4} sm={6} xl={4} xs={12}>
-                        <WalletCard name={name} key={id} sum={sum} date={date} />
+                      <Grid item lg={4} sm={6} xl={4} xs={12} key={id}>
+                        <WalletCard name={name} id={id} sum={sum} date={date} />
                       </Grid>
                     ))}
                 </Grid>

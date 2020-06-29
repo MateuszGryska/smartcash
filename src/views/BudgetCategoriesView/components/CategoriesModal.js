@@ -13,6 +13,7 @@ import {
   FormControl,
   MenuItem,
   InputLabel,
+  FormHelperText,
 } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import { addElement as addElementAction } from '../../../actions/index';
@@ -37,21 +38,24 @@ const CategoriesModal = ({ open, handleClose, addElement }) => {
                 <DialogContentText>
                   To add new category, please enter name and type here.
                 </DialogContentText>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  name="name"
-                  label="Name"
-                  type="text"
-                  variant="outlined"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name}
-                  error={errors.name && touched.name}
-                  helperText={errors.name && touched.name ? errors.name : null}
-                  fullWidth
-                />
+                <FormControl variant="outlined" fullWidth margin="dense">
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    name="name"
+                    label="Name"
+                    type="text"
+                    variant="outlined"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.name}
+                    error={errors.name && touched.name}
+                  />
+                  <FormHelperText>
+                    {errors.name && touched.name ? errors.name : null}
+                  </FormHelperText>
+                </FormControl>
                 <FormControl variant="outlined" fullWidth margin="dense">
                   <InputLabel id="demo-simple-select-outlined-label">Type</InputLabel>
                   <Select
@@ -63,11 +67,13 @@ const CategoriesModal = ({ open, handleClose, addElement }) => {
                     onBlur={handleBlur}
                     value={values.type}
                     error={errors.type && touched.type}
-                    helperText={errors.type && touched.type ? errors.type : null}
                   >
                     <MenuItem value="income">Income</MenuItem>
                     <MenuItem value="expense">Expense</MenuItem>
                   </Select>
+                  <FormHelperText>
+                    {errors.type && touched.type ? errors.type : null}
+                  </FormHelperText>
                 </FormControl>
               </DialogContent>
               <DialogActions>

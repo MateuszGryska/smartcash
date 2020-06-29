@@ -4,6 +4,10 @@ export const ADD_ITEM_START = 'ADD_ITEM_START';
 export const ADD_ITEM_SUCCESS = 'ADD_ITEM_SUCCESS';
 export const ADD_ITEM_FAILURE = 'ADD_ITEM_FAILURE';
 
+export const DELETE_ITEM_START = 'DELETE_ITEM_START';
+export const DELETE_ITEM_SUCCESS = 'DELETE_ITEM_SUCCESS';
+export const DELETE_ITEM_FAILURE = 'DELETE_ITEM_FAILURE';
+
 export const FETCH_DATA_START = 'FETCH_DATA_START';
 export const FETCH_DATA_SUCCESS = 'FETCH_DATA_SUCCESS';
 export const FETCH_DATA_FAILURE = 'FETCH_DATA_FAILURE';
@@ -64,7 +68,6 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
       ...content,
     })
     .then(({ data }) => {
-      console.log(data);
       dispatch({
         type: ADD_ITEM_SUCCESS,
         payload: {
@@ -94,8 +97,33 @@ export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => 
       });
     })
     .catch((err) => {
-      console.log(err);
-      dispatch({ type: FETCH_DATA_FAILURE });
+      console.log(err.response.status);
+      dispatch({
+        type: FETCH_DATA_FAILURE,
+        payload: {
+          error: err.response.status,
+        },
+      });
+    });
+};
+
+export const deleteElement = (itemType, id) => (dispatch) => {
+  dispatch({ type: DELETE_ITEM_START });
+
+  return axios
+    .delete(`http://localhost:5000/api/${itemType}/${id}`)
+    .then(() => {
+      dispatch({
+        type: DELETE_ITEM_SUCCESS,
+        payload: {
+          itemType,
+          id,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err.message);
+      dispatch({ type: DELETE_ITEM_FAILURE });
     });
 };
 

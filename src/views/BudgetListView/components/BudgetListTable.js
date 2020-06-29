@@ -45,7 +45,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId }) => {
+const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId, error, isLoading }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
@@ -97,89 +97,97 @@ const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId }) => {
     setRowsPerPage(event.target.value);
   };
 
-  return (
-    <Card className={classes.root}>
-      {!budgetElements ? (
-        <div className={classes.loading}>
-          <CircularProgress />
-        </div>
-      ) : (
-        <>
-          <CardContent className={classes.content}>
-            <PerfectScrollbar>
-              <div className={classes.inner}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selectedItems.length === budgetElements.length}
-                          color="primary"
-                          indeterminate={
-                            selectedItems.length > 0 && selectedItems.length < budgetElements.length
-                          }
-                          onChange={handleSelectAll}
-                        />
-                      </TableCell>
-                      <TableCell sortDirection="desc">
-                        <Tooltip enterDelay={300} title="Sort">
-                          <TableSortLabel active direction="desc">
-                            Date
-                          </TableSortLabel>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Wallet</TableCell>
-                      <TableCell>Amount</TableCell>
-                      <TableCell>Category</TableCell>
-                      <TableCell>Actions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {budgetElements.length > 0 ? (
-                      budgetElements
-                        .filter((item) =>
-                          item.name.toLowerCase().includes(searchItem.toLowerCase()),
-                        )
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map(({ _id: id, name, date, wallet, amount, category }) => (
-                          <BudgetListTableItem
-                            id={id}
-                            name={name}
-                            selectedItems={selectedItems}
-                            date={date}
-                            wallet={wallet}
-                            amount={amount}
-                            category={category}
-                            handleSelectOne={handleSelectOne}
-                          />
-                        ))
-                    ) : (
-                      <Typography align="center" variant="h3">
-                        You dont have any data, add new one!
-                      </Typography>
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-            </PerfectScrollbar>
-          </CardContent>
-          <Divider />
-          <CardActions className={classes.actions}>
-            <TablePagination
-              component="div"
-              count={budgetElements.length}
-              onChangePage={handlePageChange}
-              onChangeRowsPerPage={handleRowsPerPageChange}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              rowsPerPageOptions={[5, 10, 25]}
-            />
-          </CardActions>
-        </>
-      )}
-    </Card>
-  );
+  let renderValue;
+  if (isLoading) {
+    renderValue = (
+      <div className={classes.loading}>
+        <CircularProgress />
+      </div>
+    );
+  } else if (error !== null || !budgetElements) {
+    renderValue = (
+      <Typography align="center" variant="h1">
+        You dont have any data! Add new one!
+      </Typography>
+    );
+  } else if (budgetElements.length > 0) {
+    renderValue = (
+      <>
+        <CardContent className={classes.content}>
+          <PerfectScrollbar>
+            <div className={classes.inner}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={selectedItems.length === budgetElements.length}
+                        color="primary"
+                        indeterminate={
+                          selectedItems.length > 0 && selectedItems.length < budgetElements.length
+                        }
+                        onChange={handleSelectAll}
+                      />
+                    </TableCell>
+                    <TableCell sortDirection="desc">
+                      <Tooltip enterDelay={300} title="Sort">
+                        <TableSortLabel active direction="desc">
+                          Date
+                        </TableSortLabel>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Wallet</TableCell>
+                    <TableCell>Amount</TableCell>
+                    <TableCell>Category</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {budgetElements
+                    .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map(({ _id: id, name, date, wallet, amount, category }) => (
+                      <BudgetListTableItem
+                        key={id}
+                        id={id}
+                        name={name}
+                        selectedItems={selectedItems}
+                        date={date}
+                        wallet={wallet}
+                        amount={amount}
+                        category={category}
+                        handleSelectOne={handleSelectOne}
+                      />
+                    ))}
+                </TableBody>
+              </Table>
+            </div>
+          </PerfectScrollbar>
+        </CardContent>
+        <Divider />
+        <CardActions className={classes.actions}>
+          <TablePagination
+            component="div"
+            count={budgetElements.length}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleRowsPerPageChange}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
+        </CardActions>
+      </>
+    );
+  } else {
+    renderValue = (
+      <Typography align="center" variant="h3">
+        You dont have any data, add new one!
+      </Typography>
+    );
+  }
+
+  return <Card className={classes.root}>{renderValue}</Card>;
 };
 
 BudgetListTable.propTypes = {
@@ -191,8 +199,8 @@ BudgetListTable.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { budgetElements } = state;
-  return { budgetElements };
+  const { budgetElements, error, isLoading } = state;
+  return { budgetElements, error, isLoading };
 };
 
 const mapDispatchToProps = (dispatch) => ({

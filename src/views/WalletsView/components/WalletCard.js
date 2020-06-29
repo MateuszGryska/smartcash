@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -18,6 +19,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import EditModal from '../../../components/EditModal/EditModal';
 
+import { deleteElement as deleteElementAction } from '../../../actions';
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   statsItem: {
@@ -30,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletCard = ({ sum, name, date }) => {
+const WalletCard = ({ sum, name, date, deleteElement, id }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -39,6 +42,7 @@ const WalletCard = ({ sum, name, date }) => {
   };
 
   const handleClose = () => {
+    deleteElement('wallets', id);
     setAnchorEl(null);
   };
 
@@ -94,4 +98,8 @@ WalletCard.propTypes = {
   date: PropTypes.string.isRequired,
 };
 
-export default WalletCard;
+const mapDispatchToProps = (dispatch) => ({
+  deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+});
+
+export default connect(null, mapDispatchToProps)(WalletCard);

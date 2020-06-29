@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -19,6 +20,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import CategoriesModal from './CategoriesModal';
 
+import { deleteElement as deleteElementAction } from '../../../actions';
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   statsItem: {
@@ -37,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BudgetCategoryCard = ({ name, type, sum, date }) => {
+const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -46,6 +49,7 @@ const BudgetCategoryCard = ({ name, type, sum, date }) => {
   };
 
   const handleClose = () => {
+    deleteElement('categories', id);
     setAnchorEl(null);
   };
 
@@ -112,4 +116,8 @@ BudgetCategoryCard.propTypes = {
   date: PropTypes.string.isRequired,
 };
 
-export default BudgetCategoryCard;
+const mapDispatchToProps = (dispatch) => ({
+  deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+});
+
+export default connect(null, mapDispatchToProps)(BudgetCategoryCard);
