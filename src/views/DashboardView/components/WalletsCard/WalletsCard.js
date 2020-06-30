@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 import {
@@ -15,8 +14,6 @@ import {
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import WalletItem from './WalletItem';
-
-import { fetchDataByUserId as fetchDataByUserIdAction } from '../../../../actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,11 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletsCard = ({ wallets, fetchDataByUserId }) => {
-  useEffect(() => {
-    fetchDataByUserId();
-  }, [fetchDataByUserId]);
-
+const WalletsCard = ({ wallets }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
@@ -53,6 +46,7 @@ const WalletsCard = ({ wallets, fetchDataByUserId }) => {
             {wallets.length > 0 ? (
               wallets.map((wallet, i) => (
                 <WalletItem
+                  key={wallet.id}
                   id={wallet.id}
                   index={i}
                   name={wallet.name}
@@ -63,7 +57,7 @@ const WalletsCard = ({ wallets, fetchDataByUserId }) => {
               ))
             ) : (
               <Typography align="center" variant="h3">
-                You dont have any wallets, add new one!
+                You don&#39;t have any wallets, add new one!
               </Typography>
             )}
           </List>
@@ -80,13 +74,4 @@ const WalletsCard = ({ wallets, fetchDataByUserId }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { wallets } = state;
-  return { wallets };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: () => dispatch(fetchDataByUserIdAction('wallets', 'wallets')),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(WalletsCard);
+export default WalletsCard;

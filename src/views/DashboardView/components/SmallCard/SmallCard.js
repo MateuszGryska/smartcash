@@ -136,7 +136,7 @@ const SmallCard = ({ title, amount }) => {
 
 SmallCard.propTypes = {
   title: PropTypes.string.isRequired,
-  amount: PropTypes.string.isRequired,
+  amount: PropTypes.number.isRequired,
 };
 
 export default SmallCard;

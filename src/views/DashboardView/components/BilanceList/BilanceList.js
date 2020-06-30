@@ -97,7 +97,7 @@ const BilanceList = ({ budgetElements, fetchDataByUserId }) => {
                     ))
                   ) : (
                     <Typography align="center" variant="h3">
-                      You dont have any data, add new one!
+                      You don&#39;t have any data, add new one!
                     </Typography>
                   )}
                 </TableBody>
@@ -124,7 +124,7 @@ const BilanceList = ({ budgetElements, fetchDataByUserId }) => {
 };
 
 const mapStateToProps = (state) => {
-  const { budgetElements } = state;
+  const { budgetElements } = state.items;
   return { budgetElements };
 };
 

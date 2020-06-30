@@ -6,7 +6,7 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
 
   return axios
     .post(`http://localhost:5000/api/${itemType}`, {
-      user: getState().userId,
+      user: getState().auth.userId,
       ...content,
     })
     .then(({ data }) => {
@@ -19,8 +19,7 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
-      dispatch({ type: itemTypes.ADD_ITEM_FAILURE });
+      dispatch({ type: itemTypes.ADD_ITEM_FAILURE, payload: { error: err.response.data.message } });
     });
 };
 
@@ -28,7 +27,7 @@ export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => 
   dispatch({ type: itemTypes.FETCH_DATA_START });
 
   return axios
-    .get(`http://localhost:5000/api/${itemURL}/user/${getState().userId}`, {})
+    .get(`http://localhost:5000/api/${itemURL}/user/${getState().auth.userId}`, {})
     .then(({ data }) => {
       dispatch({
         type: itemTypes.FETCH_DATA_SUCCESS,
@@ -42,7 +41,7 @@ export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => 
       dispatch({
         type: itemTypes.FETCH_DATA_FAILURE,
         payload: {
-          error: err.response,
+          error: err.response.data.message,
         },
       });
     });
@@ -67,7 +66,10 @@ export const updateElement = (itemType, id, content) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: itemTypes.UPDATE_ITEM_FAILURE });
+      dispatch({
+        type: itemTypes.UPDATE_ITEM_FAILURE,
+        payload: { error: err.response.data.message },
+      });
     });
 };
 
@@ -86,7 +88,9 @@ export const deleteElement = (itemType, id) => (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err.message);
-      dispatch({ type: itemTypes.DELETE_ITEM_FAILURE });
+      dispatch({
+        type: itemTypes.DELETE_ITEM_FAILURE,
+        payload: { error: err.response.data.message },
+      });
     });
 };

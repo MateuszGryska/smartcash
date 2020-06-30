@@ -47,7 +47,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
   } else if (error !== null || !categories) {
     renderData = (
       <Typography align="center" variant="h3">
-        You dont have any categories! Add new one!
+        You don&#39;t have any categories! Add new one!
       </Typography>
     );
   } else if (categories.length > 0) {
@@ -74,7 +74,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
               ))
           ) : (
             <Typography align="center" variant="h3">
-              You dont have any incomes, add new one!
+              You don&#39;t have any incomes, add new one!
             </Typography>
           )}
         </Grid>
@@ -90,7 +90,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
               ))
           ) : (
             <Typography align="center" variant="h3">
-              You dont have any expenses, add new one!
+              You don&#39;t have any expenses, add new one!
             </Typography>
           )}
         </Grid>
@@ -99,7 +99,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
   } else {
     renderData = (
       <Typography align="center" variant="h3">
-        You dont have any categories, add new one!
+        You don&#39;t have any categories, add new one!
       </Typography>
     );
   }
@@ -127,7 +127,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
 };
 
 const mapStateToProps = (state) => {
-  const { categories, error, isLoading } = state;
+  const { categories, error, isLoading } = state.items;
   return { categories, error, isLoading };
 };
 

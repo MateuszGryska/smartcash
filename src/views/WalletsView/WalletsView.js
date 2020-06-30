@@ -46,7 +46,7 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
   } else if (error !== null || !wallets) {
     renderData = (
       <Typography align="center" variant="h3">
-        You dont have any wallets! Add new one!
+        You don&#39;t have any wallets! Add new one!
       </Typography>
     );
   } else if (wallets.length > 0) {
@@ -64,7 +64,7 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
   } else {
     renderData = (
       <Typography align="center" variant="h3">
-        You dont have any wallets, add new one!
+        You don&#39;t have any wallets, add new one!
       </Typography>
     );
   }
@@ -91,7 +91,7 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
 };
 
 const mapStateToProps = (state) => {
-  const { wallets, error, isLoading } = state;
+  const { wallets, error, isLoading } = state.items;
   return { wallets, error, isLoading };
 };
 

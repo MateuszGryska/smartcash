@@ -53,7 +53,7 @@ WalletItem.propTypes = {
   index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
-  sum: PropTypes.string.isRequired,
+  sum: PropTypes.number.isRequired,
   walletsLength: PropTypes.number.isRequired,
 };
 

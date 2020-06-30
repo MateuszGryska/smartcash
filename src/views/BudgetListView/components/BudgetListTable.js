@@ -107,7 +107,7 @@ const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId, error,
   } else if (error !== null || !budgetElements) {
     renderData = (
       <Typography align="center" variant="h3">
-        You dont have any data! Add new one!
+        You don&#39;t have any data! Add new one!
       </Typography>
     );
   } else if (budgetElements.length > 0) {
@@ -182,7 +182,7 @@ const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId, error,
   } else {
     renderData = (
       <Typography align="center" variant="h3">
-        You dont have any data, add new one!
+        You don&#39;t have any data, add new one!
       </Typography>
     );
   }
@@ -199,7 +199,7 @@ BudgetListTable.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { budgetElements, error, isLoading } = state;
+  const { budgetElements, error, isLoading } = state.items;
   return { budgetElements, error, isLoading };
 };
 

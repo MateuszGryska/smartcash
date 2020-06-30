@@ -126,7 +126,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { userId } = state;
+  const { userId } = state.auth;
   return { userId };
 };
 

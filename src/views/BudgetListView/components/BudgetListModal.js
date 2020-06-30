@@ -189,7 +189,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { wallets, categories } = state;
+  const { wallets, categories } = state.items;
   return { wallets, categories };
 };
 
