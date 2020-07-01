@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Checkbox, TableCell, TableRow, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { format } from 'date-fns';
+import parseISO from 'date-fns/parseISO';
+import {
+  Checkbox,
+  TableCell,
+  TableRow,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+} from '@material-ui/core';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
@@ -29,9 +39,11 @@ const BudgetListTableItem = ({
   };
 
   const handleClose = () => {
-    deleteElement('budgetElements', id);
     setAnchorEl(null);
   };
+
+  // change format date
+  const newDate = format(parseISO(date), 'dd.MM.yyyy');
 
   return (
     <TableRow hover key={id} selected={selectedItems.indexOf(id) !== -1}>
@@ -43,10 +55,16 @@ const BudgetListTableItem = ({
           value="true"
         />
       </TableCell>
-      <TableCell>{date}</TableCell>
+      <TableCell>{newDate}</TableCell>
       <TableCell>{name}</TableCell>
       <TableCell>{wallet}</TableCell>
-      <TableCell>${amount}</TableCell>
+      <TableCell>
+        {type === 'income' ? (
+          <Typography color="inherit">${amount}</Typography>
+        ) : (
+          <Typography color="error">${amount}</Typography>
+        )}
+      </TableCell>
       <TableCell>{category}</TableCell>
       <TableCell>
         <IconButton edge="end" size="medium" onClick={handleClick}>
@@ -73,7 +91,7 @@ const BudgetListTableItem = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={() => deleteElement('budgetElements', id)}>Delete</MenuItem>
       </Menu>
     </TableRow>
   );

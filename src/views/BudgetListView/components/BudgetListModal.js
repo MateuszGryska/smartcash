@@ -15,6 +15,7 @@ import {
   InputLabel,
   CircularProgress,
   FormHelperText,
+  Typography,
 } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import {
@@ -111,51 +112,60 @@ const BudgetListModal = ({
                         {errors.type && touched.type ? errors.type : null}
                       </FormHelperText>
                     </FormControl>
-
-                    <FormControl variant="outlined" fullWidth margin="dense">
-                      <InputLabel id="demo-simple-select-outlined-label">Wallet</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="wallet"
-                        label="Wallet"
-                        name="wallet"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.wallet}
-                        error={errors.wallet && touched.wallet}
-                      >
-                        {wallets.map(({ id, name }) => (
-                          <MenuItem value={id} key={id}>
-                            {name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      <FormHelperText>
-                        {errors.wallet && touched.wallet ? errors.wallet : null}
-                      </FormHelperText>
-                    </FormControl>
-                    <FormControl variant="outlined" fullWidth margin="dense" name="category">
-                      <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="category"
-                        label="Category"
-                        name="category"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.category}
-                        error={errors.category && touched.category}
-                      >
-                        {categories.map(({ id, name }) => (
-                          <MenuItem value={id} key={id}>
-                            {name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      <FormHelperText>
-                        {errors.category && touched.category ? errors.category : null}
-                      </FormHelperText>
-                    </FormControl>
+                    {wallets.length > 0 && categories.length > 0 ? (
+                      <>
+                        <FormControl variant="outlined" fullWidth margin="dense">
+                          <InputLabel id="demo-simple-select-outlined-label">Wallet</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-outlined-label"
+                            id="wallet"
+                            label="Wallet"
+                            name="wallet"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.wallet}
+                            error={errors.wallet && touched.wallet}
+                          >
+                            {wallets.map(({ id, name }) => (
+                              <MenuItem value={id} key={id}>
+                                {name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                          <FormHelperText>
+                            {errors.wallet && touched.wallet ? errors.wallet : null}
+                          </FormHelperText>
+                        </FormControl>
+                        <FormControl variant="outlined" fullWidth margin="dense" name="category">
+                          <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-outlined-label"
+                            id="category"
+                            label="Category"
+                            name="category"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.category}
+                            error={errors.category && touched.category}
+                          >
+                            {categories
+                              .filter((category) => category.type === values.type)
+                              .map(({ id, name }) => (
+                                <MenuItem value={id} key={id}>
+                                  {name}
+                                </MenuItem>
+                              ))}
+                          </Select>
+                          <FormHelperText>
+                            {errors.category && touched.category ? errors.category : null}
+                          </FormHelperText>
+                        </FormControl>
+                      </>
+                    ) : (
+                      <Typography align="center" color="error" variant="h3">
+                        You must add new wallet and new category to continue!
+                      </Typography>
+                    )}
                   </>
                 ) : (
                   <CircularProgress />

@@ -147,13 +147,14 @@ const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId, error,
                   {budgetElements
                     .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map(({ _id: id, name, date, wallet, amount, category }) => (
+                    .map(({ _id: id, name, date, wallet, amount, category, type }) => (
                       <BudgetListTableItem
                         key={id}
                         id={id}
                         name={name}
                         selectedItems={selectedItems}
                         date={date}
+                        type={type}
                         wallet={wallet}
                         amount={amount}
                         category={category}

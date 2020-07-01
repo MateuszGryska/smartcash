@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { formatDistance } from 'date-fns';
+import parseISO from 'date-fns/parseISO';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -49,11 +51,13 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
   };
 
   const handleClose = () => {
-    deleteElement('categories', id);
     setAnchorEl(null);
   };
 
   const classes = useStyles();
+
+  // change format date
+  const newDate = formatDistance(parseISO(date), new Date());
 
   return (
     <Card>
@@ -78,7 +82,7 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
           <Grid item className={classes.statsItem}>
             <AccessTimeIcon className={classes.statsIcon} />
             <Typography display="inline" variant="body2">
-              {date}
+              Updated {newDate} ago
             </Typography>
           </Grid>
           <Grid item>
@@ -105,7 +109,7 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={() => deleteElement('categories', id)}>Delete</MenuItem>
       </Menu>
     </Card>
   );

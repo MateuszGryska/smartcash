@@ -21,6 +21,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
+        error: null,
         [payload.itemType]: [...state[payload.itemType], payload.data[payload.itemType]],
       };
 

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { format } from 'date-fns';
+import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -38,6 +40,7 @@ const useStyles = makeStyles(() => ({
 const BilanceList = ({ budgetElements }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const classes = useStyles();
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -60,41 +63,41 @@ const BilanceList = ({ budgetElements }) => {
         <CardContent className={classes.content}>
           <PerfectScrollbar>
             <div className={classes.inner}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell sortDirection="desc">
-                      <Tooltip enterDelay={300} title="Sort">
-                        <TableSortLabel active direction="desc">
-                          Date
-                        </TableSortLabel>
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Wallet</TableCell>
-                    <TableCell>Amount</TableCell>
-                    <TableCell>Category</TableCell>
-                  </TableRow>
-                </TableHead>
+              {budgetElements.length > 0 ? (
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sortDirection="desc">
+                        <Tooltip enterDelay={300} title="Sort">
+                          <TableSortLabel active direction="desc">
+                            Date
+                          </TableSortLabel>
+                        </Tooltip>
+                      </TableCell>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Wallet</TableCell>
+                      <TableCell>Amount</TableCell>
+                      <TableCell>Category</TableCell>
+                    </TableRow>
+                  </TableHead>
 
-                <TableBody>
-                  {budgetElements.length > 0 ? (
-                    budgetElements.map((item) => (
+                  <TableBody>
+                    {budgetElements.map((item) => (
                       <TableRow hover key={item.id}>
-                        <TableCell>{item.date}</TableCell>
+                        <TableCell>{format(parseISO(item.date), 'dd.MM.yyyy')}</TableCell>
                         <TableCell>{item.name}</TableCell>
                         <TableCell>{item.wallet}</TableCell>
                         <TableCell>${item.amount}</TableCell>
                         <TableCell>{item.category}</TableCell>
                       </TableRow>
-                    ))
-                  ) : (
-                    <Typography align="center" variant="h3">
-                      You don&#39;t have any data, add new one!
-                    </Typography>
-                  )}
-                </TableBody>
-              </Table>
+                    ))}
+                  </TableBody>
+                </Table>
+              ) : (
+                <Typography align="center" variant="h3">
+                  You don&#39;t have any data, add new one!
+                </Typography>
+              )}
             </div>
           </PerfectScrollbar>
         </CardContent>
