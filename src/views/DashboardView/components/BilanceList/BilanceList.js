@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -23,8 +22,6 @@ import {
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import BudgetListModal from '../../../BudgetListView/components/BudgetListModal';
 
-import { fetchDataByUserId as fetchDataByUserIdAction } from '../../../../actions';
-
 const useStyles = makeStyles(() => ({
   root: {},
   content: {
@@ -38,11 +35,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BilanceList = ({ budgetElements, fetchDataByUserId }) => {
-  useEffect(() => {
-    fetchDataByUserId();
-  }, [fetchDataByUserId]);
-
+const BilanceList = ({ budgetElements }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const classes = useStyles();
   return (
@@ -123,13 +116,4 @@ const BilanceList = ({ budgetElements, fetchDataByUserId }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { budgetElements } = state.items;
-  return { budgetElements };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: () => dispatch(fetchDataByUserIdAction('budgetElements', 'budgetElements')),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(BilanceList);
+export default BilanceList;

@@ -16,10 +16,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DashboardView = ({ fetchDataByUserId, wallets, categories, isLoading }) => {
+const DashboardView = ({ fetchDataByUserId, wallets, categories, budgetElements, isLoading }) => {
   useEffect(() => {
     fetchDataByUserId('wallets', 'wallets');
     fetchDataByUserId('categories', 'categories');
+    fetchDataByUserId('budgetElements', 'budgetElements');
   }, [fetchDataByUserId]);
 
   // get wallets sum total value
@@ -54,16 +55,16 @@ const DashboardView = ({ fetchDataByUserId, wallets, categories, isLoading }) =>
       <div className={classes.root}>
         <Grid container spacing={4}>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Budget" amount={walletsTotal} />
+            <SmallCard title="Budget" amount={walletsTotal} isLoading={isLoading} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Income" amount={income} />
+            <SmallCard title="Income" amount={income} isLoading={isLoading} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Expense" amount={expense} />
+            <SmallCard title="Expense" amount={expense} isLoading={isLoading} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Total" amount={total} />
+            <SmallCard title="Total" amount={total} isLoading={isLoading} />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
             <BilanceChart />
@@ -72,7 +73,7 @@ const DashboardView = ({ fetchDataByUserId, wallets, categories, isLoading }) =>
             <WalletsCard wallets={wallets} />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <BilanceList />
+            <BilanceList budgetElements={budgetElements} />
           </Grid>
         </Grid>
       </div>
@@ -81,8 +82,8 @@ const DashboardView = ({ fetchDataByUserId, wallets, categories, isLoading }) =>
 };
 
 const mapStateToProps = (state) => {
-  const { wallets, categories, isLoading } = state.items;
-  return { wallets, categories, isLoading };
+  const { wallets, categories, budgetElements, isLoading } = state.items;
+  return { wallets, categories, budgetElements, isLoading };
 };
 
 const mapDispatchToProps = (dispatch) => ({
