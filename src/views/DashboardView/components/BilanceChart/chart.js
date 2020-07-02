@@ -6,12 +6,12 @@ export const data = {
     {
       label: 'Expense',
       backgroundColor: palette.error.main,
-      data: [18, 5, 19, 27, 29, 19, 20],
+      data: [18, 5, 19, 27, 29, 19],
     },
     {
       label: 'Income',
       backgroundColor: palette.success.main,
-      data: [25, 23, 12, 29, 30, 25, 13],
+      data: [25, 23, 12, 29, 30, 25],
     },
   ],
 };

@@ -17,6 +17,7 @@ import {
   FormHelperText,
   Typography,
 } from '@material-ui/core';
+
 import { Formik, Form } from 'formik';
 import {
   addElement as addElementAction,
@@ -31,6 +32,7 @@ const BudgetListModal = ({
   fetchDataByUserId,
   wallets,
   categories,
+  setSnackbarVisibility,
 }) => {
   useEffect(() => {
     fetchDataByUserId('wallets', 'wallets');
@@ -44,6 +46,7 @@ const BudgetListModal = ({
         validationSchema={BudgetListModalSchema}
         onSubmit={(values) => {
           addElement('budgetElements', values);
+          setSnackbarVisibility(true);
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (

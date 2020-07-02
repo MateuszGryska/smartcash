@@ -45,13 +45,23 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId, error, isLoading }) => {
+const BudgetListTable = ({
+  searchItem,
+  budgetElements,
+  wallets,
+  categories,
+  fetchDataByUserId,
+  error,
+  isLoading,
+}) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-    fetchDataByUserId();
+    fetchDataByUserId('wallets', 'wallets');
+    fetchDataByUserId('categories', 'categories');
+    fetchDataByUserId('budgetElements', 'budgetElements');
   }, [fetchDataByUserId]);
 
   const classes = useStyles();
@@ -95,6 +105,15 @@ const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId, error,
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(event.target.value);
+  };
+
+  const getWalletName = (walletId) => {
+    const walletName = wallets.find((wallet) => wallet.id === walletId);
+    return walletName.name;
+  };
+  const getCategoryName = (categoryId) => {
+    const categoryName = categories.find((category) => category.id === categoryId);
+    return categoryName.name;
   };
 
   let renderData;
@@ -155,9 +174,9 @@ const BudgetListTable = ({ searchItem, budgetElements, fetchDataByUserId, error,
                         selectedItems={selectedItems}
                         date={date}
                         type={type}
-                        wallet={wallet}
+                        wallet={getWalletName(wallet)}
                         amount={amount}
-                        category={category}
+                        category={getCategoryName(category)}
                         handleSelectOne={handleSelectOne}
                       />
                     ))}
@@ -200,12 +219,12 @@ BudgetListTable.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { budgetElements, error, isLoading } = state.items;
-  return { budgetElements, error, isLoading };
+  const { budgetElements, wallets, categories, error, isLoading } = state.items;
+  return { budgetElements, wallets, categories, error, isLoading };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: () => dispatch(fetchDataByUserIdAction('budgetElements', 'budgetElements')),
+  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetListTable);

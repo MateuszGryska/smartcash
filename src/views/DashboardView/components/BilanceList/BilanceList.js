@@ -20,7 +20,10 @@ import {
   Tooltip,
   TableSortLabel,
   LinearProgress,
+  Snackbar,
+  IconButton,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import BudgetListModal from '../../../BudgetListView/components/BudgetListModal';
 
@@ -37,9 +40,27 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BilanceList = ({ budgetElements }) => {
+const BilanceList = ({ budgetElements, wallets, categories }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
+  const [isSnackbarVisible, setSnackbarVisibility] = useState(false);
   const classes = useStyles();
+
+  const getWalletName = (walletId) => {
+    const walletName = wallets.find((wallet) => wallet.id === walletId);
+    return walletName.name;
+  };
+  const getCategoryName = (categoryId) => {
+    const categoryName = categories.find((category) => category.id === categoryId);
+    return categoryName.name;
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarVisibility(false);
+  };
 
   return (
     <Card className={classes.root}>
@@ -86,9 +107,9 @@ const BilanceList = ({ budgetElements }) => {
                       <TableRow hover key={item.id}>
                         <TableCell>{format(parseISO(item.date), 'dd.MM.yyyy')}</TableCell>
                         <TableCell>{item.name}</TableCell>
-                        <TableCell>{item.wallet}</TableCell>
+                        <TableCell>{getWalletName(item.wallet)}</TableCell>
                         <TableCell>${item.amount}</TableCell>
-                        <TableCell>{item.category}</TableCell>
+                        <TableCell>{getCategoryName(item.category)}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -114,6 +135,24 @@ const BilanceList = ({ budgetElements }) => {
         open={isModalVisible}
         handleClose={() => setModalVisibility(false)}
         type="edit"
+        setSnackbarVisibility={setSnackbarVisibility}
+      />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={isSnackbarVisible}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="New item added!"
+        action={
+          <>
+            <IconButton aria-label="close" color="inherit" onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </>
+        }
       />
     </Card>
   );

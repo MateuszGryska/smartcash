@@ -73,7 +73,11 @@ const DashboardView = ({ fetchDataByUserId, wallets, categories, budgetElements,
             <WalletsCard wallets={wallets} />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <BilanceList budgetElements={budgetElements} />
+            <BilanceList
+              budgetElements={budgetElements}
+              wallets={wallets}
+              categories={categories}
+            />
           </Grid>
         </Grid>
       </div>

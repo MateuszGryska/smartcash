@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { formatDistance } from 'date-fns';
 import parseISO from 'date-fns/parseISO';
 import { ListItem, Typography, ListItemText, IconButton, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+import { deleteElement as deleteElementAction } from '../../../../actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -15,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletItem = ({ id, index, name, date, sum, walletsLength }) => {
+const WalletItem = ({ id, index, name, date, sum, walletsLength, deleteElement }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
 
@@ -46,8 +49,7 @@ const WalletItem = ({ id, index, name, date, sum, walletsLength }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Edit</MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={() => deleteElement('wallets', id)}>Delete</MenuItem>
       </Menu>
     </ListItem>
   );
@@ -62,4 +64,8 @@ WalletItem.propTypes = {
   walletsLength: PropTypes.number.isRequired,
 };
 
-export default WalletItem;
+const mapDispatchToProps = (dispatch) => ({
+  deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+});
+
+export default connect(null, mapDispatchToProps)(WalletItem);
