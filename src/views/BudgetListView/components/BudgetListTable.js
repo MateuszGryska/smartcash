@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -20,7 +19,7 @@ import {
   TablePagination,
   CircularProgress,
 } from '@material-ui/core';
-import { fetchDataByUserId as fetchDataByUserIdAction } from '../../../actions';
+
 import BudgetListTableItem from './BudgetListTableItem';
 
 const useStyles = makeStyles(() => ({
@@ -45,24 +44,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BudgetListTable = ({
-  searchItem,
-  budgetElements,
-  wallets,
-  categories,
-  fetchDataByUserId,
-  error,
-  isLoading,
-}) => {
+// const BudgetListTable = ({ searchItem, budgetElements, wallets, categories, error, isLoading }) => {
+const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
-
-  useEffect(() => {
-    fetchDataByUserId('wallets', 'wallets');
-    fetchDataByUserId('categories', 'categories');
-    fetchDataByUserId('budgetElements', 'budgetElements');
-  }, [fetchDataByUserId]);
 
   const classes = useStyles();
   /* eslint-disable */
@@ -108,106 +94,131 @@ const BudgetListTable = ({
   };
 
   const getWalletName = (walletId) => {
-    const walletName = wallets.find((wallet) => wallet.id === walletId);
-    return walletName.name;
+    if (wallets) {
+      const walletName = wallets.find((wallet) => wallet.id === walletId);
+      return walletName.name;
+    }
+    return 'hello';
   };
   const getCategoryName = (categoryId) => {
-    const categoryName = categories.find((category) => category.id === categoryId);
-    return categoryName.name;
+    if (categories) {
+      const categoryName = categories.find((category) => category.id === categoryId);
+      return categoryName.name;
+    }
+    return 'hello';
   };
 
-  let renderData;
-  if (isLoading) {
-    renderData = (
-      <div className={classes.loading}>
-        <CircularProgress />
-      </div>
-    );
-  } else if (error !== null || !budgetElements) {
-    renderData = (
-      <Typography align="center" variant="h3">
-        You don&#39;t have any data! Add new one!
-      </Typography>
-    );
-  } else if (budgetElements.length > 0) {
-    renderData = (
-      <>
-        <CardContent className={classes.content}>
-          <PerfectScrollbar>
-            <div className={classes.inner}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={selectedItems.length === budgetElements.length}
-                        color="primary"
-                        indeterminate={
-                          selectedItems.length > 0 && selectedItems.length < budgetElements.length
-                        }
-                        onChange={handleSelectAll}
-                      />
-                    </TableCell>
-                    <TableCell sortDirection="desc">
-                      <Tooltip enterDelay={300} title="Sort">
-                        <TableSortLabel active direction="desc">
-                          Date
-                        </TableSortLabel>
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Wallet</TableCell>
-                    <TableCell>Amount</TableCell>
-                    <TableCell>Category</TableCell>
-                    <TableCell>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {budgetElements
-                    .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map(({ _id: id, name, date, wallet, amount, category, type }) => (
-                      <BudgetListTableItem
-                        key={id}
-                        id={id}
-                        name={name}
-                        selectedItems={selectedItems}
-                        date={date}
-                        type={type}
-                        wallet={getWalletName(wallet)}
-                        amount={amount}
-                        category={getCategoryName(category)}
-                        handleSelectOne={handleSelectOne}
-                      />
-                    ))}
-                </TableBody>
-              </Table>
-            </div>
-          </PerfectScrollbar>
-        </CardContent>
-        <Divider />
-        <CardActions className={classes.actions}>
-          <TablePagination
-            component="div"
-            count={budgetElements.length}
-            onChangePage={handlePageChange}
-            onChangeRowsPerPage={handleRowsPerPageChange}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25]}
-          />
-        </CardActions>
-      </>
-    );
-  } else {
-    renderData = (
-      <Typography align="center" variant="h3">
-        You don&#39;t have any data, add new one!
-      </Typography>
-    );
-  }
+  // let renderData;
+  // if (isLoading) {
+  //   renderData = (
+  //     <div className={classes.loading}>
+  //       <CircularProgress />
+  //     </div>
+  //   );
+  // } else if (error !== null || !budgetElements) {
+  //   renderData = (
+  //     <Typography align="center" variant="h3">
+  //       You don&#39;t have any data! Add new one!
+  //     </Typography>
+  //   );
+  // } else if (budgetElements.length > 0) {
+  //   renderData = (
 
-  return <Card className={classes.root}>{renderData}</Card>;
+  // } else {
+  //   renderData = (
+
+  //   );
+  // }
+
+  return (
+    <Card className={classes.root}>
+      {' '}
+      <>
+        {!budgetElements ? (
+          <div className={classes.loading}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <>
+            <CardContent className={classes.content}>
+              {budgetElements.length > 0 ? (
+                <PerfectScrollbar>
+                  <div className={classes.inner}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={selectedItems.length === budgetElements.length}
+                              color="primary"
+                              indeterminate={
+                                selectedItems.length > 0 &&
+                                selectedItems.length < budgetElements.length
+                              }
+                              onChange={handleSelectAll}
+                            />
+                          </TableCell>
+                          <TableCell sortDirection="desc">
+                            <Tooltip enterDelay={300} title="Sort">
+                              <TableSortLabel active direction="desc">
+                                Date
+                              </TableSortLabel>
+                            </Tooltip>
+                          </TableCell>
+                          <TableCell>Name</TableCell>
+                          <TableCell>Wallet</TableCell>
+                          <TableCell>Amount</TableCell>
+                          <TableCell>Category</TableCell>
+                          <TableCell>Actions</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {budgetElements
+                          .filter((item) =>
+                            item.name.toLowerCase().includes(searchItem.toLowerCase()),
+                          )
+                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                          .map(({ _id: id, name, date, wallet, amount, category, type }) => (
+                            <BudgetListTableItem
+                              key={id}
+                              id={id}
+                              name={name}
+                              selectedItems={selectedItems}
+                              date={date}
+                              type={type}
+                              wallet={getWalletName(wallet)}
+                              amount={amount}
+                              category={getCategoryName(category)}
+                              handleSelectOne={handleSelectOne}
+                            />
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </PerfectScrollbar>
+              ) : (
+                <Typography align="center" variant="h3">
+                  You don&#39;t have any data, add new one!
+                </Typography>
+              )}
+            </CardContent>
+            <Divider />
+            <CardActions className={classes.actions}>
+              <TablePagination
+                component="div"
+                count={budgetElements.length}
+                onChangePage={handlePageChange}
+                onChangeRowsPerPage={handleRowsPerPageChange}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[5, 10, 25]}
+              />
+            </CardActions>
+          </>
+        )}
+      </>
+    </Card>
+  );
 };
 
 BudgetListTable.propTypes = {
@@ -218,13 +229,4 @@ BudgetListTable.defaultProps = {
   searchItem: '',
 };
 
-const mapStateToProps = (state) => {
-  const { budgetElements, wallets, categories, error, isLoading } = state.items;
-  return { budgetElements, wallets, categories, error, isLoading };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(BudgetListTable);
+export default BudgetListTable;

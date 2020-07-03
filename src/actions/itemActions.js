@@ -38,10 +38,11 @@ export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => 
       });
     })
     .catch((err) => {
+      console.log(err);
       dispatch({
         type: itemTypes.FETCH_DATA_FAILURE,
         payload: {
-          error: err.response.data.message,
+          error: err.response,
         },
       });
     });

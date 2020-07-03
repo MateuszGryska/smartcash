@@ -12,6 +12,7 @@ import {
   MenuItem,
   Typography,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
@@ -33,6 +34,7 @@ const BudgetListTableItem = ({
 }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -40,6 +42,11 @@ const BudgetListTableItem = ({
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDeleteClick = () => {
+    deleteElement('budgetElements', id);
+    enqueueSnackbar('Deleted element!', { variant: 'success' });
   };
 
   // change format date
@@ -91,7 +98,7 @@ const BudgetListTableItem = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => deleteElement('budgetElements', id)}>Delete</MenuItem>
+        <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
       </Menu>
     </TableRow>
   );

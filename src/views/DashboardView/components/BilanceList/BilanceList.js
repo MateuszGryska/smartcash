@@ -20,10 +20,8 @@ import {
   Tooltip,
   TableSortLabel,
   LinearProgress,
-  Snackbar,
-  IconButton,
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import BudgetListModal from '../../../BudgetListView/components/BudgetListModal';
 
@@ -40,26 +38,23 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BilanceList = ({ budgetElements, wallets, categories }) => {
+const BilanceList = ({ budgetElements, wallets, categories, isLoading }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
-  const [isSnackbarVisible, setSnackbarVisibility] = useState(false);
   const classes = useStyles();
 
   const getWalletName = (walletId) => {
-    const walletName = wallets.find((wallet) => wallet.id === walletId);
-    return walletName.name;
+    if (wallets) {
+      const walletName = wallets.find((wallet) => wallet.id === walletId);
+      return walletName.name;
+    }
+    return 'hello';
   };
   const getCategoryName = (categoryId) => {
-    const categoryName = categories.find((category) => category.id === categoryId);
-    return categoryName.name;
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
+    if (categories) {
+      const categoryName = categories.find((category) => category.id === categoryId);
+      return categoryName.name;
     }
-
-    setSnackbarVisibility(false);
+    return 'hello';
   };
 
   return (
@@ -78,7 +73,7 @@ const BilanceList = ({ budgetElements, wallets, categories }) => {
         title="Latest Incomes/Expenses"
       />
       <Divider />
-      {!budgetElements ? (
+      {!budgetElements && isLoading ? (
         <LinearProgress />
       ) : (
         <CardContent className={classes.content}>
@@ -134,25 +129,6 @@ const BilanceList = ({ budgetElements, wallets, categories }) => {
         pageType="expenses"
         open={isModalVisible}
         handleClose={() => setModalVisibility(false)}
-        type="edit"
-        setSnackbarVisibility={setSnackbarVisibility}
-      />
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={isSnackbarVisible}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="New item added!"
-        action={
-          <>
-            <IconButton aria-label="close" color="inherit" onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </>
-        }
       />
     </Card>
   );

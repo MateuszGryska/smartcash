@@ -1,14 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import GlobalStyle from '../../theme/GlobalStyle';
+// import GlobalStyle from '../../theme/GlobalStyle';
 
 const MainTemplate = ({ children }) => {
-  return (
-    <main>
-      <GlobalStyle />
-      {children}
-    </main>
-  );
+  return <main>{children}</main>;
 };
 
 MainTemplate.propTypes = {

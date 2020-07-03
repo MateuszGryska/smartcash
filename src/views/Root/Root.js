@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../theme/global.scss';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { Chart } from 'react-chartjs-2';

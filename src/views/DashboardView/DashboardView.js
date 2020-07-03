@@ -18,10 +18,19 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardView = ({ fetchDataByUserId, wallets, categories, budgetElements, isLoading }) => {
   useEffect(() => {
-    fetchDataByUserId('wallets', 'wallets');
     fetchDataByUserId('categories', 'categories');
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     fetchDataByUserId('budgetElements', 'budgetElements');
-  }, [fetchDataByUserId]);
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    fetchDataByUserId('wallets', 'wallets');
+    // eslint-disable-next-line
+  }, []);
 
   // get wallets sum total value
   const walletsAllSumValues = [];
@@ -73,11 +82,16 @@ const DashboardView = ({ fetchDataByUserId, wallets, categories, budgetElements,
             <WalletsCard wallets={wallets} />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <BilanceList
-              budgetElements={budgetElements}
-              wallets={wallets}
-              categories={categories}
-            />
+            {budgetElements ? (
+              <BilanceList
+                budgetElements={budgetElements}
+                wallets={wallets}
+                categories={categories}
+                isLoading={isLoading}
+              />
+            ) : (
+              <h1>loading</h1>
+            )}
           </Grid>
         </Grid>
       </div>

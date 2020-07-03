@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -15,15 +15,21 @@ import {
   InputLabel,
   CircularProgress,
   FormHelperText,
+  Typography,
 } from '@material-ui/core';
 import { Formik, Form } from 'formik';
-import { updateElement as updateElementAction } from '../../../actions/index';
+import { useSnackbar } from 'notistack';
+import {
+  updateElement as updateElementAction,
+  fetchDataByUserId as fetchDataByUserIdAction,
+} from '../../../actions/index';
 import { BudgetListModalSchema } from '../../../validation';
 
 const EditBudgetElementModal = ({
   open,
   handleClose,
   updateElement,
+  fetchDataByUserId,
   id,
   wallets,
   categories,
@@ -33,6 +39,12 @@ const EditBudgetElementModal = ({
   category,
   type,
 }) => {
+  useEffect(() => {
+    fetchDataByUserId('wallets', 'wallets');
+    fetchDataByUserId('categories', 'categories');
+    // eslint-disable-next-line
+  }, []);
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
@@ -40,6 +52,7 @@ const EditBudgetElementModal = ({
         validationSchema={BudgetListModalSchema}
         onSubmit={(values) => {
           updateElement('budgetElements', id, values);
+          enqueueSnackbar('Updated element!', { variant: 'success' });
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -108,51 +121,60 @@ const EditBudgetElementModal = ({
                         {errors.type && touched.type ? errors.type : null}
                       </FormHelperText>
                     </FormControl>
-
-                    <FormControl variant="outlined" fullWidth margin="dense">
-                      <InputLabel id="demo-simple-select-outlined-label">Wallet</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="wallet"
-                        label="Wallet"
-                        name="wallet"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.wallet}
-                        error={errors.wallet && touched.wallet}
-                      >
-                        {wallets.map((props) => (
-                          <MenuItem value={props.id} key={props.id}>
-                            {name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      <FormHelperText>
-                        {errors.wallet && touched.wallet ? errors.wallet : null}
-                      </FormHelperText>
-                    </FormControl>
-                    <FormControl variant="outlined" fullWidth margin="dense" name="category">
-                      <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="category"
-                        label="Category"
-                        name="category"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.category}
-                        error={errors.category && touched.category}
-                      >
-                        {categories.map((props) => (
-                          <MenuItem value={props.id} key={props.id}>
-                            {name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      <FormHelperText>
-                        {errors.category && touched.category ? errors.category : null}
-                      </FormHelperText>
-                    </FormControl>
+                    {wallets.length > 0 && categories.length > 0 ? (
+                      <>
+                        <FormControl variant="outlined" fullWidth margin="dense">
+                          <InputLabel id="demo-simple-select-outlined-label">Wallet</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-outlined-label"
+                            id="wallet"
+                            label="Wallet"
+                            name="wallet"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.wallet}
+                            error={errors.wallet && touched.wallet}
+                          >
+                            {wallets.map((walletItem) => (
+                              <MenuItem value={walletItem.id} key={walletItem.id}>
+                                {walletItem.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                          <FormHelperText>
+                            {errors.wallet && touched.wallet ? errors.wallet : null}
+                          </FormHelperText>
+                        </FormControl>
+                        <FormControl variant="outlined" fullWidth margin="dense" name="category">
+                          <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-outlined-label"
+                            id="category"
+                            label="Category"
+                            name="category"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.category}
+                            error={errors.category && touched.category}
+                          >
+                            {categories
+                              .filter((categoryItem) => categoryItem.type === values.type)
+                              .map((categoryItem) => (
+                                <MenuItem value={categoryItem.id} key={categoryItem.id}>
+                                  {categoryItem.name}
+                                </MenuItem>
+                              ))}
+                          </Select>
+                          <FormHelperText>
+                            {errors.category && touched.category ? errors.category : null}
+                          </FormHelperText>
+                        </FormControl>
+                      </>
+                    ) : (
+                      <Typography align="center" color="error" variant="h3">
+                        You must add new wallet and new category to continue!
+                      </Typography>
+                    )}
                   </>
                 ) : (
                   <CircularProgress />
@@ -182,6 +204,7 @@ EditBudgetElementModal.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   updateElement: (itemType, id, content) => dispatch(updateElementAction(itemType, id, content)),
+  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
 });
 
 const mapStateToProps = (state) => {

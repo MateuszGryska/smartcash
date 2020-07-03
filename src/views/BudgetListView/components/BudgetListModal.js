@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -19,25 +19,12 @@ import {
 } from '@material-ui/core';
 
 import { Formik, Form } from 'formik';
-import {
-  addElement as addElementAction,
-  fetchDataByUserId as fetchDataByUserIdAction,
-} from '../../../actions/index';
+import { useSnackbar } from 'notistack';
+import { addElement as addElementAction } from '../../../actions/index';
 import { BudgetListModalSchema } from '../../../validation';
 
-const BudgetListModal = ({
-  open,
-  handleClose,
-  addElement,
-  fetchDataByUserId,
-  wallets,
-  categories,
-  setSnackbarVisibility,
-}) => {
-  useEffect(() => {
-    fetchDataByUserId('wallets', 'wallets');
-    fetchDataByUserId('categories', 'categories');
-  }, [fetchDataByUserId]);
+const BudgetListModal = ({ open, handleClose, addElement, wallets, categories }) => {
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
@@ -46,7 +33,7 @@ const BudgetListModal = ({
         validationSchema={BudgetListModalSchema}
         onSubmit={(values) => {
           addElement('budgetElements', values);
-          setSnackbarVisibility(true);
+          enqueueSnackbar('Created new element!', { variant: 'success' });
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -198,12 +185,6 @@ BudgetListModal.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   addElement: (itemType, content) => dispatch(addElementAction(itemType, content)),
-  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
 });
 
-const mapStateToProps = (state) => {
-  const { wallets, categories } = state.items;
-  return { wallets, categories };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(BudgetListModal);
+export default connect(null, mapDispatchToProps)(BudgetListModal);

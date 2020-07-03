@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { StylesProvider } from '@material-ui/core/styles';
+import { SnackbarProvider } from 'notistack';
 import Root from './views/Root/Root';
 
 import * as serviceWorker from './serviceWorker';
@@ -8,7 +9,9 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <React.StrictMode>
     <StylesProvider injectFirst>
-      <Root />
+      <SnackbarProvider maxSnack="3">
+        <Root />
+      </SnackbarProvider>
     </StylesProvider>
   </React.StrictMode>,
   document.getElementById('root'),

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+
 import { makeStyles } from '@material-ui/styles';
-import { Snackbar, IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+
+import { fetchDataByUserId as fetchDataByUserIdAction } from '../../actions';
 import BudgetListTable from './components/BudgetListTable';
 import Toolbar from './components/Toolbar';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
@@ -16,20 +18,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BudgetListView = () => {
+const BudgetListView = ({
+  fetchDataByUserId,
+  budgetElements,
+  wallets,
+  categories,
+  error,
+  isLoading,
+}) => {
   const [searchItem, setSearchItem] = useState('');
   const [isModalVisible, setModalVisibility] = useState(false);
-  const [isSnackbarVisible, setSnackbarVisibility] = useState(false);
+
+  useEffect(() => {
+    fetchDataByUserId('categories', 'categories');
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    fetchDataByUserId('budgetElements', 'budgetElements');
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    fetchDataByUserId('wallets', 'wallets');
+    // eslint-disable-next-line
+  }, []);
 
   const handleSearchInputChange = (e) => {
     setSearchItem(e.target.value);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarVisibility(false);
   };
 
   const classes = useStyles();
@@ -42,33 +58,33 @@ const BudgetListView = () => {
           handleSearchInputChange={handleSearchInputChange}
         />
         <div className={classes.content}>
-          <BudgetListTable searchItem={searchItem} />
+          <BudgetListTable
+            searchItem={searchItem}
+            budgetElements={budgetElements}
+            wallets={wallets}
+            categories={categories}
+            error={error}
+            isLoading={isLoading}
+          />
         </div>
         <BudgetListModal
           open={isModalVisible}
           handleClose={() => setModalVisibility(false)}
-          setSnackbarVisibility={setSnackbarVisibility}
-        />
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          open={isSnackbarVisible}
-          autoHideDuration={4000}
-          onClose={handleClose}
-          message="New item added!"
-          action={
-            <>
-              <IconButton aria-label="close" color="inherit" onClick={handleClose}>
-                <CloseIcon />
-              </IconButton>
-            </>
-          }
+          wallets={wallets}
+          categories={categories}
         />
       </div>
     </UserTemplate>
   );
 };
 
-export default BudgetListView;
+const mapStateToProps = (state) => {
+  const { budgetElements, wallets, categories, error, isLoading } = state.items;
+  return { budgetElements, wallets, categories, error, isLoading };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetListView);
