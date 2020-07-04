@@ -32,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletsCard = ({ wallets }) => {
+const WalletsCard = ({ wallets, isLoading }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
       <CardHeader title="Wallets" />
       <Divider />
-      {!wallets ? (
+      {isLoading ? (
         <LinearProgress />
       ) : (
         <CardContent className={classes.content}>

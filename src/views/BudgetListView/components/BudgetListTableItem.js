@@ -29,6 +29,7 @@ const BudgetListTableItem = ({
   type,
   amount,
   category,
+
   handleSelectOne,
   deleteElement,
 }) => {
@@ -46,7 +47,7 @@ const BudgetListTableItem = ({
 
   const handleDeleteClick = () => {
     deleteElement('budgetElements', id);
-    enqueueSnackbar('Deleted element!', { variant: 'success' });
+    enqueueSnackbar('Deleted element!', { variant: 'warning' });
   };
 
   // change format date
@@ -81,6 +82,7 @@ const BudgetListTableItem = ({
           <EditIcon />
         </IconButton>
       </TableCell>
+
       <EditBudgetElementModal
         name={name}
         id={id}
@@ -91,6 +93,7 @@ const BudgetListTableItem = ({
         open={isEditModalVisible}
         handleClose={() => setEditModalVisibility(false)}
       />
+
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}

@@ -12,11 +12,13 @@ import {
   FormHelperText,
   FormControl,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
 import { addElement as addElementAction } from '../../../actions/index';
 import { WalletsModalSchema } from '../../../validation';
 
 const WalletsModal = ({ open, handleClose, addElement }) => {
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
@@ -24,6 +26,7 @@ const WalletsModal = ({ open, handleClose, addElement }) => {
         validationSchema={WalletsModalSchema}
         onSubmit={(values) => {
           addElement('wallets', values);
+          enqueueSnackbar('Created new wallet!', { variant: 'success' });
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (

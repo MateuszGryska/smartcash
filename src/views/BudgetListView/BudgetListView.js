@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 
 import { fetchDataByUserId as fetchDataByUserIdAction } from '../../actions';
@@ -76,6 +76,18 @@ const BudgetListView = ({
       </div>
     </UserTemplate>
   );
+};
+
+BudgetListView.propTypes = {
+  budgetElements: PropTypes.arrayOf(PropTypes.object),
+  categories: PropTypes.arrayOf(PropTypes.object),
+  wallets: PropTypes.arrayOf(PropTypes.object),
+};
+
+BudgetListView.defaultProps = {
+  budgetElements: [],
+  categories: [],
+  wallets: [],
 };
 
 const mapStateToProps = (state) => {

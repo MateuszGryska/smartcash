@@ -98,37 +98,15 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
       const walletName = wallets.find((wallet) => wallet.id === walletId);
       return walletName.name;
     }
-    return 'hello';
+    return 'ERROR';
   };
   const getCategoryName = (categoryId) => {
     if (categories) {
       const categoryName = categories.find((category) => category.id === categoryId);
       return categoryName.name;
     }
-    return 'hello';
+    return 'ERROR';
   };
-
-  // let renderData;
-  // if (isLoading) {
-  //   renderData = (
-  //     <div className={classes.loading}>
-  //       <CircularProgress />
-  //     </div>
-  //   );
-  // } else if (error !== null || !budgetElements) {
-  //   renderData = (
-  //     <Typography align="center" variant="h3">
-  //       You don&#39;t have any data! Add new one!
-  //     </Typography>
-  //   );
-  // } else if (budgetElements.length > 0) {
-  //   renderData = (
-
-  // } else {
-  //   renderData = (
-
-  //   );
-  // }
 
   return (
     <Card className={classes.root}>

@@ -12,18 +12,33 @@ import {
   FormHelperText,
   FormControl,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
-import { updateElement as updateElementAction } from '../../../actions/index';
+import {
+  updateElement as updateElementAction,
+  fetchDataByUserId as fetchDataByUserIdAction,
+} from '../../../actions/index';
 import { WalletsModalSchema } from '../../../validation';
 
-const EditWalletModal = ({ open, handleClose, id, name, sum, updateElement }) => {
+const EditWalletModal = ({
+  open,
+  handleClose,
+  id,
+  name,
+  sum,
+  updateElement,
+  fetchDataByUserId,
+}) => {
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
         initialValues={{ name, sum }}
         validationSchema={WalletsModalSchema}
-        onSubmit={(values) => {
-          updateElement('wallets', id, values);
+        onSubmit={async (values) => {
+          await updateElement('wallets', id, values);
+          enqueueSnackbar('Updated wallet!', { variant: 'success' });
+          fetchDataByUserId('wallets', 'wallets');
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -74,7 +89,7 @@ const EditWalletModal = ({ open, handleClose, id, name, sum, updateElement }) =>
                   Cancel
                 </Button>
                 <Button onClick={handleClose} color="primary" type="submit" disabled={!isValid}>
-                  Add
+                  Update
                 </Button>
               </DialogActions>
             </Form>
@@ -93,6 +108,7 @@ EditWalletModal.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   updateElement: (itemType, id, content) => dispatch(updateElementAction(itemType, id, content)),
+  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
 });
 
 export default connect(null, mapDispatchToProps)(EditWalletModal);

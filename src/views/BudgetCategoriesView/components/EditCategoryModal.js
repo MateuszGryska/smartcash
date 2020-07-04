@@ -15,18 +15,34 @@ import {
   InputLabel,
   FormHelperText,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
-import { updateElement as updateElementAction } from '../../../actions/index';
+import {
+  updateElement as updateElementAction,
+  fetchDataByUserId as fetchDataByUserIdAction,
+} from '../../../actions/index';
+
 import { CategoriesModalSchema } from '../../../validation';
 
-const EditCategoryModal = ({ open, handleClose, name, type, updateElement, id }) => {
+const EditCategoryModal = ({
+  open,
+  handleClose,
+  name,
+  type,
+  updateElement,
+  fetchDataByUserId,
+  id,
+}) => {
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
         initialValues={{ name, type }}
         validationSchema={CategoriesModalSchema}
-        onSubmit={(values) => {
-          updateElement('categories', id, values);
+        onSubmit={async (values) => {
+          await updateElement('categories', id, values);
+          enqueueSnackbar('Updated category!', { variant: 'success' });
+          fetchDataByUserId('categories', 'categories');
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -100,6 +116,7 @@ EditCategoryModal.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   updateElement: (itemType, id, content) => dispatch(updateElementAction(itemType, id, content)),
+  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
 });
 
 export default connect(null, mapDispatchToProps)(EditCategoryModal);

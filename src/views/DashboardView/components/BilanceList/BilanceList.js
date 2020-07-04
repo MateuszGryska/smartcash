@@ -126,7 +126,8 @@ const BilanceList = ({ budgetElements, wallets, categories, isLoading }) => {
         </Button>
       </CardActions>
       <BudgetListModal
-        pageType="expenses"
+        wallets={wallets}
+        categories={categories}
         open={isModalVisible}
         handleClose={() => setModalVisibility(false)}
       />

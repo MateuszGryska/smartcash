@@ -15,6 +15,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 const WalletCard = ({ sum, name, date, deleteElement, id }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,6 +47,11 @@ const WalletCard = ({ sum, name, date, deleteElement, id }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDeleteClick = () => {
+    deleteElement('wallets', id);
+    enqueueSnackbar('Deleted wallet!', { variant: 'warning' });
   };
 
   // change format date
@@ -96,7 +103,7 @@ const WalletCard = ({ sum, name, date, deleteElement, id }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => deleteElement('wallets', id)}>Delete</MenuItem>
+        <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
       </Menu>
     </Card>
   );

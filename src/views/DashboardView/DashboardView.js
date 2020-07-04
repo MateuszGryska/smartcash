@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
 import SmallCard from './components/SmallCard/SmallCard';
 import BilanceChart from './components/BilanceChart/BilanceChart';
@@ -13,6 +14,11 @@ import { fetchDataByUserId as fetchDataByUserIdAction } from '../../actions';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
+  },
+  loading: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 
@@ -79,24 +85,36 @@ const DashboardView = ({ fetchDataByUserId, wallets, categories, budgetElements,
             <BilanceChart />
           </Grid>
           <Grid item lg={4} md={12} xl={3} xs={12}>
-            <WalletsCard wallets={wallets} />
+            <WalletsCard wallets={wallets} isLoading={isLoading} />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            {budgetElements ? (
+            {isLoading ? (
+              <div className={classes.loading}>
+                <CircularProgress />
+              </div>
+            ) : (
               <BilanceList
                 budgetElements={budgetElements}
                 wallets={wallets}
                 categories={categories}
                 isLoading={isLoading}
               />
-            ) : (
-              <h1>loading</h1>
             )}
           </Grid>
         </Grid>
       </div>
     </UserTemplate>
   );
+};
+
+DashboardView.propTypes = {
+  budgetElements: PropTypes.arrayOf(PropTypes.object),
+  wallets: PropTypes.arrayOf(PropTypes.object),
+};
+
+DashboardView.defaultProps = {
+  budgetElements: [],
+  wallets: [],
 };
 
 const mapStateToProps = (state) => {

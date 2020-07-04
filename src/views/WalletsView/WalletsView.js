@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
 const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
   useEffect(() => {
     fetchDataByUserId();
-  }, [fetchDataByUserId]);
+    // eslint-disable-next-line
+  }, []);
 
   const classes = useStyles();
   const [isModalVisible, setModalVisibility] = useState(false);
@@ -79,11 +80,8 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
 
         <>
           <div className={classes.content}>{renderData}</div>
-          <WalletsModal
-            open={isModalVisible}
-            pageType="wallets"
-            handleClose={() => setModalVisibility(false)}
-          />
+
+          <WalletsModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
         </>
       </div>
     </UserTemplate>

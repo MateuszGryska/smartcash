@@ -16,10 +16,12 @@ import {
   FormHelperText,
 } from '@material-ui/core';
 import { Formik, Form } from 'formik';
+import { useSnackbar } from 'notistack';
 import { addElement as addElementAction } from '../../../actions/index';
 import { CategoriesModalSchema } from '../../../validation';
 
 const CategoriesModal = ({ open, handleClose, addElement }) => {
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
@@ -27,6 +29,7 @@ const CategoriesModal = ({ open, handleClose, addElement }) => {
         validationSchema={CategoriesModalSchema}
         onSubmit={(values) => {
           addElement('categories', values);
+          enqueueSnackbar('Created new category!', { variant: 'success' });
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (

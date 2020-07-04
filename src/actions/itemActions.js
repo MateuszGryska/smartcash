@@ -19,7 +19,8 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      dispatch({ type: itemTypes.ADD_ITEM_FAILURE, payload: { error: err.response.data.message } });
+      console.log(err);
+      dispatch({ type: itemTypes.ADD_ITEM_FAILURE });
     });
 };
 

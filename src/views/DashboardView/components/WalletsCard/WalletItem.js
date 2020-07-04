@@ -6,6 +6,7 @@ import { formatDistance } from 'date-fns';
 import parseISO from 'date-fns/parseISO';
 import { ListItem, Typography, ListItemText, IconButton, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { useSnackbar } from 'notistack';
 
 import { deleteElement as deleteElementAction } from '../../../../actions';
 
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const WalletItem = ({ id, index, name, date, sum, walletsLength, deleteElement }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,6 +30,11 @@ const WalletItem = ({ id, index, name, date, sum, walletsLength, deleteElement }
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDeleteClick = () => {
+    deleteElement('wallets', id);
+    enqueueSnackbar('Deleted wallet!', { variant: 'success' });
   };
 
   // change format date
@@ -49,7 +56,7 @@ const WalletItem = ({ id, index, name, date, sum, walletsLength, deleteElement }
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => deleteElement('wallets', id)}>Delete</MenuItem>
+        <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
       </Menu>
     </ListItem>
   );

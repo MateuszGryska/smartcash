@@ -27,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
 const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading }) => {
   useEffect(() => {
     fetchDataByUserId();
-  }, [fetchDataByUserId]);
+    // eslint-disable-next-line
+  }, []);
 
   const classes = useStyles();
   const [isModalVisible, setModalVisibility] = useState(false);
@@ -114,12 +115,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
         <>
           {renderData}
 
-          <CategoriesModal
-            open={isModalVisible}
-            pageType="budgetcategories"
-            handleClose={() => setModalVisibility(false)}
-            type="add"
-          />
+          <CategoriesModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
         </>
       </div>
     </UserTemplate>

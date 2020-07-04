@@ -40,19 +40,24 @@ const EditBudgetElementModal = ({
   type,
 }) => {
   useEffect(() => {
-    fetchDataByUserId('wallets', 'wallets');
-    fetchDataByUserId('categories', 'categories');
+    if (!wallets && !categories) {
+      fetchDataByUserId('wallets', 'wallets');
+      fetchDataByUserId('categories', 'categories');
+    }
+
     // eslint-disable-next-line
   }, []);
+
   const { enqueueSnackbar } = useSnackbar();
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
         initialValues={{ name, amount, wallet, category, type }}
         validationSchema={BudgetListModalSchema}
-        onSubmit={(values) => {
-          updateElement('budgetElements', id, values);
+        onSubmit={async (values) => {
+          await updateElement('budgetElements', id, values);
           enqueueSnackbar('Updated element!', { variant: 'success' });
+          fetchDataByUserId('budgetElements', 'budgetElements');
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
