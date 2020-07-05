@@ -68,3 +68,27 @@ export const getUserById = () => (dispatch, getState) => {
       });
     });
 };
+
+export const updateUserImage = (image) => (dispatch, getState) => {
+  dispatch({ type: authTypes.UPLOAD_USER_IMAGE_START });
+
+  const formData = new window.FormData();
+  formData.append('image', image);
+  return axios
+    .patch(`http://localhost:5000/api/users/image/${getState().auth.userId}`, formData)
+    .then(({ data }) => {
+      dispatch({
+        type: authTypes.UPLOAD_USER_IMAGE_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      dispatch({
+        type: authTypes.UPLOAD_USER_IMAGE_FAILURE,
+        // payload: { error: err.response.data.message },
+      });
+    });
+};

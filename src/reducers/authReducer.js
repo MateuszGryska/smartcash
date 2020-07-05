@@ -1,7 +1,8 @@
 import { authTypes } from '../actions/types';
 
 const initialState = {
-  userId: '5eef32769a68458ec7090f4f',
+  // userId: '5eef32769a68458ec7090f4f',
+  userId: '5f01bddf75f2312f19fb3e47',
   user: {},
   isLoading: false,
   error: null,
@@ -37,6 +38,15 @@ export default (state = initialState, { type, payload }) => {
         isLoading: false,
         error: null,
       };
+    case authTypes.UPLOAD_USER_IMAGE_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...payload.data,
+        },
+      };
+
     default:
       return state;
   }

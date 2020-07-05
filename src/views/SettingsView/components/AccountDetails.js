@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardActions,
@@ -9,7 +9,7 @@ import {
   Avatar,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import avatar from '../../../assets/images/avatar_1.png';
+import AddAvatarModal from './AddAvatarModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AccountDetails = ({ userData }) => {
+  const [isUploadModalVisible, setUploadModalVisibility] = useState(false);
   const classes = useStyles();
   return (
     <Card>
@@ -41,16 +42,31 @@ const AccountDetails = ({ userData }) => {
             </Typography>
             <Typography variant="body2">{userData.country}</Typography>
           </div>
-          <Avatar className={classes.avatar} alt="Person Avatar" src={avatar} />
+          {userData.image && (
+            <Avatar
+              className={classes.avatar}
+              alt="Person Avatar"
+              src={`http://localhost:5000/${userData.image}`}
+            />
+          )}
+          {!userData.image && <Avatar className={classes.avatar} alt="Person Avatar" src="" />}
         </div>
       </CardContent>
       <Divider />
       <CardActions>
-        <Button className={classes.uploadButton} variant="text">
+        <Button
+          className={classes.uploadButton}
+          variant="text"
+          onClick={() => setUploadModalVisibility(true)}
+        >
           Upload Picture
         </Button>
         <Button variant="text">remove Picture</Button>
       </CardActions>
+      <AddAvatarModal
+        open={isUploadModalVisible}
+        handleClose={() => setUploadModalVisibility(false)}
+      />
     </Card>
   );
 };

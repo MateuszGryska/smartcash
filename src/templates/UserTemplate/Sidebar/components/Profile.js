@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Avatar, Typography } from '@material-ui/core';
-import avatar from '../../../../assets/images/avatar_1.png';
+import { Avatar, Typography, CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,18 +19,38 @@ const useStyles = makeStyles((theme) => ({
   name: {
     marginTop: theme.spacing(1),
   },
+  loading: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '100px',
+  },
 }));
 
-const Profile = ({ className }) => {
+const Profile = ({ className, user, isLoading }) => {
   const classes = useStyles();
 
   return (
     <div className={clsx(classes.root, className)}>
-      <Avatar className={classes.avatar} alt="Person Avatar" src={avatar} />
-      <Typography className={classes.name} variant="h4">
-        {/* {`${users[0].firstName} ${users[0].lastName}`} */}
-        Joe example
-      </Typography>
+      {isLoading ? (
+        <div className={classes.loading}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          {user.image && (
+            <Avatar
+              className={classes.avatar}
+              alt="Person Avatar"
+              src={`http://localhost:5000/${user.image}`}
+            />
+          )}
+          {!user.image && <Avatar className={classes.avatar} alt="Person Avatar" src="" />}
+          <Typography className={classes.name} variant="h4">
+            {user.firstName} {user.lastName}
+          </Typography>
+        </>
+      )}
     </div>
   );
 };
@@ -45,8 +64,8 @@ Profile.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { users } = state;
-  return { users };
+  const { user, isLoading } = state.auth;
+  return { user, isLoading };
 };
 
 export default connect(mapStateToProps)(Profile);
