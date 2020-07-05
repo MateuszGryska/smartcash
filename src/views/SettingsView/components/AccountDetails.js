@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import {
   Card,
   CardActions,
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AccountDetails = ({ users }) => {
+const AccountDetails = ({ userData }) => {
   const classes = useStyles();
   return (
     <Card>
@@ -38,9 +37,9 @@ const AccountDetails = ({ users }) => {
         <div className={classes.details}>
           <div>
             <Typography gutterBottom variant="h2">
-              {`${users[0].firstName} ${users[0].lastName}`}
+              {userData.firstName} {userData.lastName}
             </Typography>
-            <Typography variant="body2">{users[0].country}</Typography>
+            <Typography variant="body2">{userData.country}</Typography>
           </div>
           <Avatar className={classes.avatar} alt="Person Avatar" src={avatar} />
         </div>
@@ -56,9 +55,4 @@ const AccountDetails = ({ users }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { users } = state;
-  return { users };
-};
-
-export default connect(mapStateToProps)(AccountDetails);
+export default AccountDetails;

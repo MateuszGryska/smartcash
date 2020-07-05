@@ -2,6 +2,7 @@ import { authTypes } from '../actions/types';
 
 const initialState = {
   userId: '5eef32769a68458ec7090f4f',
+  user: {},
   isLoading: false,
   error: null,
 };
@@ -22,6 +23,19 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         users: [...state.users, payload],
+      };
+
+    case authTypes.GET_USER_START:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case authTypes.GET_USER_SUCCESS:
+      return {
+        ...state,
+        ...payload.data,
+        isLoading: false,
+        error: null,
       };
     default:
       return state;

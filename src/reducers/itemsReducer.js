@@ -1,9 +1,9 @@
 import { itemTypes } from '../actions/types';
 
 const initialState = {
-  // budgetElements: [],
-  // categories: [],
-  // wallets: [],
+  budgetElements: [],
+  wallets: [],
+  categories: [],
   isLoading: false,
   error: null,
 };

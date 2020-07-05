@@ -14,7 +14,7 @@ import { Formik, Form } from 'formik';
 import { editUser as editUserAction } from '../../../actions/index';
 import { ProfileDetailsSchema } from '../../../validation';
 
-const ProfileDetails = ({ editUser }) => {
+const ProfileDetails = ({ editUser, userData }) => {
   return (
     <Card>
       <CardHeader title="Profile" subheader="The information can be edited" />
@@ -22,16 +22,11 @@ const ProfileDetails = ({ editUser }) => {
 
       <Formik
         initialValues={{
-          // firstName: users[0].firstName,
-          // lastName: users[0].lastName,
-          // email: users[0].email,
-          // phoneNumber: users[0].phoneNumber,
-          // country: users[0].country,
-          firstName: '',
-          lastName: '',
-          email: '',
-          phoneNumber: '',
-          country: '',
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          phoneNumber: userData.phoneNumber,
+          country: userData.country,
         }}
         validationSchema={ProfileDetailsSchema}
         onSubmit={(values) => {
@@ -138,9 +133,4 @@ const mapDispatchToProps = (dispatch) => ({
   editUser: (data) => dispatch(editUserAction(data)),
 });
 
-const mapStateToProps = (state) => {
-  const { users } = state;
-  return { users };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileDetails);
+export default connect(null, mapDispatchToProps)(ProfileDetails);

@@ -44,3 +44,27 @@ export const editUser = (data) => {
     },
   };
 };
+
+export const getUserById = () => (dispatch, getState) => {
+  dispatch({ type: authTypes.GET_USER_START });
+
+  return axios
+    .get(`http://localhost:5000/api/users/${getState().auth.userId}`, {})
+    .then(({ data }) => {
+      dispatch({
+        type: authTypes.GET_USER_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: authTypes.GET_USER_FAILURE,
+        payload: {
+          error: err.response,
+        },
+      });
+    });
+};
