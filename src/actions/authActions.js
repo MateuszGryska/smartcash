@@ -21,7 +21,7 @@ export const authenticate = (email, password) => (dispatch) => {
       ...password,
     })
     .then((payload) => {
-      const tokenExpirationDate = new Date(new Date().getTime() + 7000);
+      const tokenExpirationDate = new Date(new Date().getTime() + 1000 * 60 * 60);
       window.localStorage.setItem(
         'userData',
         JSON.stringify({

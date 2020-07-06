@@ -8,7 +8,6 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
     .post(
       `http://localhost:5000/api/${itemType}`,
       {
-        user: getState().auth.userId,
         ...content,
       },
       {
