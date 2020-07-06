@@ -1,20 +1,42 @@
 import axios from 'axios';
 import { authTypes } from './types';
 
+export const setUserId = (userId, token, expiration) => {
+  return {
+    type: 'SET_USER',
+    payload: {
+      userId,
+      token,
+      expiration,
+    },
+  };
+};
+
 export const authenticate = (email, password) => (dispatch) => {
   dispatch({ type: authTypes.AUTH_START });
 
   return axios
     .post('http://localhost:5000/api/users/login', {
-      email,
-      password,
+      ...email,
+      ...password,
     })
     .then((payload) => {
-      console.log(payload);
-      dispatch({ type: authTypes.AUTH_SUCCESS, payload });
+      const tokenExpirationDate = new Date(new Date().getTime() + 7000);
+      window.localStorage.setItem(
+        'userData',
+        JSON.stringify({
+          userId: payload.data.userId,
+          token: payload.data.token,
+          expiration: tokenExpirationDate.toISOString(),
+        }),
+      );
+      dispatch({
+        type: authTypes.AUTH_SUCCESS,
+        payload: { ...payload, expiration: tokenExpirationDate.toISOString() },
+      });
     })
     .catch((err) => {
-      console.log(err.message);
+      console.log(err.response);
       dispatch({ type: authTypes.AUTH_FAILURE });
     });
 };
@@ -27,8 +49,19 @@ export const signUp = (data) => (dispatch) => {
       ...data,
     })
     .then((payload) => {
-      console.log(payload);
-      dispatch({ type: authTypes.SIGNUP_SUCCESS, payload });
+      const tokenExpirationDate = new Date(new Date().getTime() + 1000 * 60 * 60);
+      window.localStorage.setItem(
+        'userData',
+        JSON.stringify({
+          userId: payload.data.userId,
+          token: payload.data.token,
+          expiration: tokenExpirationDate.toISOString(),
+        }),
+      );
+      dispatch({
+        type: authTypes.SIGNUP_SUCCESS,
+        payload: { ...payload, expiration: tokenExpirationDate.toISOString() },
+      });
     })
     .catch((err) => {
       console.log(err.message);
@@ -91,4 +124,12 @@ export const updateUserImage = (image) => (dispatch, getState) => {
         // payload: { error: err.response.data.message },
       });
     });
+};
+
+export const logout = () => {
+  window.localStorage.removeItem('userData');
+
+  return {
+    type: 'LOG_OUT_USER',
+  };
 };

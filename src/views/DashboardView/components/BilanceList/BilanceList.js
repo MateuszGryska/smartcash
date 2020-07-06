@@ -43,14 +43,14 @@ const BilanceList = ({ budgetElements, wallets, categories, isLoading }) => {
   const classes = useStyles();
 
   const getWalletName = (walletId) => {
-    if (wallets) {
+    if (wallets.length > 0) {
       const walletName = wallets.find((wallet) => wallet.id === walletId);
       return walletName.name;
     }
     return 'hello';
   };
   const getCategoryName = (categoryId) => {
-    if (categories) {
+    if (categories.length > 0) {
       const categoryName = categories.find((category) => category.id === categoryId);
       return categoryName.name;
     }

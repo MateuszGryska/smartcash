@@ -5,10 +5,18 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
   dispatch({ type: itemTypes.ADD_ITEM_START });
 
   return axios
-    .post(`http://localhost:5000/api/${itemType}`, {
-      user: getState().auth.userId,
-      ...content,
-    })
+    .post(
+      `http://localhost:5000/api/${itemType}`,
+      {
+        user: getState().auth.userId,
+        ...content,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      },
+    )
     .then(({ data }) => {
       dispatch({
         type: itemTypes.ADD_ITEM_SUCCESS,
@@ -19,7 +27,7 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err.response);
       dispatch({ type: itemTypes.ADD_ITEM_FAILURE });
     });
 };
@@ -27,8 +35,19 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
 export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => {
   dispatch({ type: itemTypes.FETCH_DATA_START });
 
+  const storedData = JSON.parse(window.localStorage.getItem('userData'));
+
+  let uid = getState().auth.userId;
+  if (storedData && storedData.userId) {
+    uid = storedData.userId;
+  }
+
   return axios
-    .get(`http://localhost:5000/api/${itemURL}/user/${getState().auth.userId}`, {})
+    .get(`http://localhost:5000/api/${itemURL}/user/${uid}`, {
+      headers: {
+        Authorization: `Bearer ${getState().auth.token}`,
+      },
+    })
     .then(({ data }) => {
       dispatch({
         type: itemTypes.FETCH_DATA_SUCCESS,
@@ -49,13 +68,21 @@ export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => 
     });
 };
 
-export const updateElement = (itemType, id, content) => (dispatch) => {
+export const updateElement = (itemType, id, content) => (dispatch, getState) => {
   dispatch({ type: itemTypes.UPDATE_ITEM_START });
 
   return axios
-    .patch(`http://localhost:5000/api/${itemType}/${id}`, {
-      ...content,
-    })
+    .patch(
+      `http://localhost:5000/api/${itemType}/${id}`,
+      {
+        ...content,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      },
+    )
     .then(({ data }) => {
       dispatch({
         type: itemTypes.UPDATE_ITEM_SUCCESS,
@@ -75,11 +102,15 @@ export const updateElement = (itemType, id, content) => (dispatch) => {
     });
 };
 
-export const deleteElement = (itemType, id) => (dispatch) => {
+export const deleteElement = (itemType, id) => (dispatch, getState) => {
   dispatch({ type: itemTypes.DELETE_ITEM_START });
 
   return axios
-    .delete(`http://localhost:5000/api/${itemType}/${id}`)
+    .delete(`http://localhost:5000/api/${itemType}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${getState().auth.token}`,
+      },
+    })
     .then(() => {
       dispatch({
         type: itemTypes.DELETE_ITEM_SUCCESS,

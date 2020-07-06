@@ -9,7 +9,10 @@ import BilanceChart from './components/BilanceChart/BilanceChart';
 import WalletsCard from './components/WalletsCard/WalletsCard';
 import BilanceList from './components/BilanceList/BilanceList';
 
-import { fetchDataByUserId as fetchDataByUserIdAction } from '../../actions';
+import {
+  fetchDataByUserId as fetchDataByUserIdAction,
+  getUserById as getUserByIdAction,
+} from '../../actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +25,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DashboardView = ({ fetchDataByUserId, wallets, categories, budgetElements, isLoading }) => {
+const DashboardView = ({
+  getUserById,
+  fetchDataByUserId,
+  wallets,
+  categories,
+  budgetElements,
+  isLoading,
+  userId,
+}) => {
   useEffect(() => {
     fetchDataByUserId('categories', 'categories');
     // eslint-disable-next-line
@@ -35,6 +46,13 @@ const DashboardView = ({ fetchDataByUserId, wallets, categories, budgetElements,
 
   useEffect(() => {
     fetchDataByUserId('wallets', 'wallets');
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      getUserById();
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -119,11 +137,13 @@ DashboardView.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { wallets, categories, budgetElements, isLoading } = state.items;
-  return { wallets, categories, budgetElements, isLoading };
+  const { userId } = state.auth;
+  return { wallets, categories, userId, budgetElements, isLoading };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
+  getUserById: () => dispatch(getUserByIdAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardView);

@@ -45,7 +45,6 @@ const LoginView = ({ authenticate, userId }) => {
         initialValues={{ email: '', password: '' }}
         validationSchema={LoginSchema}
         onSubmit={(values) => {
-          console.log(values);
           authenticate(values);
         }}
       >
@@ -55,7 +54,7 @@ const LoginView = ({ authenticate, userId }) => {
           }
           return (
             <CardContent className={classes.contentBody}>
-              <Grid container spacing="2">
+              <Grid container spacing={2}>
                 <Grid item md={12} xs={12}>
                   <Form>
                     <Grid container spacing="2">

@@ -1,16 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { StylesProvider } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
 import Root from './views/Root/Root';
-
 import * as serviceWorker from './serviceWorker';
+import store from './store';
 
 ReactDOM.render(
   <React.StrictMode>
     <StylesProvider injectFirst>
       <SnackbarProvider maxSnack="3">
-        <Root />
+        <Provider store={store}>
+          <Root />
+        </Provider>
       </SnackbarProvider>
     </StylesProvider>
   </React.StrictMode>,

@@ -1,8 +1,7 @@
 import { authTypes } from '../actions/types';
 
 const initialState = {
-  // userId: '5eef32769a68458ec7090f4f',
-  userId: '5f01bddf75f2312f19fb3e47',
+  userId: '',
   user: {},
   isLoading: false,
   error: null,
@@ -13,12 +12,16 @@ export default (state = initialState, { type, payload }) => {
     case authTypes.AUTH_SUCCESS:
       return {
         ...state,
-        userID: payload.data._id,
+        userId: payload.data.userId,
+        token: payload.data.token,
+        expiration: payload.expiration,
       };
     case authTypes.SIGNUP_SUCCESS:
       return {
         ...state,
-        userID: payload.data.user._id,
+        userId: payload.data.userId,
+        token: payload.data.token,
+        expiration: payload.expiration,
       };
     case authTypes.EDIT_USER_SUCCESS:
       return {
@@ -29,6 +32,7 @@ export default (state = initialState, { type, payload }) => {
     case authTypes.GET_USER_START:
       return {
         ...state,
+
         isLoading: true,
       };
     case authTypes.GET_USER_SUCCESS:
@@ -45,6 +49,18 @@ export default (state = initialState, { type, payload }) => {
           ...state.user,
           ...payload.data,
         },
+      };
+    case 'SET_USER':
+      return {
+        ...state,
+        ...payload,
+      };
+    case 'LOG_OUT_USER':
+      return {
+        ...state,
+        userId: '',
+        token: '',
+        expiration: '',
       };
 
     default:
