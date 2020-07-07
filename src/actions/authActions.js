@@ -16,7 +16,7 @@ export const authenticate = (email, password) => (dispatch) => {
   dispatch({ type: authTypes.AUTH_START });
 
   return axios
-    .post('http://localhost:5000/api/users/login', {
+    .post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, {
       ...email,
       ...password,
     })
@@ -45,7 +45,7 @@ export const signUp = (data) => (dispatch) => {
   dispatch({ type: authTypes.SIGNUP_START });
 
   return axios
-    .post('http://localhost:5000/api/users/signup', {
+    .post(`${process.env.REACT_APP_BACKEND_URL}/users/signup`, {
       ...data,
     })
     .then((payload) => {
@@ -82,7 +82,7 @@ export const getUserById = () => (dispatch, getState) => {
   dispatch({ type: authTypes.GET_USER_START });
 
   return axios
-    .get(`http://localhost:5000/api/users/${getState().auth.userId}`, {})
+    .get(`${process.env.REACT_APP_BACKEND_URL}/users/${getState().auth.userId}`, {})
     .then(({ data }) => {
       dispatch({
         type: authTypes.GET_USER_SUCCESS,
@@ -108,7 +108,7 @@ export const updateUserImage = (image) => (dispatch, getState) => {
   const formData = new window.FormData();
   formData.append('image', image);
   return axios
-    .patch(`http://localhost:5000/api/users/image/${getState().auth.userId}`, formData)
+    .patch(`${process.env.REACT_APP_BACKEND_URL}/users/image/${getState().auth.userId}`, formData)
     .then(({ data }) => {
       dispatch({
         type: authTypes.UPLOAD_USER_IMAGE_SUCCESS,

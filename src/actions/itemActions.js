@@ -6,7 +6,7 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
 
   return axios
     .post(
-      `http://localhost:5000/api/${itemType}`,
+      `${process.env.REACT_APP_BACKEND_URL}/${itemType}`,
       {
         ...content,
       },
@@ -42,7 +42,7 @@ export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => 
   }
 
   return axios
-    .get(`http://localhost:5000/api/${itemURL}/user/${uid}`, {
+    .get(`${process.env.REACT_APP_BACKEND_URL}/${itemURL}/user/${uid}`, {
       headers: {
         Authorization: `Bearer ${getState().auth.token}`,
       },
@@ -72,7 +72,7 @@ export const updateElement = (itemType, id, content) => (dispatch, getState) => 
 
   return axios
     .patch(
-      `http://localhost:5000/api/${itemType}/${id}`,
+      `${process.env.REACT_APP_BACKEND_URL}/${itemType}/${id}`,
       {
         ...content,
       },
@@ -105,7 +105,7 @@ export const deleteElement = (itemType, id) => (dispatch, getState) => {
   dispatch({ type: itemTypes.DELETE_ITEM_START });
 
   return axios
-    .delete(`http://localhost:5000/api/${itemType}/${id}`, {
+    .delete(`${process.env.REACT_APP_BACKEND_URL}/${itemType}/${id}`, {
       headers: {
         Authorization: `Bearer ${getState().auth.token}`,
       },
