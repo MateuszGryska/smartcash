@@ -50,6 +50,17 @@ export default (state = initialState, { type, payload }) => {
           ...payload.data,
         },
       };
+    case authTypes.UPDATE_USER_START:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case authTypes.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        user: { ...payload.data.users },
+      };
     case 'SET_USER':
       return {
         ...state,

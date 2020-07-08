@@ -69,13 +69,36 @@ export const signUp = (data) => (dispatch) => {
     });
 };
 
-export const editUser = (data) => {
-  return {
-    type: authTypes.EDIT_USER_SUCCESS,
-    payload: {
-      ...data,
-    },
-  };
+export const editUser = (userData) => (dispatch, getState) => {
+  dispatch({ type: authTypes.UPDATE_USER_START });
+
+  return axios
+    .patch(
+      `${process.env.REACT_APP_BACKEND_URL}/users/${getState().auth.userId}`,
+      {
+        ...userData,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      },
+    )
+    .then(({ data }) => {
+      dispatch({
+        type: authTypes.UPDATE_USER_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: authTypes.UPDATE_USER_FAILURE,
+        payload: { error: err.response.data.message },
+      });
+    });
 };
 
 export const getUserById = () => (dispatch, getState) => {

@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletCard = ({ sum, name, date, deleteElement, id }) => {
+const WalletCard = ({ sum, name, date, deleteElement, id, error }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
@@ -49,9 +49,13 @@ const WalletCard = ({ sum, name, date, deleteElement, id }) => {
     setAnchorEl(null);
   };
 
-  const handleDeleteClick = () => {
-    deleteElement('wallets', id);
-    enqueueSnackbar('Deleted wallet!', { variant: 'warning' });
+  const handleDeleteClick = async () => {
+    await deleteElement('wallets', id);
+    if (error !== null) {
+      enqueueSnackbar(error, { variant: 'warning' });
+    } else {
+      enqueueSnackbar('Deleted wallet!', { variant: 'warning' });
+    }
   };
 
   // change format date

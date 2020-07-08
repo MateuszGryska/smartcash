@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography, CircularProgress } from '@material-ui/core';
+
 import Toolbar from './components/Toolbar';
 import WalletCard from './components/WalletCard';
 import UserTemplate from '../../templates/UserTemplate/UserTemplate';
@@ -57,7 +58,7 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
           .filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()))
           .map(({ _id: id, name, sum, date }) => (
             <Grid item lg={4} sm={6} xl={4} xs={12} key={id}>
-              <WalletCard name={name} id={id} sum={sum} date={date} />
+              <WalletCard name={name} id={id} sum={sum} date={date} error={error} />
             </Grid>
           ))}
       </Grid>

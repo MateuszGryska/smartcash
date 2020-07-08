@@ -48,6 +48,12 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         [payload.itemType]: [...state[payload.itemType].filter((item) => item._id !== payload.id)],
       };
+    case itemTypes.DELETE_ITEM_FAILURE:
+      return {
+        ...state,
+        error: payload.error,
+      };
+
     case itemTypes.UPDATE_ITEM_START:
       return {
         ...state,

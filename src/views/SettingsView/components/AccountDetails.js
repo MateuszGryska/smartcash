@@ -46,7 +46,7 @@ const AccountDetails = ({ userData }) => {
             <Avatar
               className={classes.avatar}
               alt="Person Avatar"
-              src={`http://localhost:5000/${userData.image}`}
+              src={`${process.env.REACT_APP_ASSET_URL}${userData.image}`}
             />
           )}
           {!userData.image && <Avatar className={classes.avatar} alt="Person Avatar" src="" />}

@@ -42,7 +42,7 @@ const Profile = ({ className, user, isLoading }) => {
             <Avatar
               className={classes.avatar}
               alt="Person Avatar"
-              src={`http://localhost:5000/${user.image}`}
+              src={`${process.env.REACT_APP_ASSET_URL}${user.image}`}
             />
           )}
           {!user.image && <Avatar className={classes.avatar} alt="Person Avatar" src="" />}
