@@ -68,9 +68,16 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
           {incomes.length > 0 ? (
             incomes
               .filter((category) => category.name.toLowerCase().includes(searchItem.toLowerCase()))
-              .map(({ _id: id, name, type, sum, date }) => (
+              .map(({ _id: id, name, type, sum, date, budgetElements }) => (
                 <Grid item lg={4} sm={6} xl={4} xs={12} key={id}>
-                  <BudgetCategoryCard name={name} id={id} type={type} sum={sum} date={date} />
+                  <BudgetCategoryCard
+                    name={name}
+                    id={id}
+                    type={type}
+                    sum={sum}
+                    date={date}
+                    budgetElements={budgetElements}
+                  />
                 </Grid>
               ))
           ) : (
@@ -84,9 +91,16 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
           {expenses.length > 0 ? (
             expenses
               .filter((category) => category.name.toLowerCase().includes(searchItem.toLowerCase()))
-              .map(({ _id: id, name, type, sum, date }) => (
+              .map(({ _id: id, name, type, sum, date, budgetElements }) => (
                 <Grid item lg={4} sm={6} xl={4} xs={12} key={id}>
-                  <BudgetCategoryCard name={name} id={id} type={type} sum={sum} date={date} />
+                  <BudgetCategoryCard
+                    name={name}
+                    id={id}
+                    type={type}
+                    sum={sum}
+                    date={date}
+                    budgetElements={budgetElements}
+                  />
                 </Grid>
               ))
           ) : (

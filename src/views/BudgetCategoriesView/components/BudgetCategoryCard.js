@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
+const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id, budgetElements }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -60,8 +60,15 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
   };
 
   const handleDeleteClick = () => {
-    deleteElement('categories', id);
-    enqueueSnackbar('Deleted category!', { variant: 'warning' });
+    if (budgetElements.length > 0) {
+      enqueueSnackbar('Delete budget items before deleting the category!', {
+        variant: 'warning',
+      });
+    } else {
+      deleteElement('categories', id);
+      enqueueSnackbar('Deleted category!', { variant: 'success' });
+    }
+
     setDeleteModalVisibility(false);
   };
 

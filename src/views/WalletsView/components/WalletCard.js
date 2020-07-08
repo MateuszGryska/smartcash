@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletCard = ({ sum, name, date, deleteElement, id, error }) => {
+const WalletCard = ({ sum, name, date, deleteElement, id, budgetElements }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -53,12 +53,15 @@ const WalletCard = ({ sum, name, date, deleteElement, id, error }) => {
   };
 
   const handleDeleteClick = () => {
-    deleteElement('wallets', id);
-    if (error !== null) {
-      enqueueSnackbar(error, { variant: 'warning' });
+    if (budgetElements.length > 0) {
+      enqueueSnackbar('Delete budget items before deleting the wallet!', {
+        variant: 'warning',
+      });
     } else {
-      enqueueSnackbar('Deleted wallet!', { variant: 'warning' });
+      deleteElement('wallets', id);
+      enqueueSnackbar('Deleted wallet!', { variant: 'success' });
     }
+
     setDeleteModalVisibility(false);
   };
 

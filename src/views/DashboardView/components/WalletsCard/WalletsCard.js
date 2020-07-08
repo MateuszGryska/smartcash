@@ -53,6 +53,7 @@ const WalletsCard = ({ wallets, isLoading }) => {
                   sum={wallet.sum}
                   date={wallet.date}
                   walletsLength={wallets.length}
+                  budgetElements={wallet.budgetElements}
                 />
               ))
             ) : (
