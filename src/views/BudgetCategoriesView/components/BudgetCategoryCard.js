@@ -22,6 +22,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import EditCategoryModal from './EditCategoryModal';
+import DeleteModal from '../../../components/DeleteModal/DeleteModal';
 
 import { deleteElement as deleteElementAction } from '../../../actions';
 
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
+  const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -54,11 +56,13 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    setDeleteModalVisibility(false);
   };
 
   const handleDeleteClick = () => {
     deleteElement('categories', id);
     enqueueSnackbar('Deleted category!', { variant: 'warning' });
+    setDeleteModalVisibility(false);
   };
 
   const classes = useStyles();
@@ -102,7 +106,11 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
           </Grid>
         </Grid>
       </CardActions>
-
+      <DeleteModal
+        open={isDeleteModalVisible}
+        handleClose={handleClose}
+        deleteFn={handleDeleteClick}
+      />
       <EditCategoryModal
         open={isEditModalVisible}
         handleClose={() => setEditModalVisibility(false)}
@@ -118,7 +126,7 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
+        <MenuItem onClick={() => setDeleteModalVisibility(true)}>Delete</MenuItem>
       </Menu>
     </Card>
   );

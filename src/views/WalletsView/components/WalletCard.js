@@ -21,6 +21,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import EditWalletModal from './EditWalletModal';
+import DeleteModal from '../../../components/DeleteModal/DeleteModal';
 
 import { deleteElement as deleteElementAction } from '../../../actions';
 
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WalletCard = ({ sum, name, date, deleteElement, id, error }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
+  const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -47,15 +49,17 @@ const WalletCard = ({ sum, name, date, deleteElement, id, error }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    setDeleteModalVisibility(false);
   };
 
-  const handleDeleteClick = async () => {
-    await deleteElement('wallets', id);
+  const handleDeleteClick = () => {
+    deleteElement('wallets', id);
     if (error !== null) {
       enqueueSnackbar(error, { variant: 'warning' });
     } else {
       enqueueSnackbar('Deleted wallet!', { variant: 'warning' });
     }
+    setDeleteModalVisibility(false);
   };
 
   // change format date
@@ -100,6 +104,11 @@ const WalletCard = ({ sum, name, date, deleteElement, id, error }) => {
         name={name}
         sum={sum}
       />
+      <DeleteModal
+        open={isDeleteModalVisible}
+        handleClose={handleClose}
+        deleteFn={handleDeleteClick}
+      />
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -107,7 +116,7 @@ const WalletCard = ({ sum, name, date, deleteElement, id, error }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
+        <MenuItem onClick={() => setDeleteModalVisibility(true)}>Delete</MenuItem>
       </Menu>
     </Card>
   );

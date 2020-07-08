@@ -7,6 +7,7 @@ import parseISO from 'date-fns/parseISO';
 import { ListItem, Typography, ListItemText, IconButton, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useSnackbar } from 'notistack';
+import DeleteModal from '../../../../components/DeleteModal/DeleteModal';
 
 import { deleteElement as deleteElementAction } from '../../../../actions';
 
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WalletItem = ({ id, index, name, date, sum, walletsLength, deleteElement }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -30,11 +32,13 @@ const WalletItem = ({ id, index, name, date, sum, walletsLength, deleteElement }
 
   const handleClose = () => {
     setAnchorEl(null);
+    setDeleteModalVisibility(false);
   };
 
   const handleDeleteClick = () => {
     deleteElement('wallets', id);
     enqueueSnackbar('Deleted wallet!', { variant: 'success' });
+    setDeleteModalVisibility(false);
   };
 
   // change format date
@@ -49,6 +53,11 @@ const WalletItem = ({ id, index, name, date, sum, walletsLength, deleteElement }
       <IconButton edge="end" size="medium" onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
+      <DeleteModal
+        open={isDeleteModalVisible}
+        handleClose={handleClose}
+        deleteFn={handleDeleteClick}
+      />
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -56,7 +65,7 @@ const WalletItem = ({ id, index, name, date, sum, walletsLength, deleteElement }
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
+        <MenuItem onClick={() => setDeleteModalVisibility(true)}>Delete</MenuItem>
       </Menu>
     </ListItem>
   );

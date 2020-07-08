@@ -23,6 +23,12 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
   },
   logo: {
+    textDecoration: 'none',
+    color: theme.palette.white,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  logoName: {
     marginLeft: 5,
   },
 }));
@@ -34,33 +40,37 @@ const Topbar = ({ className, onSidebarOpen, logout, ...rest }) => {
   return (
     <AppBar {...rest} className={clsx(classes.root, className)} position="fixed">
       <Toolbar>
-        <MonetizationOnIcon style={{ fontSize: 30 }} />
-        <Typography variant="h3" color="inherit" className={classes.logo}>
-          SmartCash
-        </Typography>
-        <Hidden mdDown>
-          <div className={classes.flexGrow} />
-          <IconButton color="inherit">
-            <Badge badgeContent={notifications.length} color="primary" variant="dot">
-              <NotificationsIcon fontSize="large" />
-            </Badge>
-          </IconButton>
-          <IconButton
-            as={Link}
-            to="/login"
-            className={classes.signOutButton}
-            color="inherit"
-            onClick={() => logout()}
-          >
-            <InputIcon fontSize="large" />
-          </IconButton>
-        </Hidden>
-        <Hidden lgUp>
-          <div className={classes.flexGrow} />
-          <IconButton color="inherit" onClick={onSidebarOpen}>
-            <MenuIcon fontSize="large" />
-          </IconButton>
-        </Hidden>
+        <>
+          <Link to="/dashboard" className={classes.logo}>
+            <MonetizationOnIcon style={{ fontSize: 30 }} />
+            <Typography variant="h3" color="inherit" className={classes.logoName}>
+              SmartCash
+            </Typography>
+          </Link>
+          <Hidden mdDown>
+            <div className={classes.flexGrow} />
+            <IconButton color="inherit">
+              <Badge badgeContent={notifications.length} color="primary" variant="dot">
+                <NotificationsIcon fontSize="large" />
+              </Badge>
+            </IconButton>
+            <IconButton
+              as={Link}
+              to="/login"
+              className={classes.signOutButton}
+              color="inherit"
+              onClick={() => logout()}
+            >
+              <InputIcon fontSize="large" />
+            </IconButton>
+          </Hidden>
+          <Hidden lgUp>
+            <div className={classes.flexGrow} />
+            <IconButton color="inherit" onClick={onSidebarOpen}>
+              <MenuIcon fontSize="large" />
+            </IconButton>
+          </Hidden>
+        </>
       </Toolbar>
     </AppBar>
   );

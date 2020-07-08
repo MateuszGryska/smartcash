@@ -17,6 +17,7 @@ import { useSnackbar } from 'notistack';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import EditBudgetElementModal from './EditBudgetElementModal';
+import DeleteModal from '../../../components/DeleteModal/DeleteModal';
 
 import { deleteElement as deleteElementAction } from '../../../actions';
 
@@ -34,6 +35,7 @@ const BudgetListTableItem = ({
   deleteElement,
 }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
+  const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -43,11 +45,13 @@ const BudgetListTableItem = ({
 
   const handleClose = () => {
     setAnchorEl(null);
+    setDeleteModalVisibility(false);
   };
 
   const handleDeleteClick = () => {
     deleteElement('budgetElements', id);
     enqueueSnackbar('Deleted element!', { variant: 'warning' });
+    setDeleteModalVisibility(false);
   };
 
   // change format date
@@ -82,7 +86,11 @@ const BudgetListTableItem = ({
           <EditIcon />
         </IconButton>
       </TableCell>
-
+      <DeleteModal
+        open={isDeleteModalVisible}
+        handleClose={handleClose}
+        deleteFn={handleDeleteClick}
+      />
       <EditBudgetElementModal
         name={name}
         id={id}
@@ -101,7 +109,7 @@ const BudgetListTableItem = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
+        <MenuItem onClick={() => setDeleteModalVisibility(true)}>Delete</MenuItem>
       </Menu>
     </TableRow>
   );
