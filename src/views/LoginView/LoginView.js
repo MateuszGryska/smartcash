@@ -4,10 +4,10 @@ import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, CardHeader, CardContent, Typography, TextField, Button } from '@material-ui/core';
 import { Formik, Form } from 'formik';
-import { routes } from '../../routes';
-import AuthTemplate from '../../templates/AuthTemplate/AuthTemplate';
-import { authenticate as authenticateAction } from '../../actions';
-import { LoginSchema } from '../../validation';
+import { routes } from 'routes';
+import AuthTemplate from 'templates/AuthTemplate/AuthTemplate';
+import { authenticate as authenticateAction } from 'actions';
+import { LoginSchema } from 'validation';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

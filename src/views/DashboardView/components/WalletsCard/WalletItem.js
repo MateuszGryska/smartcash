@@ -7,9 +7,9 @@ import parseISO from 'date-fns/parseISO';
 import { ListItem, Typography, ListItemText, IconButton, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useSnackbar } from 'notistack';
-import DeleteModal from '../../../../components/DeleteModal/DeleteModal';
+import DeleteModal from 'components/DeleteModal/DeleteModal';
 
-import { deleteElement as deleteElementAction } from '../../../../actions';
+import { deleteElement as deleteElementAction } from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

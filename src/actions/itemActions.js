@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { itemTypes } from './types';
+import { itemTypes } from 'actions/types';
 
 export const addElement = (itemType, content) => (dispatch, getState) => {
   dispatch({ type: itemTypes.ADD_ITEM_START });
@@ -26,7 +26,7 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err.response);
+      console.log(err);
       dispatch({ type: itemTypes.ADD_ITEM_FAILURE });
     });
 };
@@ -120,6 +120,7 @@ export const deleteElement = (itemType, id) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
+      console.log(err);
       dispatch({
         type: itemTypes.DELETE_ITEM_FAILURE,
         payload: { error: err.response.data.message },

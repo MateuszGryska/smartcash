@@ -2,12 +2,10 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, CircularProgress } from '@material-ui/core';
-import UserTemplate from '../../templates/UserTemplate/UserTemplate';
-import AccountDetails from './components/AccountDetails';
-import ProfileDetails from './components/ProfileDetails';
-import PasswordSection from './components/PasswordSection';
+import UserTemplate from 'templates/UserTemplate/UserTemplate';
+import { AccountDetails, ProfileDetails, PasswordSection } from 'views/SettingsView/components';
 
-import { getUserById as getUserByIdAction } from '../../actions';
+import { getUserById as getUserByIdAction } from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +27,7 @@ const SettingsView = ({ getUserById, user, isLoading }) => {
     getUserById();
     // eslint-disable-next-line
   }, []);
-  console.log(user.user);
+
   const classes = useStyles();
   return (
     <UserTemplate>

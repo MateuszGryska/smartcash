@@ -13,7 +13,7 @@ import {
   LinearProgress,
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import WalletItem from './WalletItem';
+import WalletItem from 'views/DashboardView/components/WalletsCard/WalletItem';
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -3,24 +3,24 @@ import { connect } from 'react-redux';
 import { Chart } from 'react-chartjs-2';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { useAuth } from '../../hooks/auth-hook';
-import '../../theme/global.scss';
-import MainTemplate from '../../templates/MainTemplate/MainTemplate';
-import theme from '../../theme/mainTheme';
-import { routes } from '../../routes';
+import { useAuth } from 'hooks/auth-hook';
+import 'theme/global.scss';
+import MainTemplate from 'templates/MainTemplate/MainTemplate';
+import theme from 'theme/mainTheme';
+import { routes } from 'routes';
 
-import BudgetCategoriesView from '../BudgetCategoriesView/BudgetCategoriesView';
-import DashboardView from '../DashboardView/DashboardView';
-import BudgetListView from '../BudgetListView/BudgetListView';
-import SettingsView from '../SettingsView/SettingsView';
-import WalletsView from '../WalletsView/WalletsView';
-import LoginView from '../LoginView/LoginView';
-import RegisterView from '../RegisterView/RegisterView';
+import BudgetCategoriesView from 'views/BudgetCategoriesView';
+import DashboardView from 'views/DashboardView/';
+import BudgetListView from 'views/BudgetListView/';
+import SettingsView from 'views/SettingsView/';
+import WalletsView from 'views/WalletsView/';
+import LoginView from 'views/LoginView/';
+import RegisterView from 'views/RegisterView/';
 
-import { setUserId as setUserIdAction, logout as logoutAction } from '../../actions';
+import { setUserId as setUserIdAction, logout as logoutAction } from 'actions';
 
 // add corner radius to chart
-import { chartjs } from '../../helpers';
+import { chartjs } from 'helpers';
 
 Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
   draw: chartjs.draw,

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { StylesProvider } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
-import Root from './views/Root/Root';
+import Root from './views/Root';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 

@@ -5,10 +5,10 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid, CardHeader, CardContent, Typography, TextField, Button } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { routes } from '../../routes';
-import AuthTemplate from '../../templates/AuthTemplate/AuthTemplate';
-import { signUp as signUpAction } from '../../actions';
-import { RegisterSchema } from '../../validation';
+import { routes } from 'routes';
+import AuthTemplate from 'templates/AuthTemplate/AuthTemplate';
+import { signUp as signUpAction } from 'actions';
+import { RegisterSchema } from 'validation';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -60,7 +60,6 @@ const RegisterView = ({ signUp, userId }) => {
         }}
         validationSchema={RegisterSchema}
         onSubmit={(values) => {
-          console.log(values);
           signUp(values);
         }}
       >

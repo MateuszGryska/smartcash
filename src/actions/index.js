@@ -1,4 +1,4 @@
-export { addElement, fetchDataByUserId, deleteElement, updateElement } from './itemActions';
+export { addElement, fetchDataByUserId, deleteElement, updateElement } from 'actions/itemActions';
 export {
   authenticate,
   signUp,
@@ -7,4 +7,4 @@ export {
   updateUserImage,
   setUserId,
   logout,
-} from './authActions';
+} from 'actions/authActions';

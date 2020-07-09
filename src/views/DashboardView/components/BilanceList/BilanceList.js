@@ -23,7 +23,7 @@ import {
 } from '@material-ui/core';
 
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import BudgetListModal from '../../../BudgetListView/components/BudgetListModal';
+import BudgetListModal from 'views/BudgetListView/components/BudgetListModal';
 
 const useStyles = makeStyles(() => ({
   root: {},

@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Divider, Typography, CircularProgress } from '@material-ui/core';
-import Toolbar from './components/Toolbar';
-import BudgetCategoryCard from './components/BudgetCategoryCard';
-import UserTemplate from '../../templates/UserTemplate/UserTemplate';
-import CategoriesModal from './components/CategoriesModal';
+import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
 
-import { fetchDataByUserId as fetchDataByUserIdAction } from '../../actions';
+import {
+  BudgetCategoryCard,
+  CategoriesModal,
+  Toolbar,
+} from 'views/BudgetCategoriesView/components';
+
+import UserTemplate from 'templates/UserTemplate';
 
 const useStyles = makeStyles((theme) => ({
   root: {

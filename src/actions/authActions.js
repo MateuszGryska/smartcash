@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { authTypes } from './types';
+import { authTypes } from 'actions/types';
 
 export const setUserId = (userId, token, expiration) => {
   return {
@@ -36,7 +36,7 @@ export const authenticate = (email, password) => (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err.response);
+      console.log(err);
       dispatch({ type: authTypes.AUTH_FAILURE });
     });
 };
@@ -64,7 +64,7 @@ export const signUp = (data) => (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err.message);
+      console.log(err);
       dispatch({ type: authTypes.SIGNUP_FAILURE });
     });
 };
@@ -93,7 +93,6 @@ export const editUser = (userData) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: authTypes.UPDATE_USER_FAILURE,
         payload: { error: err.response.data.message },
@@ -141,7 +140,7 @@ export const updateUserImage = (image) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err.response.data);
+      console.log(err);
       dispatch({
         type: authTypes.UPLOAD_USER_IMAGE_FAILURE,
         // payload: { error: err.response.data.message },

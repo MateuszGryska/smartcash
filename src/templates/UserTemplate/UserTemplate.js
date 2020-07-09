@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/styles';
-import Topbar from './Topbar';
-import Sidebar from './Sidebar';
-import Footer from './Footer';
+import Topbar from 'templates/UserTemplate/Topbar';
+import Sidebar from 'templates/UserTemplate/Sidebar';
+import Footer from 'templates/UserTemplate/Footer';
 
 const useStyles = makeStyles((theme) => ({
   root: {

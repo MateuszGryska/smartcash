@@ -2,13 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography, CircularProgress } from '@material-ui/core';
+import UserTemplate from 'templates/UserTemplate/UserTemplate';
+import { Toolbar, WalletCard, WalletsModal } from 'views/WalletsView/components';
 
-import Toolbar from './components/Toolbar';
-import WalletCard from './components/WalletCard';
-import UserTemplate from '../../templates/UserTemplate/UserTemplate';
-
-import WalletsModal from './components/WalletsModal';
-import { fetchDataByUserId as fetchDataByUserIdAction } from '../../actions';
+import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {

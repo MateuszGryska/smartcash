@@ -1,4 +1,4 @@
-import { authTypes } from '../actions/types';
+import { authTypes } from 'actions/types';
 
 const initialState = {
   userId: '',

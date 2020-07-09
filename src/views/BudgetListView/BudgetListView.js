@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-
-import { fetchDataByUserId as fetchDataByUserIdAction } from '../../actions';
-import BudgetListTable from './components/BudgetListTable';
-import Toolbar from './components/Toolbar';
-import UserTemplate from '../../templates/UserTemplate/UserTemplate';
-import BudgetListModal from './components/BudgetListModal';
+import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
+import { BudgetListTable, Toolbar, BudgetListModal } from 'views/BudgetListView/components';
+import UserTemplate from 'templates/UserTemplate';
 
 const useStyles = makeStyles((theme) => ({
   root: {

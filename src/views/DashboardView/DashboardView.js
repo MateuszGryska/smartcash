@@ -3,16 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, CircularProgress } from '@material-ui/core';
-import UserTemplate from '../../templates/UserTemplate/UserTemplate';
-import SmallCard from './components/SmallCard/SmallCard';
-import BilanceChart from './components/BilanceChart/BilanceChart';
-import WalletsCard from './components/WalletsCard/WalletsCard';
-import BilanceList from './components/BilanceList/BilanceList';
+import UserTemplate from 'templates/UserTemplate/UserTemplate';
+import { BilanceList, WalletsCard, BilanceChart, SmallCard } from 'views/DashboardView/components';
 
 import {
   fetchDataByUserId as fetchDataByUserIdAction,
   getUserById as getUserByIdAction,
-} from '../../actions';
+} from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {

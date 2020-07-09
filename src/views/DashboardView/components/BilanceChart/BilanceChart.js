@@ -6,7 +6,7 @@ import { Card, CardHeader, CardContent, CardActions, Divider, Button } from '@ma
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-import { data, options } from './chart';
+import { data, options } from 'views/DashboardView/components/BilanceChart/chart';
 
 const useStyles = makeStyles(() => ({
   root: {},
