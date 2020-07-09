@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Chart } from 'react-chartjs-2';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { useAuth } from 'hooks/auth-hook';
@@ -8,12 +9,6 @@ import 'theme/global.scss';
 import MainTemplate from 'templates/MainTemplate/MainTemplate';
 import theme from 'theme/mainTheme';
 import { routes } from 'routes';
-
-import BudgetCategoriesView from 'views/BudgetCategoriesView';
-import DashboardView from 'views/DashboardView/';
-import BudgetListView from 'views/BudgetListView/';
-import SettingsView from 'views/SettingsView/';
-import WalletsView from 'views/WalletsView/';
 import LoginView from 'views/LoginView/';
 import RegisterView from 'views/RegisterView/';
 
@@ -21,6 +16,12 @@ import { setUserId as setUserIdAction, logout as logoutAction } from 'actions';
 
 // add corner radius to chart
 import { chartjs } from 'helpers';
+
+const BudgetCategoriesView = React.lazy(() => import('views/BudgetCategoriesView'));
+const DashboardView = React.lazy(() => import('views/DashboardView/'));
+const BudgetListView = React.lazy(() => import('views/BudgetListView/'));
+const SettingsView = React.lazy(() => import('views/SettingsView/'));
+const WalletsView = React.lazy(() => import('views/WalletsView/'));
 
 Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
   draw: chartjs.draw,
@@ -35,13 +36,15 @@ function Root({ token, setUser, expiration, logout }) {
   if (tokenId || token) {
     routesWhenLoggedIn = (
       <Switch>
-        <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
-        <Route exact path={routes.dashboard} component={DashboardView} />
-        <Route exact path={routes.budgetlist} component={BudgetListView} />
-        <Route exact path={routes.budgetcategories} component={BudgetCategoriesView} />
-        <Route exact path={routes.wallets} component={WalletsView} />
-        <Route exact path={routes.settings} component={SettingsView} />
-        <Redirect to={routes.home} />
+        <Suspense fallback={<LinearProgress />}>
+          <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
+          <Route exact path={routes.dashboard} component={DashboardView} />
+          <Route exact path={routes.budgetlist} component={BudgetListView} />
+          <Route exact path={routes.budgetcategories} component={BudgetCategoriesView} />
+          <Route exact path={routes.wallets} component={WalletsView} />
+          <Route exact path={routes.settings} component={SettingsView} />
+          <Redirect to={routes.home} />
+        </Suspense>
       </Switch>
     );
   } else {

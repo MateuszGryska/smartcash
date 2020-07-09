@@ -57,7 +57,7 @@ const LoginView = ({ authenticate, userId }) => {
               <Grid container spacing={2}>
                 <Grid item md={12} xs={12}>
                   <Form>
-                    <Grid container spacing="2">
+                    <Grid container spacing={2}>
                       <Grid item md={12} xs={12}>
                         <TextField
                           fullWidth

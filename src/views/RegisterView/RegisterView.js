@@ -70,7 +70,7 @@ const RegisterView = ({ signUp, userId }) => {
           return (
             <>
               <CardContent className={classes.contentBody}>
-                <Grid container spacing="2">
+                <Grid container spacing={2}>
                   <Form>
                     <Grid item md={12} xs={12}>
                       <TextField
