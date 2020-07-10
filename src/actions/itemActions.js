@@ -26,8 +26,7 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
-      dispatch({ type: itemTypes.ADD_ITEM_FAILURE });
+      dispatch({ type: itemTypes.ADD_ITEM_FAILURE, payload: { error: err.response.data.message } });
     });
 };
 
@@ -57,12 +56,9 @@ export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => 
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: itemTypes.FETCH_DATA_FAILURE,
-        payload: {
-          error: err.response,
-        },
+        payload: { error: err.response.data.message },
       });
     });
 };
@@ -93,7 +89,6 @@ export const updateElement = (itemType, id, content) => (dispatch, getState) => 
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: itemTypes.UPDATE_ITEM_FAILURE,
         payload: { error: err.response.data.message },
@@ -120,7 +115,6 @@ export const deleteElement = (itemType, id) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: itemTypes.DELETE_ITEM_FAILURE,
         payload: { error: err.response.data.message },

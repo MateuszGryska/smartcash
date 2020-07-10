@@ -8,66 +8,132 @@ const initialState = {
   error: null,
 };
 
+// helper functions
+
 /* eslint-disable no-underscore-dangle */
+const addItemStart = (state) => {
+  return {
+    ...state,
+    isLoading: true,
+  };
+};
+
+const addItemSuccess = (state, payload) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: null,
+    [payload.itemType]: [...state[payload.itemType], payload.data[payload.itemType]],
+  };
+};
+
+const addItemFailure = (state, payload) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: payload.error,
+  };
+};
+
+const fetchDataStart = (state) => {
+  return {
+    ...state,
+    isLoading: true,
+  };
+};
+
+const fetchDataSuccess = (state, payload) => {
+  return {
+    ...state,
+    [payload.itemType]: [...payload.data[payload.itemType]],
+    isLoading: false,
+    error: null,
+  };
+};
+
+const fetchDataFailure = (state, payload) => {
+  return {
+    ...state,
+    error: payload.error,
+    isLoading: false,
+  };
+};
+
+const deleteItemStart = (state) => {
+  return {
+    ...state,
+    isLoading: true,
+  };
+};
+
+const deleteItemSuccess = (state, payload) => {
+  return {
+    ...state,
+    isLoading: false,
+    [payload.itemType]: [...state[payload.itemType].filter((item) => item._id !== payload.id)],
+  };
+};
+
+const deleteItemFailure = (state, payload) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: payload.error,
+  };
+};
+
+const updateItemStart = (state) => {
+  return {
+    ...state,
+    isLoading: true,
+  };
+};
+
+const updateItemSuccess = (state, payload) => {
+  return {
+    ...state,
+    isLoading: false,
+    [payload.itemType]: [
+      ...state[payload.itemType].filter((item) => item.id !== payload.id),
+      payload.data[payload.itemType],
+    ],
+  };
+};
+
+const updateItemFailure = (state, payload) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: payload.error,
+  };
+};
+
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case itemTypes.ADD_ITEM_START:
-      return {
-        ...state,
-        isLoading: true,
-      };
-
+      return addItemStart(state);
     case itemTypes.ADD_ITEM_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        error: null,
-        [payload.itemType]: [...state[payload.itemType], payload.data[payload.itemType]],
-      };
-
+      return addItemSuccess(state, payload);
+    case itemTypes.ADD_ITEM_FAILURE:
+      return addItemFailure(state, payload);
     case itemTypes.FETCH_DATA_START:
-      return {
-        ...state,
-        isLoading: true,
-      };
+      return fetchDataStart(state);
     case itemTypes.FETCH_DATA_SUCCESS:
-      return {
-        ...state,
-        [payload.itemType]: [...payload.data[payload.itemType]],
-        isLoading: false,
-        error: null,
-      };
+      return fetchDataSuccess(state, payload);
     case itemTypes.FETCH_DATA_FAILURE:
-      return {
-        ...state,
-        error: payload.error,
-        isLoading: false,
-      };
+      return fetchDataFailure(state, payload);
+    case itemTypes.DELETE_ITEM_START:
+      return deleteItemStart(state);
     case itemTypes.DELETE_ITEM_SUCCESS:
-      return {
-        ...state,
-        [payload.itemType]: [...state[payload.itemType].filter((item) => item._id !== payload.id)],
-      };
+      return deleteItemSuccess(state, payload);
     case itemTypes.DELETE_ITEM_FAILURE:
-      return {
-        ...state,
-        error: payload.error,
-      };
-
+      return deleteItemFailure(state, payload);
     case itemTypes.UPDATE_ITEM_START:
-      return {
-        ...state,
-        isLoading: true,
-      };
+      return updateItemStart(state);
     case itemTypes.UPDATE_ITEM_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        [payload.itemType]: [
-          ...state[payload.itemType].filter((item) => item.id !== payload.id),
-          payload.data[payload.itemType],
-        ],
-      };
+      return updateItemSuccess(state, payload);
+    case itemTypes.UPDATE_ITEM_FAILURE:
+      return updateItemFailure(state, payload);
     default:
       return state;
   }

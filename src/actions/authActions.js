@@ -36,8 +36,7 @@ export const authenticate = (email, password) => (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err);
-      dispatch({ type: authTypes.AUTH_FAILURE });
+      dispatch({ type: authTypes.AUTH_FAILURE, payload: { error: err.response.data.message } });
     });
 };
 
@@ -64,8 +63,7 @@ export const signUp = (data) => (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err);
-      dispatch({ type: authTypes.SIGNUP_FAILURE });
+      dispatch({ type: authTypes.SIGNUP_FAILURE, payload: { error: err.response.data.message } });
     });
 };
 
@@ -114,12 +112,9 @@ export const getUserById = () => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: authTypes.GET_USER_FAILURE,
-        payload: {
-          error: err.response,
-        },
+        payload: { error: err.response.data.message },
       });
     });
 };
@@ -140,10 +135,9 @@ export const updateUserImage = (image) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: authTypes.UPLOAD_USER_IMAGE_FAILURE,
-        // payload: { error: err.response.data.message },
+        payload: { error: err.response.data.message },
       });
     });
 };
