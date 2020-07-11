@@ -25,9 +25,13 @@ const useStyles = makeStyles((theme) => ({
   recoverPasswordText: {
     paddingTop: theme.spacing(2),
   },
+  error: {
+    paddingTop: theme.spacing(2),
+    textAlign: 'center',
+  },
 }));
 
-const LoginView = ({ authenticate, userId }) => {
+const LoginView = ({ authenticate, userId, error }) => {
   const classes = useStyles();
   return (
     <AuthTemplate>
@@ -100,6 +104,11 @@ const LoginView = ({ authenticate, userId }) => {
                         </Button>
                       </Grid>
                       <Grid item md={12} xs={12}>
+                        <Typography className={classes.error} variant="body2" color="error">
+                          {error || null}
+                        </Typography>
+                      </Grid>
+                      <Grid item md={12} xs={12}>
                         <Typography
                           className={classes.recoverPasswordText}
                           variant="body2"
@@ -125,8 +134,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { userId } = state.auth;
-  return { userId };
+  const { userId, error } = state.auth;
+  return { userId, error };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
