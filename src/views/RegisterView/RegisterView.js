@@ -28,12 +28,13 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     padding: theme.spacing(4),
   },
-  recoverPasswordText: {
+  error: {
     paddingTop: theme.spacing(2),
+    textAlign: 'center',
   },
 }));
 
-const RegisterView = ({ signUp, userId }) => {
+const RegisterView = ({ signUp, userId, error }) => {
   const classes = useStyles();
   return (
     <AuthTemplate>
@@ -71,98 +72,113 @@ const RegisterView = ({ signUp, userId }) => {
             <>
               <CardContent className={classes.contentBody}>
                 <Grid container spacing={2}>
-                  <Form>
-                    <Grid item md={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="First name"
-                        type="text"
-                        margin="none"
-                        name="firstName"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.firstName}
-                        variant="outlined"
-                        error={errors.firstName && touched.firstName}
-                        helperText={errors.firstName && touched.firstName ? errors.firstName : null}
-                      />
-                    </Grid>
-                    <Grid item md={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Last name"
-                        type="text"
-                        margin="none"
-                        name="lastName"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.lastName}
-                        variant="outlined"
-                        error={errors.lastName && touched.lastName}
-                        helperText={errors.lastName && touched.lastName ? errors.lastName : null}
-                      />
-                    </Grid>
-                    <Grid item md={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Email Address"
-                        type="email"
-                        margin="none"
-                        name="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.email}
-                        variant="outlined"
-                        error={errors.email && touched.email}
-                        helperText={errors.email && touched.email ? errors.email : null}
-                      />
-                    </Grid>
-                    <Grid item md={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Password"
-                        type="password"
-                        margin="none"
-                        name="password"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.password}
-                        variant="outlined"
-                        error={errors.password && touched.password}
-                        helperText={errors.password && touched.password ? errors.password : null}
-                      />
-                    </Grid>
-                    <Grid item md={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Confirm password"
-                        type="password"
-                        margin="none"
-                        name="confirmPassword"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.confirmPassword}
-                        variant="outlined"
-                        error={errors.confirmPassword && touched.confirmPassword}
-                        helperText={
-                          errors.confirmPassword && touched.confirmPassword
-                            ? errors.confirmPassword
-                            : null
-                        }
-                      />
-                    </Grid>
-                    <Grid item md={12} xs={12}>
-                      <Button
-                        fullWidth
-                        color="primary"
-                        variant="contained"
-                        type="submit"
-                        disabled={!isValid}
-                      >
-                        Sign up now
-                      </Button>
-                    </Grid>
-                  </Form>
+                  <Grid item md={12} xs={12}>
+                    <Form>
+                      <Grid container spacing={2}>
+                        <Grid item md={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="First name"
+                            type="text"
+                            margin="none"
+                            name="firstName"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.firstName}
+                            variant="outlined"
+                            error={errors.firstName && touched.firstName}
+                            helperText={
+                              errors.firstName && touched.firstName ? errors.firstName : null
+                            }
+                          />
+                        </Grid>
+                        <Grid item md={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Last name"
+                            type="text"
+                            margin="none"
+                            name="lastName"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.lastName}
+                            variant="outlined"
+                            error={errors.lastName && touched.lastName}
+                            helperText={
+                              errors.lastName && touched.lastName ? errors.lastName : null
+                            }
+                          />
+                        </Grid>
+                        <Grid item md={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Email Address"
+                            type="email"
+                            margin="none"
+                            name="email"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.email}
+                            variant="outlined"
+                            error={errors.email && touched.email}
+                            helperText={errors.email && touched.email ? errors.email : null}
+                          />
+                        </Grid>
+                        <Grid item md={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Password"
+                            type="password"
+                            margin="none"
+                            name="password"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.password}
+                            variant="outlined"
+                            error={errors.password && touched.password}
+                            helperText={
+                              errors.password && touched.password ? errors.password : null
+                            }
+                          />
+                        </Grid>
+                        <Grid item md={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Confirm password"
+                            type="password"
+                            margin="none"
+                            name="confirmPassword"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.confirmPassword}
+                            variant="outlined"
+                            error={errors.confirmPassword && touched.confirmPassword}
+                            helperText={
+                              errors.confirmPassword && touched.confirmPassword
+                                ? errors.confirmPassword
+                                : null
+                            }
+                          />
+                        </Grid>
+                        <Grid item md={12} xs={12}>
+                          <Button
+                            fullWidth
+                            color="primary"
+                            variant="contained"
+                            type="submit"
+                            disabled={!isValid}
+                          >
+                            Sign up now
+                          </Button>
+                        </Grid>
+                        <Grid item md={12} xs={12}>
+                          <Typography className={classes.error} variant="body2" color="error">
+                            {error || null}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Form>
+                  </Grid>
                 </Grid>
               </CardContent>
             </>
@@ -179,8 +195,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { userId } = state.auth;
-  return { userId };
+  const { userId, error } = state.auth;
+  return { userId, error };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);
