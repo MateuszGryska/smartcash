@@ -44,13 +44,13 @@ const WalletItem = ({
     setDeleteModalVisibility(false);
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     if (budgetElements.length > 0) {
       enqueueSnackbar('Delete budget items before deleting the wallet!', {
         variant: 'warning',
       });
     } else {
-      deleteElement('wallets', id);
+      await deleteElement('wallets', id);
       enqueueSnackbar('Deleted wallet!', { variant: 'success' });
     }
 

@@ -60,13 +60,13 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id, budgetEl
     setDeleteModalVisibility(false);
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     if (budgetElements.length > 0) {
       enqueueSnackbar('Delete budget items before deleting the category!', {
         variant: 'warning',
       });
     } else {
-      deleteElement('categories', id);
+      await deleteElement('categories', id);
       enqueueSnackbar('Deleted category!', { variant: 'success' });
     }
 

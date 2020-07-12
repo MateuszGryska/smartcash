@@ -48,8 +48,8 @@ const BudgetListTableItem = ({
     setDeleteModalVisibility(false);
   };
 
-  const handleDeleteClick = () => {
-    deleteElement('budgetElements', id);
+  const handleDeleteClick = async () => {
+    await deleteElement('budgetElements', id);
     enqueueSnackbar('Deleted element!', { variant: 'warning' });
     setDeleteModalVisibility(false);
   };
