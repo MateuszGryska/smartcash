@@ -11,13 +11,14 @@ import {
   TextField,
   FormHelperText,
   FormControl,
+  Typography,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
 import { editUser as editUserAction } from 'actions';
 import { ProfileDetailsSchema } from 'validation';
 
-const ProfileDetails = ({ editUser, userData }) => {
+const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
   const { enqueueSnackbar } = useSnackbar();
   return (
     <Card>
@@ -33,9 +34,11 @@ const ProfileDetails = ({ editUser, userData }) => {
           country: userData.country,
         }}
         validationSchema={ProfileDetailsSchema}
-        onSubmit={(values) => {
-          editUser(values);
-          enqueueSnackbar('The user has been updated!', { variant: 'success' });
+        onSubmit={async (values) => {
+          await editUser(values);
+          if (!isLoading && error === null) {
+            enqueueSnackbar('The user has been updated!', { variant: 'success' });
+          }
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -137,6 +140,11 @@ const ProfileDetails = ({ editUser, userData }) => {
                     </FormHelperText>
                   </FormControl>
                 </Grid>
+                <Grid item md={12} xs={12}>
+                  <Typography variant="body2" color="error">
+                    {error || null}
+                  </Typography>
+                </Grid>
               </Grid>
             </CardContent>
             <Divider />
@@ -152,8 +160,13 @@ const ProfileDetails = ({ editUser, userData }) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  const { isLoading, error } = state.auth;
+  return { isLoading, error };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   editUser: (data) => dispatch(editUserAction(data)),
 });
 
-export default connect(null, mapDispatchToProps)(ProfileDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileDetails);

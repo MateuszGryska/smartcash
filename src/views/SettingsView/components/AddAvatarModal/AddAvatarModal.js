@@ -9,6 +9,7 @@ import {
   DialogTitle,
   Button,
   Avatar,
+  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
@@ -38,7 +39,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const AddAvatarModal = ({ open, handleClose, updateUserImage }) => {
+const AddAvatarModal = ({ open, handleClose, updateUserImage, isLoading, error }) => {
   const filePickerRef = useRef();
   const [file, setFile] = useState();
   const [previewURL, setPreviewURL] = useState();
@@ -64,7 +65,9 @@ const AddAvatarModal = ({ open, handleClose, updateUserImage }) => {
 
   const submitHandler = async () => {
     await updateUserImage(file);
-    enqueueSnackbar('Changed avatar!', { variant: 'success' });
+    if (!isLoading && error === null) {
+      enqueueSnackbar('Changed avatar!', { variant: 'success' });
+    }
     handleClose();
   };
 
@@ -111,6 +114,9 @@ const AddAvatarModal = ({ open, handleClose, updateUserImage }) => {
                 Pick image
               </Button>
             </div>
+            <Typography variant="body2" color="error">
+              {error || null}
+            </Typography>
           </>
         </DialogContent>
         <DialogActions>
@@ -131,8 +137,13 @@ AddAvatarModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => {
+  const { isLoading, error } = state.items;
+  return { isLoading, error };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   updateUserImage: (image) => dispatch(updateUserImageAction(image)),
 });
 
-export default connect(null, mapDispatchToProps)(AddAvatarModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddAvatarModal);

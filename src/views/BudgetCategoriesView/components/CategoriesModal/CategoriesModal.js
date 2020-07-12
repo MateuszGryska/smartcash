@@ -14,22 +14,25 @@ import {
   MenuItem,
   InputLabel,
   FormHelperText,
+  Typography,
 } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import { useSnackbar } from 'notistack';
 import { addElement as addElementAction } from 'actions';
 import { CategoriesModalSchema } from 'validation';
 
-const CategoriesModal = ({ open, handleClose, addElement }) => {
+const CategoriesModal = ({ open, handleClose, addElement, isLoading, error }) => {
   const { enqueueSnackbar } = useSnackbar();
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
         initialValues={{ name: '', type: '' }}
         validationSchema={CategoriesModalSchema}
-        onSubmit={(values) => {
-          addElement('categories', values);
-          enqueueSnackbar('Created new category!', { variant: 'success' });
+        onSubmit={async (values) => {
+          await addElement('categories', values);
+          if (!isLoading && error === null) {
+            enqueueSnackbar('Created new category!', { variant: 'success' });
+          }
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -78,6 +81,9 @@ const CategoriesModal = ({ open, handleClose, addElement }) => {
                     {errors.type && touched.type ? errors.type : null}
                   </FormHelperText>
                 </FormControl>
+                <Typography variant="body2" color="error">
+                  {error || null}
+                </Typography>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary">
@@ -101,8 +107,13 @@ CategoriesModal.propTypes = {
   addElement: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => {
+  const { isLoading, error } = state.items;
+  return { isLoading, error };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   addElement: (itemType, content) => dispatch(addElementAction(itemType, content)),
 });
 
-export default connect(null, mapDispatchToProps)(CategoriesModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesModal);

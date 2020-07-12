@@ -11,22 +11,25 @@ import {
   Button,
   FormHelperText,
   FormControl,
+  Typography,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
 import { addElement as addElementAction } from 'actions/index';
 import { WalletsModalSchema } from 'validation';
 
-const WalletsModal = ({ open, handleClose, addElement }) => {
+const WalletsModal = ({ open, handleClose, addElement, isLoading, error }) => {
   const { enqueueSnackbar } = useSnackbar();
   return (
     <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
       <Formik
         initialValues={{ name: '', sum: '' }}
         validationSchema={WalletsModalSchema}
-        onSubmit={(values) => {
-          addElement('wallets', values);
-          enqueueSnackbar('Created new wallet!', { variant: 'success' });
+        onSubmit={async (values) => {
+          await addElement('wallets', values);
+          if (!isLoading && error === null) {
+            enqueueSnackbar('Created new wallet!', { variant: 'success' });
+          }
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -71,6 +74,9 @@ const WalletsModal = ({ open, handleClose, addElement }) => {
                   />
                   <FormHelperText>{errors.sum && touched.sum ? errors.sum : null}</FormHelperText>
                 </FormControl>
+                <Typography variant="body2" color="error">
+                  {error || null}
+                </Typography>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary">
@@ -94,8 +100,13 @@ WalletsModal.propTypes = {
   addElement: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => {
+  const { isLoading, error } = state.items;
+  return { isLoading, error };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   addElement: (itemType, content) => dispatch(addElementAction(itemType, content)),
 });
 
-export default connect(null, mapDispatchToProps)(WalletsModal);
+export default connect(mapStateToProps, mapDispatchToProps)(WalletsModal);

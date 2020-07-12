@@ -23,7 +23,15 @@ import { useSnackbar } from 'notistack';
 import { addElement as addElementAction } from 'actions';
 import { BudgetListModalSchema } from 'validation';
 
-const BudgetListModal = ({ open, handleClose, addElement, wallets, categories }) => {
+const BudgetListModal = ({
+  open,
+  handleClose,
+  addElement,
+  wallets,
+  categories,
+  isLoading,
+  error,
+}) => {
   const { enqueueSnackbar } = useSnackbar();
 
   return (
@@ -31,9 +39,11 @@ const BudgetListModal = ({ open, handleClose, addElement, wallets, categories })
       <Formik
         initialValues={{ name: '', amount: '', wallet: '', category: '', type: '' }}
         validationSchema={BudgetListModalSchema}
-        onSubmit={(values) => {
-          addElement('budgetElements', values);
-          enqueueSnackbar('Created new element!', { variant: 'success' });
+        onSubmit={async (values) => {
+          await addElement('budgetElements', values);
+          if (!isLoading && error === null) {
+            enqueueSnackbar('Created new element!', { variant: 'success' });
+          }
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -160,6 +170,9 @@ const BudgetListModal = ({ open, handleClose, addElement, wallets, categories })
                 ) : (
                   <CircularProgress />
                 )}
+                <Typography variant="body2" color="error">
+                  {error || null}
+                </Typography>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary">
@@ -183,8 +196,13 @@ BudgetListModal.propTypes = {
   addElement: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => {
+  const { isLoading, error } = state.items;
+  return { isLoading, error };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   addElement: (itemType, content) => dispatch(addElementAction(itemType, content)),
 });
 
-export default connect(null, mapDispatchToProps)(BudgetListModal);
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetListModal);

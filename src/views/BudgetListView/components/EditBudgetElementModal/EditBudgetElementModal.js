@@ -38,6 +38,8 @@ const EditBudgetElementModal = ({
   wallet,
   category,
   type,
+  isLoading,
+  error,
 }) => {
   useEffect(() => {
     if (!wallets && !categories) {
@@ -56,7 +58,9 @@ const EditBudgetElementModal = ({
         validationSchema={BudgetListModalSchema}
         onSubmit={async (values) => {
           await updateElement('budgetElements', id, values);
-          enqueueSnackbar('Updated element!', { variant: 'success' });
+          if (!isLoading && error === null) {
+            enqueueSnackbar('Updated element!', { variant: 'success' });
+          }
           fetchDataByUserId('budgetElements', 'budgetElements');
         }}
       >
@@ -184,6 +188,9 @@ const EditBudgetElementModal = ({
                 ) : (
                   <CircularProgress />
                 )}
+                <Typography variant="body2" color="error">
+                  {error || null}
+                </Typography>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary">
@@ -213,8 +220,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { wallets, categories } = state.items;
-  return { wallets, categories };
+  const { wallets, categories, isLoading, error } = state.items;
+  return { wallets, categories, isLoading, error };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditBudgetElementModal);

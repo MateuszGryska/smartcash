@@ -14,6 +14,7 @@ import {
   MenuItem,
   InputLabel,
   FormHelperText,
+  Typography,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
@@ -32,6 +33,8 @@ const EditCategoryModal = ({
   updateElement,
   fetchDataByUserId,
   id,
+  isLoading,
+  error,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   return (
@@ -41,7 +44,9 @@ const EditCategoryModal = ({
         validationSchema={CategoriesModalSchema}
         onSubmit={async (values) => {
           await updateElement('categories', id, values);
-          enqueueSnackbar('Updated category!', { variant: 'success' });
+          if (!isLoading && error === null) {
+            enqueueSnackbar('Updated category!', { variant: 'success' });
+          }
           fetchDataByUserId('categories', 'categories');
         }}
       >
@@ -91,6 +96,9 @@ const EditCategoryModal = ({
                     {errors.type && touched.type ? errors.type : null}
                   </FormHelperText>
                 </FormControl>
+                <Typography variant="body2" color="error">
+                  {error || null}
+                </Typography>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary">
@@ -114,9 +122,14 @@ EditCategoryModal.propTypes = {
   updateElement: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => {
+  const { isLoading, error } = state.items;
+  return { isLoading, error };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   updateElement: (itemType, id, content) => dispatch(updateElementAction(itemType, id, content)),
   fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
 });
 
-export default connect(null, mapDispatchToProps)(EditCategoryModal);
+export default connect(mapStateToProps, mapDispatchToProps)(EditCategoryModal);
