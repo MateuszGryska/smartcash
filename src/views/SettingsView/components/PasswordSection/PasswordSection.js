@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Card,
@@ -102,6 +103,15 @@ const PasswordSection = ({ isLoading, error }) => {
       </Formik>
     </Card>
   );
+};
+
+PasswordSection.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+};
+
+PasswordSection.defaultProps = {
+  error: null,
 };
 
 const mapStateToProps = (state) => {

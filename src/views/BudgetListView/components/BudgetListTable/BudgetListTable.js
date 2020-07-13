@@ -201,10 +201,16 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
 
 BudgetListTable.propTypes = {
   searchItem: PropTypes.string,
+  budgetElements: PropTypes.arrayOf(PropTypes.object),
+  wallets: PropTypes.arrayOf(PropTypes.object),
+  categories: PropTypes.arrayOf(PropTypes.object),
 };
 
 BudgetListTable.defaultProps = {
   searchItem: '',
+  budgetElements: [],
+  wallets: [],
+  categories: [],
 };
 
 export default BudgetListTable;
