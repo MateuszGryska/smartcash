@@ -19,3 +19,5 @@ https://github.com/MateuszGryska/smartcash-backend
 
 ## Authors
 Mateusz Gryska
+
+Project was inspired by Devias Template.
