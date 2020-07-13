@@ -1,48 +1,10 @@
-const initialState = {
-  data: [
-    {
-      name: 'user1',
-      password: 'haslo123',
-      firstName: 'Matthew',
-      lastName: 'Example',
-      wallets: [
-        {
-          name: 'My account',
-          value: 3000,
-        },
-      ],
-      allCategory: {
-        incomes: [
-          {
-            name: 'first income category',
-            sum: 5000,
-            incomesInCategory: [],
-          },
-          {
-            name: 'second income category',
-            sum: 5000,
-            incomesInCategory: [],
-          },
-        ],
-        expenses: [
-          {
-            name: 'first expense category',
-            sum: 4000,
-            expensesInCategory: [],
-          },
-          {
-            name: 'second expense category',
-            sum: 5000,
-            incomesInCategory: [],
-          },
-        ],
-      },
-    },
-  ],
-};
+import { combineReducers } from 'redux';
+import authReducer from 'reducers/authReducer';
+import itemsReducer from 'reducers/itemsReducer';
 
-const RootReducer = (state = initialState, action) => {
-  console.log(state, action);
-};
+const RootReducer = combineReducers({
+  auth: authReducer,
+  items: itemsReducer,
+});
 
 export default RootReducer;

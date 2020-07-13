@@ -1,10 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, CardHeader, CardContent, Typography, TextField, Button } from '@material-ui/core';
-import { Formik } from 'formik';
-import AuthTemplate from '../../templates/AuthTemplate/AuthTemplate';
-import { LoginSchema } from '../../validation';
+import { Formik, Form } from 'formik';
+import { routes } from 'routes';
+import AuthTemplate from 'templates/AuthTemplate/AuthTemplate';
+import { authenticate as authenticateAction } from 'actions';
+import { LoginSchema } from 'validation';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -22,9 +25,13 @@ const useStyles = makeStyles((theme) => ({
   recoverPasswordText: {
     paddingTop: theme.spacing(2),
   },
+  error: {
+    paddingTop: theme.spacing(2),
+    textAlign: 'center',
+  },
 }));
 
-const LoginView = () => {
+const LoginView = ({ authenticate, userId, error }) => {
   const classes = useStyles();
   return (
     <AuthTemplate>
@@ -42,68 +49,93 @@ const LoginView = () => {
         initialValues={{ email: '', password: '' }}
         validationSchema={LoginSchema}
         onSubmit={(values) => {
-          console.log(values);
+          authenticate(values);
         }}
       >
-        {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
-          <CardContent className={classes.contentBody}>
-            <Grid container spacing="2">
-              <Grid item md={12} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Email Address"
-                  type="email"
-                  margin="none"
-                  name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                  variant="outlined"
-                  error={errors.email && touched.email}
-                  helperText={errors.email && touched.email ? errors.email : null}
-                />
+        {({ values, handleChange, handleBlur, errors, touched, isValid }) => {
+          if (userId) {
+            return <Redirect to={routes.home} />;
+          }
+          return (
+            <CardContent className={classes.contentBody}>
+              <Grid container spacing={2}>
+                <Grid item md={12} xs={12}>
+                  <Form>
+                    <Grid container spacing={2}>
+                      <Grid item md={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Email Address"
+                          type="email"
+                          margin="none"
+                          name="email"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.email}
+                          variant="outlined"
+                          error={errors.email && touched.email}
+                          helperText={errors.email && touched.email ? errors.email : null}
+                        />
+                      </Grid>
+                      <Grid item md={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Password"
+                          type="password"
+                          margin="none"
+                          name="password"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.password}
+                          variant="outlined"
+                          error={errors.password && touched.password}
+                          helperText={errors.password && touched.password ? errors.password : null}
+                        />
+                      </Grid>
+                      <Grid item md={12} xs={12}>
+                        <Button
+                          fullWidth
+                          color="primary"
+                          variant="contained"
+                          type="submit"
+                          disabled={!isValid}
+                        >
+                          Sign in
+                        </Button>
+                      </Grid>
+                      <Grid item md={12} xs={12}>
+                        <Typography className={classes.error} variant="body2" color="error">
+                          {error || null}
+                        </Typography>
+                      </Grid>
+                      <Grid item md={12} xs={12}>
+                        <Typography
+                          className={classes.recoverPasswordText}
+                          variant="body2"
+                          color="textSecondary"
+                        >
+                          You have problems with sign in?
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Form>
+                </Grid>
               </Grid>
-              <Grid item md={12} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Password"
-                  type="password"
-                  margin="none"
-                  name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                  variant="outlined"
-                  error={errors.password && touched.password}
-                  helperText={errors.password && touched.password ? errors.password : null}
-                />
-              </Grid>
-              <Grid item md={12} xs={12}>
-                <Button
-                  fullWidth
-                  color="primary"
-                  variant="contained"
-                  type="submit"
-                  disabled={!isValid}
-                >
-                  Sign in
-                </Button>
-              </Grid>
-              <Grid item md={12} xs={12}>
-                <Typography
-                  className={classes.recoverPasswordText}
-                  variant="body2"
-                  color="textSecondary"
-                >
-                  You have problems with sign in?
-                </Typography>
-              </Grid>
-            </Grid>
-          </CardContent>
-        )}
+            </CardContent>
+          );
+        }}
       </Formik>
     </AuthTemplate>
   );
 };
 
-export default LoginView;
+const mapDispatchToProps = (dispatch) => ({
+  authenticate: (email, password) => dispatch(authenticateAction(email, password)),
+});
+
+const mapStateToProps = (state) => {
+  const { userId, error } = state.auth;
+  return { userId, error };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

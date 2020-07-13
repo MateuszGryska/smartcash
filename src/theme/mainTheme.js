@@ -1,7 +1,7 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles';
 
-import palette from './palette';
-import typography from './typography';
+import palette from 'theme/palette';
+import typography from 'theme/typography';
 
 const theme = createMuiTheme({
   palette,

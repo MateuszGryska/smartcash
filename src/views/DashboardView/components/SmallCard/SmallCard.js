@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
 import MoneyIcon from '@material-ui/icons/Money';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
@@ -70,9 +70,14 @@ const useStyles = makeStyles((theme) => ({
   total: {
     color: theme.palette.white,
   },
+  loading: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
 
-const SmallCard = ({ title, amount }) => {
+const SmallCard = ({ title, amount, isLoading }) => {
   const classes = useStyles();
 
   let currentIcon;
@@ -104,9 +109,15 @@ const SmallCard = ({ title, amount }) => {
             <Typography className={clsx(title === 'Total' ? classes.totalTitle : classes.title)}>
               {title}
             </Typography>
-            <Typography variant="h3" className={clsx(title === 'Total' ? classes.total : null)}>
-              ${amount}
-            </Typography>
+            {amount || !isLoading ? (
+              <Typography variant="h3" className={clsx(title === 'Total' ? classes.total : null)}>
+                ${amount}
+              </Typography>
+            ) : (
+              <div className={classes.loading}>
+                <CircularProgress />
+              </div>
+            )}
           </Grid>
           <Grid item>{currentIcon}</Grid>
         </Grid>
@@ -136,7 +147,7 @@ const SmallCard = ({ title, amount }) => {
 
 SmallCard.propTypes = {
   title: PropTypes.string.isRequired,
-  amount: PropTypes.string.isRequired,
+  amount: PropTypes.number.isRequired,
 };
 
 export default SmallCard;

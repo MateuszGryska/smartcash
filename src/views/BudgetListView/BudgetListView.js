@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import BudgetListTable from './components/BudgetListTable';
-import Toolbar from './components/Toolbar';
-import UserTemplate from '../../templates/UserTemplate/UserTemplate';
-import ActiveModal from '../../components/ActiveModal/ActiveModal';
+import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
+import { BudgetListTable, Toolbar, BudgetListModal } from 'views/BudgetListView/components';
+import UserTemplate from 'templates/UserTemplate';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,14 +15,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BudgetListView = () => {
+const BudgetListView = ({
+  fetchDataByUserId,
+  budgetElements,
+  wallets,
+  categories,
+  error,
+  isLoading,
+}) => {
   const [searchItem, setSearchItem] = useState('');
+  const [isModalVisible, setModalVisibility] = useState(false);
+
+  useEffect(() => {
+    fetchDataByUserId('categories', 'categories');
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    fetchDataByUserId('budgetElements', 'budgetElements');
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    fetchDataByUserId('wallets', 'wallets');
+    // eslint-disable-next-line
+  }, []);
 
   const handleSearchInputChange = (e) => {
     setSearchItem(e.target.value);
   };
-  const [isModalVisible, setModalVisibility] = useState(false);
+
   const classes = useStyles();
+
   return (
     <UserTemplate>
       <div className={classes.root}>
@@ -30,17 +55,45 @@ const BudgetListView = () => {
           handleSearchInputChange={handleSearchInputChange}
         />
         <div className={classes.content}>
-          <BudgetListTable searchItem={searchItem} />
+          <BudgetListTable
+            searchItem={searchItem}
+            budgetElements={budgetElements}
+            wallets={wallets}
+            categories={categories}
+            error={error}
+            isLoading={isLoading}
+          />
         </div>
-        <ActiveModal
-          pageType="expenses"
+        <BudgetListModal
           open={isModalVisible}
           handleClose={() => setModalVisibility(false)}
-          type="edit"
+          wallets={wallets}
+          categories={categories}
         />
       </div>
     </UserTemplate>
   );
 };
 
-export default BudgetListView;
+BudgetListView.propTypes = {
+  budgetElements: PropTypes.arrayOf(PropTypes.object),
+  categories: PropTypes.arrayOf(PropTypes.object),
+  wallets: PropTypes.arrayOf(PropTypes.object),
+};
+
+BudgetListView.defaultProps = {
+  budgetElements: [],
+  categories: [],
+  wallets: [],
+};
+
+const mapStateToProps = (state) => {
+  const { budgetElements, wallets, categories, error, isLoading } = state.items;
+  return { budgetElements, wallets, categories, error, isLoading };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetListView);

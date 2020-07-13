@@ -8,8 +8,8 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import SettingsIcon from '@material-ui/icons/Settings';
-import SidebarNav from './components/SidebarNav';
-import Profile from './components/Profile';
+import SidebarNav from 'templates/UserTemplate/Sidebar/components/SidebarNav';
+import Profile from 'templates/UserTemplate/Sidebar/components/Profile';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
