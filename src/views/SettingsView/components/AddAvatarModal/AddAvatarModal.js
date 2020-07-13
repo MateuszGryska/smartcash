@@ -135,6 +135,13 @@ const AddAvatarModal = ({ open, handleClose, updateUserImage, isLoading, error }
 AddAvatarModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  updateUserImage: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+};
+
+AddAvatarModal.defaultProps = {
+  error: null,
 };
 
 const mapStateToProps = (state) => {

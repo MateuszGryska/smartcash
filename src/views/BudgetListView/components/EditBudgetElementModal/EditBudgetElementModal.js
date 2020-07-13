@@ -212,6 +212,23 @@ EditBudgetElementModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   updateElement: PropTypes.func.isRequired,
+  fetchDataByUserId: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  wallets: PropTypes.arrayOf(PropTypes.object),
+  categories: PropTypes.arrayOf(PropTypes.object),
+  name: PropTypes.string.isRequired,
+  amount: PropTypes.number.isRequired,
+  wallet: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+};
+
+EditBudgetElementModal.defaultProps = {
+  error: null,
+  wallets: [],
+  categories: [],
 };
 
 const mapDispatchToProps = (dispatch) => ({

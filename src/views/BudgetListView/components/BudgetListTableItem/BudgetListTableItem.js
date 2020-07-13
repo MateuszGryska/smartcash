@@ -30,7 +30,6 @@ const BudgetListTableItem = ({
   type,
   amount,
   category,
-
   handleSelectOne,
   deleteElement,
 }) => {
@@ -124,6 +123,8 @@ BudgetListTableItem.propTypes = {
   amount: PropTypes.number.isRequired,
   category: PropTypes.string.isRequired,
   handleSelectOne: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  deleteElement: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

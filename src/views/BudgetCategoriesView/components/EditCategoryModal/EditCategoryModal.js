@@ -120,6 +120,16 @@ EditCategoryModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   updateElement: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  fetchDataByUserId: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+};
+
+EditCategoryModal.defaultProps = {
+  error: null,
 };
 
 const mapStateToProps = (state) => {

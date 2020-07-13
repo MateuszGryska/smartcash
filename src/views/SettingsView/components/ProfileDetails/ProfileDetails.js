@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Card,
@@ -158,6 +159,24 @@ const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
       </Formik>
     </Card>
   );
+};
+
+ProfileDetails.propTypes = {
+  userData: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    country: PropTypes.string.isRequired,
+    phoneNumber: PropTypes.number.isRequired,
+  }),
+  editUser: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+};
+
+ProfileDetails.defaultProps = {
+  userData: {},
+  error: null,
 };
 
 const mapStateToProps = (state) => {

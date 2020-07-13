@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, CircularProgress } from '@material-ui/core';
@@ -54,6 +55,21 @@ const SettingsView = ({ getUserById, user, isLoading }) => {
       )}
     </UserTemplate>
   );
+};
+
+SettingsView.propTypes = {
+  getUserById: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    phoneNumber: PropTypes.number.isRequired,
+    country: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+  }).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {

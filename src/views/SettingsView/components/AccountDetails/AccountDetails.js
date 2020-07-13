@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Card,
   CardActions,
@@ -69,6 +70,19 @@ const AccountDetails = ({ userData }) => {
       />
     </Card>
   );
+};
+
+AccountDetails.propTypes = {
+  userData: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    country: PropTypes.string.isRequired,
+  }),
+};
+
+AccountDetails.defaultProps = {
+  userData: {},
 };
 
 export default AccountDetails;
