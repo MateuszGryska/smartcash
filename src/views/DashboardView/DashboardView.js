@@ -97,7 +97,7 @@ const DashboardView = ({
             <SmallCard title="Total" amount={total} isLoading={isLoading} />
           </Grid>
           <Grid item lg={8} md={12} xl={9} xs={12}>
-            <BilanceChart />
+            <BilanceChart budgetElements={budgetElements} />
           </Grid>
           <Grid item lg={4} md={12} xl={3} xs={12}>
             <WalletsCard wallets={wallets} isLoading={isLoading} />

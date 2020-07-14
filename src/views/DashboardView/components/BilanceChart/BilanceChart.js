@@ -1,4 +1,5 @@
 import React from 'react';
+import { useChartData } from 'hooks/chart-data-hook';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
@@ -6,7 +7,7 @@ import { Card, CardHeader, CardContent, CardActions, Divider, Button } from '@ma
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-import { data, options } from 'views/DashboardView/components/BilanceChart/chart';
+import { result, options } from 'views/DashboardView/components/BilanceChart/chart';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -19,8 +20,25 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BilanceChart = () => {
+const BilanceChart = ({ budgetElements }) => {
   const classes = useStyles();
+  const { readyIncomes, readyExpenses } = useChartData(budgetElements);
+
+  const data = {
+    labels: result,
+    datasets: [
+      {
+        label: 'expenses',
+        backgroundColor: 'red',
+        data: readyExpenses,
+      },
+      {
+        label: 'incomes',
+        backgroundColor: 'green',
+        data: readyIncomes,
+      },
+    ],
+  };
 
   return (
     <Card className={classes.root}>
@@ -41,7 +59,7 @@ const BilanceChart = () => {
       <Divider />
 
       <CardActions className={classes.actions}>
-        <Button color="primary" size="large" variant="text" component={Link} to="/expenses">
+        <Button color="primary" size="large" variant="text" component={Link} to="/budgetlist">
           Overview <ArrowRightIcon />
         </Button>
       </CardActions>
