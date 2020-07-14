@@ -3,11 +3,13 @@ import isSameDay from 'date-fns/isSameDay';
 import eachDayOfInterval from 'date-fns/eachDayOfInterval';
 import isAfter from 'date-fns/isAfter';
 import subDays from 'date-fns/subDays';
+import format from 'date-fns/format';
 
 export const useChartData = (budgetElements) => {
   const now = new Date();
   const sevenDaysBefore = subDays(new Date(now), 6);
   const getLastSevenDays = eachDayOfInterval({ start: sevenDaysBefore, end: now });
+  const labels = getLastSevenDays.map((date) => format(date, 'dd MMM'));
 
   const filteredIncomes = [];
   const filteredExpenses = [];
@@ -59,5 +61,5 @@ export const useChartData = (budgetElements) => {
       }
     }
   }
-  return { readyIncomes, readyExpenses };
+  return { readyIncomes, readyExpenses, labels };
 };

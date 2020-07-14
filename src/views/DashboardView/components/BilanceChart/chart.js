@@ -1,29 +1,4 @@
-import eachDayOfInterval from 'date-fns/eachDayOfInterval';
-import format from 'date-fns/format';
-import { subDays } from 'date-fns';
-import palette from '../../../../theme/palette';
-
-// get last 7 days
-const now = new Date();
-const sevenDaysBefore = subDays(new Date(now), 6);
-const getLastSevenDays = eachDayOfInterval({ start: sevenDaysBefore, end: now });
-export const result = getLastSevenDays.map((date) => format(date, 'dd MMM'));
-
-export const data = {
-  labels: result,
-  datasets: [
-    {
-      label: 'Expense',
-      backgroundColor: palette.error.main,
-      data: [18, 5, 19, 27, 29, 19],
-    },
-    {
-      label: 'Income',
-      backgroundColor: palette.success.main,
-      data: [25, 23, 12, 29, 30, 25],
-    },
-  ],
-};
+import palette from 'theme/palette';
 
 export const options = {
   responsive: true,

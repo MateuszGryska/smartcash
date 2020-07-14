@@ -7,7 +7,8 @@ import { Card, CardHeader, CardContent, CardActions, Divider, Button } from '@ma
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-import { result, options } from 'views/DashboardView/components/BilanceChart/chart';
+import { options } from 'views/DashboardView/components/BilanceChart/chart';
+import palette from 'theme/palette';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -22,19 +23,19 @@ const useStyles = makeStyles(() => ({
 
 const BilanceChart = ({ budgetElements }) => {
   const classes = useStyles();
-  const { readyIncomes, readyExpenses } = useChartData(budgetElements);
+  const { readyIncomes, readyExpenses, labels } = useChartData(budgetElements);
 
   const data = {
-    labels: result,
+    labels,
     datasets: [
       {
         label: 'expenses',
-        backgroundColor: 'red',
+        backgroundColor: palette.error.main,
         data: readyExpenses,
       },
       {
         label: 'incomes',
-        backgroundColor: 'green',
+        backgroundColor: palette.success.main,
         data: readyIncomes,
       },
     ],
