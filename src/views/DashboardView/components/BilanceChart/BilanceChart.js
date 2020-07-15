@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useChartData } from 'hooks/chart-data-hook';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
-import { Card, CardHeader, CardContent, CardActions, Divider, Button } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Divider,
+  Button,
+  Select,
+  MenuItem,
+} from '@material-ui/core';
+
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 import { options } from 'views/DashboardView/components/BilanceChart/chart';
@@ -23,7 +32,8 @@ const useStyles = makeStyles(() => ({
 
 const BilanceChart = ({ budgetElements }) => {
   const classes = useStyles();
-  const { readyIncomes, readyExpenses, labels } = useChartData(budgetElements);
+  const [day, setDay] = useState(6);
+  const { readyIncomes, readyExpenses, labels } = useChartData(budgetElements, day);
 
   const data = {
     labels,
@@ -41,13 +51,27 @@ const BilanceChart = ({ budgetElements }) => {
     ],
   };
 
+  const handleChange = (event) => {
+    setDay(event.target.value);
+  };
+
   return (
     <Card className={classes.root}>
       <CardHeader
         action={
-          <Button size="large" variant="text">
-            Last 7 days <ArrowDropDownIcon />
-          </Button>
+          <Select
+            labelId="demo-simple-select-outlined-label"
+            id="days"
+            label="days"
+            name="days"
+            onChange={handleChange}
+            value={day}
+            variant="outlined"
+          >
+            <MenuItem value={6}>Last 7 days</MenuItem>
+            <MenuItem value={13}>Last 14 days</MenuItem>
+            <MenuItem value={29}>Last 30 days</MenuItem>
+          </Select>
         }
         title="Incomes and expenses"
       />

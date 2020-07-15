@@ -5,9 +5,9 @@ import isAfter from 'date-fns/isAfter';
 import subDays from 'date-fns/subDays';
 import format from 'date-fns/format';
 
-export const useChartData = (budgetElements) => {
+export const useChartData = (budgetElements, day) => {
   const now = new Date();
-  const sevenDaysBefore = subDays(new Date(now), 6);
+  const sevenDaysBefore = subDays(new Date(now), day);
   const getLastSevenDays = eachDayOfInterval({ start: sevenDaysBefore, end: now });
   const labels = getLastSevenDays.map((date) => format(date, 'dd MMM'));
 
