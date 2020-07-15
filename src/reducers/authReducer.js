@@ -21,6 +21,10 @@ const initialState = {
     isLoading: false,
     error: null,
   },
+  deleteUser: {
+    isLoading: false,
+    error: null,
+  },
 };
 
 // helper functions
@@ -209,6 +213,27 @@ const updateUserFailure = (state, payload) => {
   };
 };
 
+const deleteUserStart = (state) => {
+  return {
+    ...state,
+    deleteUser: {
+      ...state.deleteUser,
+      isLoading: true,
+    },
+  };
+};
+
+const deleteUserFailure = (state, payload) => {
+  return {
+    ...state,
+    deleteUser: {
+      ...state.deleteUser,
+      isLoading: false,
+      error: payload.error,
+    },
+  };
+};
+
 const cleanUp = (state) => {
   return {
     ...state,
@@ -276,6 +301,12 @@ export default (state = initialState, { type, payload }) => {
       return updateUserSuccess(state, payload);
     case authTypes.UPDATE_USER_FAILURE:
       return updateUserFailure(state, payload);
+    case authTypes.DELETE_USER_START:
+      return deleteUserStart(state);
+
+    case authTypes.DELETE_USER_FAIL:
+      return deleteUserFailure(state, payload);
+
     case authTypes.CLEAN_UP:
       return cleanUp(state);
     case 'SET_USER':

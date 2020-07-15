@@ -32,8 +32,8 @@ const useStyles = makeStyles(() => ({
 
 const BilanceChart = ({ budgetElements }) => {
   const classes = useStyles();
-  const [day, setDay] = useState(6);
-  const { readyIncomes, readyExpenses, labels } = useChartData(budgetElements, day);
+  const [days, setDay] = useState(6);
+  const { readyIncomes, readyExpenses, labels } = useChartData(budgetElements, days);
 
   const data = {
     labels,
@@ -62,10 +62,9 @@ const BilanceChart = ({ budgetElements }) => {
           <Select
             labelId="demo-simple-select-outlined-label"
             id="days"
-            label="days"
             name="days"
             onChange={handleChange}
-            value={day}
+            value={days}
             variant="outlined"
           >
             <MenuItem value={6}>Last 7 days</MenuItem>

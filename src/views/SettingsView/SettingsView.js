@@ -1,12 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, CircularProgress } from '@material-ui/core';
+import { Grid, CircularProgress, Button } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import UserTemplate from 'templates/UserTemplate/UserTemplate';
+import DeleteModal from 'components/DeleteModal';
 import { AccountDetails, ProfileDetails, PasswordSection } from 'views/SettingsView/components';
 
-import { getUserById as getUserByIdAction } from 'actions';
+import {
+  getUserById as getUserByIdAction,
+  deleteUser as deleteUserAction,
+  logout as logoutAction,
+} from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,13 +27,28 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     marginTop: '100px',
   },
+  deleteButton: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
-const SettingsView = ({ getUserById, user, isLoading }) => {
+const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading }) => {
+  const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     getUserById();
     // eslint-disable-next-line
   }, []);
+
+  const handleDeleteUser = async () => {
+    try {
+      await deleteUser();
+      logout();
+    } catch (err) {
+      enqueueSnackbar(`${err}`, { variant: 'error' });
+    }
+  };
 
   const classes = useStyles();
   return (
@@ -48,6 +69,15 @@ const SettingsView = ({ getUserById, user, isLoading }) => {
               </Grid>
               <Grid className={classes.passwordSection} item>
                 <PasswordSection />
+              </Grid>
+              <Grid item className={classes.deleteButton}>
+                <Button onClick={() => setDeleteModalVisibility(true)}>Delete your account</Button>
+                <DeleteModal
+                  user
+                  handleClose={() => setDeleteModalVisibility(false)}
+                  deleteFn={handleDeleteUser}
+                  open={isDeleteModalVisible}
+                />
               </Grid>
             </Grid>
           </Grid>
@@ -79,6 +109,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getUserById: () => dispatch(getUserByIdAction()),
+  deleteUser: () => dispatch(deleteUserAction()),
+  logout: () => dispatch(logoutAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);

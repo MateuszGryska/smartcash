@@ -150,6 +150,28 @@ export const logout = () => {
   };
 };
 
+export const deleteUser = () => (dispatch, getState) => {
+  dispatch({ type: authTypes.DELETE_USER_START });
+
+  return axios
+    .delete(`${process.env.REACT_APP_BACKEND_URL}/users/${getState().auth.userId}`, {
+      headers: {
+        Authorization: `Bearer ${getState().auth.token}`,
+      },
+    })
+    .then(() => {
+      dispatch({
+        type: authTypes.DELETE_USER_SUCCESS,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: authTypes.DELETE_USER_FAILURE,
+        payload: { error: err.response.data.message },
+      });
+    });
+};
+
 // clean up messages
 export const clean = () => ({
   type: authTypes.CLEAN_UP,

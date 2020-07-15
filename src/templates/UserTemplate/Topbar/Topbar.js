@@ -10,7 +10,7 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
-import { logout as logoutAction } from '../../../actions';
+import { logout as logoutAction } from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {

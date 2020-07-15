@@ -5,11 +5,11 @@ import isAfter from 'date-fns/isAfter';
 import subDays from 'date-fns/subDays';
 import format from 'date-fns/format';
 
-export const useChartData = (budgetElements, day) => {
+export const useChartData = (budgetElements, days) => {
   const now = new Date();
-  const sevenDaysBefore = subDays(new Date(now), day);
-  const getLastSevenDays = eachDayOfInterval({ start: sevenDaysBefore, end: now });
-  const labels = getLastSevenDays.map((date) => format(date, 'dd MMM'));
+  const getLastDaysFromNow = subDays(new Date(now), days);
+  const lastDaysArray = eachDayOfInterval({ start: getLastDaysFromNow, end: now });
+  const labels = lastDaysArray.map((date) => format(date, 'dd MMM'));
 
   const filteredIncomes = [];
   const filteredExpenses = [];
@@ -20,7 +20,7 @@ export const useChartData = (budgetElements, day) => {
     // filter all data to last 7 days and incomes/expenses
     budgetElements
       .filter((item) => {
-        return isAfter(parseISO(item.date), sevenDaysBefore);
+        return isAfter(parseISO(item.date), getLastDaysFromNow);
       })
       .forEach((item) => {
         if (item.type === 'income') {
@@ -31,9 +31,9 @@ export const useChartData = (budgetElements, day) => {
       });
 
     // Checks the filtered array and adds it to show the data array
-    for (let i = 0; i < getLastSevenDays.length; i += 1) {
+    for (let i = 0; i < lastDaysArray.length; i += 1) {
       for (let y = 0; y < filteredIncomes.length; y += 1) {
-        if (isSameDay(getLastSevenDays[i], parseISO(filteredIncomes[y].date))) {
+        if (isSameDay(lastDaysArray[i], parseISO(filteredIncomes[y].date))) {
           if (!readyIncomes[i]) {
             readyIncomes.push(filteredIncomes[y].amount);
           } else {
@@ -46,9 +46,9 @@ export const useChartData = (budgetElements, day) => {
       }
     }
 
-    for (let i = 0; i < getLastSevenDays.length; i += 1) {
+    for (let i = 0; i < lastDaysArray.length; i += 1) {
       for (let y = 0; y < filteredExpenses.length; y += 1) {
-        if (isSameDay(getLastSevenDays[i], parseISO(filteredExpenses[y].date))) {
+        if (isSameDay(lastDaysArray[i], parseISO(filteredExpenses[y].date))) {
           if (!readyExpenses[i]) {
             readyExpenses.push(filteredExpenses[y].amount);
           } else {

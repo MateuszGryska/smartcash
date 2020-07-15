@@ -88,10 +88,10 @@ const DashboardView = ({
             <SmallCard title="Budget" amount={walletsTotal} isLoading={isLoading} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Income" amount={income} isLoading={isLoading} />
+            <SmallCard title="Incomes" amount={income} isLoading={isLoading} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Expense" amount={expense} isLoading={isLoading} />
+            <SmallCard title="Expenses" amount={expense} isLoading={isLoading} />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <SmallCard title="Total" amount={total} isLoading={isLoading} />

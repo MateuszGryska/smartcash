@@ -10,7 +10,7 @@ import {
   Button,
 } from '@material-ui/core';
 
-const DeleteModal = ({ open, handleClose, deleteFn }) => {
+const DeleteModal = ({ open, handleClose, deleteFn, user }) => {
   return (
     <Dialog
       fullWidth
@@ -23,7 +23,9 @@ const DeleteModal = ({ open, handleClose, deleteFn }) => {
 
       <DialogContent id="alert-dialog-description">
         <DialogContentText>
-          Are you sure that you want to permanently delete this item?
+          {user
+            ? 'Are you sure that you want to permanently delete your account?'
+            : 'Are you sure that you want to permanently delete this item?'}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
