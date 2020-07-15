@@ -6,6 +6,18 @@ const initialState = {
   categories: [],
   isLoading: false,
   error: null,
+  deleteItem: {
+    error: null,
+    loading: false,
+  },
+  fetchItem: {
+    error: null,
+    loading: false,
+  },
+  updateItem: {
+    error: null,
+    loading: false,
+  },
 };
 
 // helper functions
@@ -38,7 +50,10 @@ const addItemFailure = (state, payload) => {
 const fetchDataStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+    fetchItem: {
+      ...state.fetchItem,
+      isLoading: true,
+    },
   };
 };
 
@@ -46,65 +61,93 @@ const fetchDataSuccess = (state, payload) => {
   return {
     ...state,
     [payload.itemType]: [...payload.data[payload.itemType]],
-    isLoading: false,
-    error: null,
+    fetchItem: {
+      ...state.fetchItem,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
 const fetchDataFailure = (state, payload) => {
   return {
     ...state,
-    error: payload.error,
-    isLoading: false,
+    fetchItem: {
+      ...state.fetchItem,
+      error: payload.error,
+      isLoading: false,
+    },
   };
 };
 
 const deleteItemStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+    deleteItem: {
+      ...state.deleteItem,
+      isLoading: true,
+    },
   };
 };
 
 const deleteItemSuccess = (state, payload) => {
   return {
     ...state,
-    isLoading: false,
+
     [payload.itemType]: [...state[payload.itemType].filter((item) => item._id !== payload.id)],
+    deleteItem: {
+      ...state.deleteItem,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
 const deleteItemFailure = (state, payload) => {
   return {
     ...state,
-    isLoading: false,
-    error: payload.error,
+
+    deleteItem: {
+      ...state.deleteItem,
+      isLoading: false,
+      error: payload.error,
+    },
   };
 };
 
 const updateItemStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+    updateItem: {
+      ...state.updateItem,
+      isLoading: true,
+    },
   };
 };
 
 const updateItemSuccess = (state, payload) => {
   return {
     ...state,
-    isLoading: false,
     [payload.itemType]: [
       ...state[payload.itemType].filter((item) => item.id !== payload.id),
       payload.data[payload.itemType],
     ],
+    updateItem: {
+      ...state.updateItem,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
 const updateItemFailure = (state, payload) => {
   return {
     ...state,
-    isLoading: false,
-    error: payload.error,
+    updateItem: {
+      ...state.updateItem,
+      isLoading: false,
+      error: payload.error,
+    },
   };
 };
 

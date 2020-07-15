@@ -30,7 +30,7 @@ export const useChartData = (budgetElements) => {
         }
       });
 
-    // Checks the filtered array and adds it to show the data
+    // Checks the filtered array and adds it to show the data array
     for (let i = 0; i < getLastSevenDays.length; i += 1) {
       for (let y = 0; y < filteredIncomes.length; y += 1) {
         if (isSameDay(getLastSevenDays[i], parseISO(filteredIncomes[y].date))) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -7,7 +7,7 @@ import { Formik, Form } from 'formik';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { routes } from 'routes';
 import AuthTemplate from 'templates/AuthTemplate/AuthTemplate';
-import { signUp as signUpAction } from 'actions';
+import { signUp as signUpAction, clean as cleanAction } from 'actions';
 import { RegisterSchema } from 'validation';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +34,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterView = ({ signUp, userId, error }) => {
+const RegisterView = ({ signUp, cleanUp, userId, error }) => {
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
+
   const classes = useStyles();
   return (
     <AuthTemplate>
@@ -192,6 +198,7 @@ const RegisterView = ({ signUp, userId, error }) => {
 const mapDispatchToProps = (dispatch) => ({
   signUp: (firstName, lastName, email, password) =>
     dispatch(signUpAction(firstName, lastName, email, password)),
+  cleanUp: () => dispatch(cleanAction()),
 });
 
 const mapStateToProps = (state) => {

@@ -5,6 +5,22 @@ const initialState = {
   user: {},
   isLoading: false,
   error: null,
+  editUser: {
+    isLoading: false,
+    error: null,
+  },
+  getUser: {
+    isLoading: false,
+    error: null,
+  },
+  uploadImage: {
+    isLoading: false,
+    error: null,
+  },
+  updateUser: {
+    isLoading: false,
+    error: null,
+  },
 };
 
 // helper functions
@@ -22,6 +38,7 @@ const authSuccess = (state, payload) => {
     token: payload.data.token,
     expiration: payload.expiration,
     isLoading: false,
+    error: false,
   };
 };
 
@@ -47,6 +64,7 @@ const signUpSuccess = (state, payload) => {
     token: payload.data.token,
     expiration: payload.expiration,
     isLoading: false,
+    error: false,
   };
 };
 
@@ -61,7 +79,10 @@ const signUpFailure = (state, payload) => {
 const editUserStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+    editUser: {
+      ...state.editEdit,
+      isLoading: true,
+    },
   };
 };
 
@@ -69,7 +90,11 @@ const editUserSuccess = (state, payload) => {
   return {
     ...state,
     users: [...state.users, payload],
-    isLoading: false,
+    editUser: {
+      ...state.editUser,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
@@ -84,7 +109,10 @@ const editUserFailure = (state, payload) => {
 const getUserStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+    getUser: {
+      ...state.getUser,
+      isLoading: true,
+    },
   };
 };
 
@@ -92,23 +120,32 @@ const getUserSuccess = (state, payload) => {
   return {
     ...state,
     ...payload.data,
-    isLoading: false,
-    error: null,
+    getUser: {
+      ...state.getUser,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
 const getUserFailure = (state, payload) => {
   return {
     ...state,
-    isLoading: false,
-    error: payload.error,
+    getUser: {
+      ...state.getUser,
+      isLoading: false,
+      error: payload.error,
+    },
   };
 };
 
 const uploadUserImageStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+    uploadImage: {
+      ...state.uploadImage,
+      isLoading: true,
+    },
   };
 };
 
@@ -119,23 +156,33 @@ const uploadUserImageSuccess = (state, payload) => {
       ...state.user,
       ...payload.data,
     },
-    isLoading: false,
-    error: null,
+    uploadImage: {
+      ...state.uploadImage,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
 const uploadUserImageFailure = (state, payload) => {
   return {
     ...state,
-    isLoading: false,
-    error: payload.error,
+    uploadImage: {
+      ...state.uploadImage,
+      isLoading: false,
+      error: payload.error,
+    },
   };
 };
 
 const updateUserStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+
+    updateUser: {
+      ...state.updateUser,
+      isLoading: true,
+    },
   };
 };
 
@@ -143,16 +190,50 @@ const updateUserSuccess = (state, payload) => {
   return {
     ...state,
     user: { ...payload.data.users },
-    isLoading: false,
-    error: null,
+    updateUser: {
+      ...state.updateUser,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
 const updateUserFailure = (state, payload) => {
   return {
     ...state,
+    updateUser: {
+      ...state.updateUser,
+      isLoading: false,
+      error: payload.error,
+    },
+  };
+};
+
+const cleanUp = (state) => {
+  return {
+    ...state,
     isLoading: false,
-    error: payload.error,
+    error: null,
+    editUser: {
+      ...state.editUser,
+      isLoading: false,
+      error: null,
+    },
+    getUser: {
+      ...state.getUser,
+      isLoading: false,
+      error: null,
+    },
+    uploadImage: {
+      ...state.uploadImage,
+      isLoading: false,
+      error: null,
+    },
+    updateUser: {
+      ...state.updateUser,
+      isLoading: false,
+      error: null,
+    },
   };
 };
 
@@ -195,6 +276,8 @@ export default (state = initialState, { type, payload }) => {
       return updateUserSuccess(state, payload);
     case authTypes.UPDATE_USER_FAILURE:
       return updateUserFailure(state, payload);
+    case authTypes.CLEAN_UP:
+      return cleanUp(state);
     case 'SET_USER':
       return {
         ...state,

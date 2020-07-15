@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -6,7 +6,7 @@ import { Grid, CardHeader, CardContent, Typography, TextField, Button } from '@m
 import { Formik, Form } from 'formik';
 import { routes } from 'routes';
 import AuthTemplate from 'templates/AuthTemplate/AuthTemplate';
-import { authenticate as authenticateAction } from 'actions';
+import { authenticate as authenticateAction, clean as cleanAction } from 'actions';
 import { LoginSchema } from 'validation';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginView = ({ authenticate, userId, error }) => {
+const LoginView = ({ authenticate, cleanUp, userId, error }) => {
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
+
   const classes = useStyles();
   return (
     <AuthTemplate>
@@ -131,6 +137,7 @@ const LoginView = ({ authenticate, userId, error }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   authenticate: (email, password) => dispatch(authenticateAction(email, password)),
+  cleanUp: () => dispatch(cleanAction()),
 });
 
 const mapStateToProps = (state) => {

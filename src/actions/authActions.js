@@ -149,3 +149,8 @@ export const logout = () => {
     type: 'LOG_OUT_USER',
   };
 };
+
+// clean up messages
+export const clean = () => ({
+  type: authTypes.CLEAN_UP,
+});

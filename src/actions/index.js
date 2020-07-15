@@ -7,4 +7,5 @@ export {
   updateUserImage,
   setUserId,
   logout,
+  clean,
 } from 'actions/authActions';
