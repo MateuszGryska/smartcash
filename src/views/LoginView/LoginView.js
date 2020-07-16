@@ -1,13 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, CardHeader, CardContent, Typography, TextField, Button } from '@material-ui/core';
+import {
+  Grid,
+  CardHeader,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton,
+} from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import { routes } from 'routes';
 import AuthTemplate from 'templates/AuthTemplate/AuthTemplate';
 import { authenticate as authenticateAction, clean as cleanAction } from 'actions';
 import { LoginSchema } from 'validation';
+
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -32,6 +44,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginView = ({ authenticate, cleanUp, userId, error }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
   useEffect(() => {
     return () => {
       cleanUp();
@@ -39,6 +53,10 @@ const LoginView = ({ authenticate, cleanUp, userId, error }) => {
   }, [cleanUp]);
 
   const classes = useStyles();
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
   return (
     <AuthTemplate>
       <div className={classes.signUpText}>
@@ -87,7 +105,7 @@ const LoginView = ({ authenticate, cleanUp, userId, error }) => {
                         <TextField
                           fullWidth
                           label="Password"
-                          type="password"
+                          type={showPassword ? 'text' : 'password'}
                           margin="none"
                           name="password"
                           onChange={handleChange}
@@ -96,6 +114,19 @@ const LoginView = ({ authenticate, cleanUp, userId, error }) => {
                           variant="outlined"
                           error={errors.password && touched.password}
                           helperText={errors.password && touched.password ? errors.password : null}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={handleClickShowPassword}
+                                  onMouseDown={handleMouseDownPassword}
+                                >
+                                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
                         />
                       </Grid>
                       <Grid item md={12} xs={12}>

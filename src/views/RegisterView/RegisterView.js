@@ -1,14 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, CardHeader, CardContent, Typography, TextField, Button } from '@material-ui/core';
+import {
+  Grid,
+  CardHeader,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton,
+} from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { routes } from 'routes';
 import AuthTemplate from 'templates/AuthTemplate/AuthTemplate';
 import { signUp as signUpAction, clean as cleanAction } from 'actions';
 import { RegisterSchema } from 'validation';
+
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -35,11 +47,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegisterView = ({ signUp, cleanUp, userId, error }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   useEffect(() => {
     return () => {
       cleanUp();
     };
   }, [cleanUp]);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+  const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+  const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
   const classes = useStyles();
   return (
@@ -134,7 +153,7 @@ const RegisterView = ({ signUp, cleanUp, userId, error }) => {
                           <TextField
                             fullWidth
                             label="Password"
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             margin="none"
                             name="password"
                             onChange={handleChange}
@@ -145,13 +164,26 @@ const RegisterView = ({ signUp, cleanUp, userId, error }) => {
                             helperText={
                               errors.password && touched.password ? errors.password : null
                             }
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                  >
+                                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
                           />
                         </Grid>
                         <Grid item md={12} xs={12}>
                           <TextField
                             fullWidth
                             label="Confirm password"
-                            type="password"
+                            type={showConfirmPassword ? 'text' : 'password'}
                             margin="none"
                             name="confirmPassword"
                             onChange={handleChange}
@@ -164,6 +196,23 @@ const RegisterView = ({ signUp, cleanUp, userId, error }) => {
                                 ? errors.confirmPassword
                                 : null
                             }
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowConfirmPassword}
+                                    onMouseDown={handleMouseDownConfirmPassword}
+                                  >
+                                    {showConfirmPassword ? (
+                                      <VisibilityIcon />
+                                    ) : (
+                                      <VisibilityOffIcon />
+                                    )}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
                           />
                         </Grid>
                         <Grid item md={12} xs={12}>
