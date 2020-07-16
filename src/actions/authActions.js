@@ -67,7 +67,7 @@ export const signUp = (data) => (dispatch) => {
     });
 };
 
-export const editUser = (userData) => (dispatch, getState) => {
+export const updateUser = (userData) => (dispatch, getState) => {
   dispatch({ type: authTypes.UPDATE_USER_START });
 
   return axios

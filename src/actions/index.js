@@ -2,7 +2,7 @@ export { addElement, fetchDataByUserId, deleteElement, updateElement } from 'act
 export {
   authenticate,
   signUp,
-  editUser,
+  updateUser,
   getUserById,
   updateUserImage,
   setUserId,

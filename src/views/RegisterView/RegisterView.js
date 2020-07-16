@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterView = ({ signUp, cleanUp, userId, error }) => {
+const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   useEffect(() => {
@@ -223,7 +223,7 @@ const RegisterView = ({ signUp, cleanUp, userId, error }) => {
                             type="submit"
                             disabled={!isValid}
                           >
-                            Sign up now
+                            {isLoading ? 'Signing up' : 'Sign up now'}
                           </Button>
                         </Grid>
                         <Grid item md={12} xs={12}>
@@ -251,8 +251,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { userId, error } = state.auth;
-  return { userId, error };
+  const { userId, error, isLoading } = state.auth;
+  return { userId, error, isLoading };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);

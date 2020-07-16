@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginView = ({ authenticate, cleanUp, userId, error }) => {
+const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const LoginView = ({ authenticate, cleanUp, userId, error }) => {
                           type="submit"
                           disabled={!isValid}
                         >
-                          Sign in
+                          {isLoading ? 'Signing in' : 'Sign in'}
                         </Button>
                       </Grid>
                       <Grid item md={12} xs={12}>
@@ -172,8 +172,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { userId, error } = state.auth;
-  return { userId, error };
+  const { userId, error, isLoading } = state.auth;
+  return { userId, error, isLoading };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

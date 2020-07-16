@@ -5,10 +5,6 @@ const initialState = {
   user: {},
   isLoading: false,
   error: null,
-  editUser: {
-    isLoading: false,
-    error: null,
-  },
   getUser: {
     isLoading: false,
     error: null,
@@ -73,36 +69,6 @@ const signUpSuccess = (state, payload) => {
 };
 
 const signUpFailure = (state, payload) => {
-  return {
-    ...state,
-    isLoading: false,
-    error: payload.error,
-  };
-};
-
-const editUserStart = (state) => {
-  return {
-    ...state,
-    editUser: {
-      ...state.editEdit,
-      isLoading: true,
-    },
-  };
-};
-
-const editUserSuccess = (state, payload) => {
-  return {
-    ...state,
-    users: [...state.users, payload],
-    editUser: {
-      ...state.editUser,
-      isLoading: false,
-      error: false,
-    },
-  };
-};
-
-const editUserFailure = (state, payload) => {
   return {
     ...state,
     isLoading: false,
@@ -239,8 +205,8 @@ const cleanUp = (state) => {
     ...state,
     isLoading: false,
     error: null,
-    editUser: {
-      ...state.editUser,
+    updateUser: {
+      ...state.updateUser,
       isLoading: false,
       error: null,
     },
@@ -251,11 +217,6 @@ const cleanUp = (state) => {
     },
     uploadImage: {
       ...state.uploadImage,
-      isLoading: false,
-      error: null,
-    },
-    updateUser: {
-      ...state.updateUser,
       isLoading: false,
       error: null,
     },
@@ -277,12 +238,6 @@ export default (state = initialState, { type, payload }) => {
       return signUpSuccess(state, payload);
     case authTypes.SIGNUP_FAILURE:
       return signUpFailure(state, payload);
-    case authTypes.EDIT_USER_START:
-      return editUserStart(state);
-    case authTypes.EDIT_USER_SUCCESS:
-      return editUserSuccess(state, payload);
-    case authTypes.EDIT_USER_FAILURE:
-      return editUserFailure(state, payload);
     case authTypes.GET_USER_START:
       return getUserStart(state);
     case authTypes.GET_USER_SUCCESS:
