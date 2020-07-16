@@ -69,6 +69,15 @@ const Topbar = ({ className, onSidebarOpen, logout, ...rest }) => {
             <IconButton color="inherit" onClick={onSidebarOpen}>
               <MenuIcon fontSize="large" />
             </IconButton>
+            <IconButton
+              as={Link}
+              to="/login"
+              className={classes.signOutButton}
+              color="inherit"
+              onClick={() => logout()}
+            >
+              <InputIcon fontSize="large" />
+            </IconButton>
           </Hidden>
         </>
       </Toolbar>
