@@ -98,14 +98,15 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
       const walletName = wallets.find((wallet) => wallet.id === walletId);
       return walletName.name;
     }
-    return 'ERROR';
+    return 'Wallet name cannot be added!';
   };
+
   const getCategoryName = (categoryId) => {
     if (categories) {
       const categoryName = categories.find((category) => category.id === categoryId);
       return categoryName.name;
     }
-    return 'ERROR';
+    return 'Category name cannot be added!';
   };
 
   return (
@@ -152,8 +153,15 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
                       </TableHead>
                       <TableBody>
                         {budgetElements
-                          .filter((item) =>
-                            item.name.toLowerCase().includes(searchItem.toLowerCase()),
+                          .filter(
+                            ({ name, category, wallet }) =>
+                              name.toLowerCase().includes(searchItem.toLowerCase()) ||
+                              getCategoryName(category)
+                                .toLowerCase()
+                                .includes(searchItem.toLowerCase()) ||
+                              getWalletName(wallet)
+                                .toLowerCase()
+                                .includes(searchItem.toLowerCase()),
                           )
                           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                           .map(({ _id: id, name, date, wallet, amount, category, type }) => (
