@@ -71,7 +71,7 @@ const BudgetListModal = ({
                         value={values.name}
                         error={errors.name && touched.name}
                       />
-                      <FormHelperText>
+                      <FormHelperText error>
                         {errors.name && touched.name ? errors.name : null}
                       </FormHelperText>
                     </FormControl>
@@ -89,7 +89,7 @@ const BudgetListModal = ({
                         value={values.amount}
                         error={errors.amount && touched.amount}
                       />
-                      <FormHelperText>
+                      <FormHelperText error>
                         {errors.amount && touched.amount ? errors.amount : null}
                       </FormHelperText>
                     </FormControl>
@@ -108,7 +108,7 @@ const BudgetListModal = ({
                         <MenuItem value="income">Income</MenuItem>
                         <MenuItem value="expense">Expense</MenuItem>
                       </Select>
-                      <FormHelperText>
+                      <FormHelperText error>
                         {errors.type && touched.type ? errors.type : null}
                       </FormHelperText>
                     </FormControl>
@@ -132,7 +132,7 @@ const BudgetListModal = ({
                               </MenuItem>
                             ))}
                           </Select>
-                          <FormHelperText>
+                          <FormHelperText error>
                             {errors.wallet && touched.wallet ? errors.wallet : null}
                           </FormHelperText>
                         </FormControl>
@@ -156,7 +156,7 @@ const BudgetListModal = ({
                                 </MenuItem>
                               ))}
                           </Select>
-                          <FormHelperText>
+                          <FormHelperText error>
                             {errors.category && touched.category ? errors.category : null}
                           </FormHelperText>
                         </FormControl>

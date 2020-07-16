@@ -60,7 +60,7 @@ const ProfileDetails = ({ updateUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.firstName && touched.firstName}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.firstName && touched.firstName ? errors.firstName : null}
                     </FormHelperText>
                   </FormControl>
@@ -79,7 +79,7 @@ const ProfileDetails = ({ updateUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.lastName && touched.lastName}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.lastName && touched.lastName ? errors.lastName : null}
                     </FormHelperText>
                   </FormControl>
@@ -99,7 +99,7 @@ const ProfileDetails = ({ updateUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.email && touched.email}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.email && touched.email ? errors.email : null}
                     </FormHelperText>
                   </FormControl>
@@ -118,7 +118,7 @@ const ProfileDetails = ({ updateUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.phoneNumber && touched.phoneNumber}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.phoneNumber && touched.phoneNumber ? errors.phoneNumber : null}
                     </FormHelperText>
                   </FormControl>
@@ -136,7 +136,7 @@ const ProfileDetails = ({ updateUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.country && touched.country}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.country && touched.country ? errors.country : null}
                     </FormHelperText>
                   </FormControl>

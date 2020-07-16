@@ -57,7 +57,7 @@ const PasswordSection = ({ isLoading, error }) => {
                       variant="outlined"
                       error={errors.password && touched.password}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.password && touched.password ? errors.password : null}
                     </FormHelperText>
                   </FormControl>
@@ -78,7 +78,7 @@ const PasswordSection = ({ isLoading, error }) => {
                       variant="outlined"
                       error={errors.confirmPassword && touched.confirmPassword}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.confirmPassword && touched.confirmPassword
                         ? errors.confirmPassword
                         : null}

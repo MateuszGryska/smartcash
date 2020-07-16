@@ -8,6 +8,8 @@ import {
   CardContent,
   Typography,
   TextField,
+  FormHelperText,
+  FormControl,
   Button,
   InputAdornment,
   IconButton,
@@ -87,47 +89,53 @@ const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
                   <Form>
                     <Grid container spacing={2}>
                       <Grid item md={12} xs={12}>
-                        <TextField
-                          fullWidth
-                          label="Email Address"
-                          type="email"
-                          margin="none"
-                          name="email"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.email}
-                          variant="outlined"
-                          error={errors.email && touched.email}
-                          helperText={errors.email && touched.email ? errors.email : null}
-                        />
+                        <FormControl variant="outlined" fullWidth margin="dense">
+                          <TextField
+                            fullWidth
+                            label="Email Address"
+                            variant="outlined"
+                            type="email"
+                            name="email"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.email}
+                            error={errors.email && touched.email}
+                          />
+                          <FormHelperText error>
+                            {errors.email && touched.email ? errors.email : null}
+                          </FormHelperText>
+                        </FormControl>
                       </Grid>
                       <Grid item md={12} xs={12}>
-                        <TextField
-                          fullWidth
-                          label="Password"
-                          type={showPassword ? 'text' : 'password'}
-                          margin="none"
-                          name="password"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.password}
-                          variant="outlined"
-                          error={errors.password && touched.password}
-                          helperText={errors.password && touched.password ? errors.password : null}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle password visibility"
-                                  onClick={handleClickShowPassword}
-                                  onMouseDown={handleMouseDownPassword}
-                                >
-                                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
+                        <FormControl variant="outlined" fullWidth margin="dense">
+                          <TextField
+                            fullWidth
+                            label="Password"
+                            type={showPassword ? 'text' : 'password'}
+                            name="password"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.password}
+                            variant="outlined"
+                            error={errors.password && touched.password}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                  >
+                                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                          <FormHelperText error>
+                            {errors.password && touched.password ? errors.password : null}
+                          </FormHelperText>
+                        </FormControl>
                       </Grid>
                       <Grid item md={12} xs={12}>
                         <Button
@@ -137,7 +145,7 @@ const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
                           type="submit"
                           disabled={!isValid}
                         >
-                          {isLoading ? 'Signing in' : 'Sign in'}
+                          {isLoading ? 'Signing in...' : 'Sign in'}
                         </Button>
                       </Grid>
                       <Grid item md={12} xs={12}>

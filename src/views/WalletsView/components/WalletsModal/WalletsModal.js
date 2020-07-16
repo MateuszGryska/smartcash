@@ -55,7 +55,7 @@ const WalletsModal = ({ open, handleClose, addElement, isLoading, error }) => {
                     value={values.name}
                     error={errors.name && touched.name}
                   />
-                  <FormHelperText>
+                  <FormHelperText error>
                     {errors.name && touched.name ? errors.name : null}
                   </FormHelperText>
                 </FormControl>
@@ -72,7 +72,9 @@ const WalletsModal = ({ open, handleClose, addElement, isLoading, error }) => {
                     value={values.sum}
                     error={errors.sum && touched.sum}
                   />
-                  <FormHelperText>{errors.sum && touched.sum ? errors.sum : null}</FormHelperText>
+                  <FormHelperText error>
+                    {errors.sum && touched.sum ? errors.sum : null}
+                  </FormHelperText>
                 </FormControl>
                 <Typography variant="body2" color="error">
                   {error || null}

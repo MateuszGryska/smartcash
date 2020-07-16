@@ -64,7 +64,7 @@ const EditWalletModal = ({
                     value={values.name}
                     error={errors.name && touched.name}
                   />
-                  <FormHelperText>
+                  <FormHelperText error>
                     {errors.name && touched.name ? errors.name : null}
                   </FormHelperText>
                 </FormControl>
@@ -81,7 +81,9 @@ const EditWalletModal = ({
                     value={values.sum}
                     error={errors.sum && touched.sum}
                   />
-                  <FormHelperText>{errors.sum && touched.sum ? errors.sum : null}</FormHelperText>
+                  <FormHelperText error>
+                    {errors.sum && touched.sum ? errors.sum : null}
+                  </FormHelperText>
                 </FormControl>
               </DialogContent>
               <DialogActions>
