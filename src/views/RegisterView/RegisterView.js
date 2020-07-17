@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   useEffect(() => {
     return () => {
       cleanUp();
@@ -59,8 +59,6 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
-  const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
-  const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
   const classes = useStyles();
   return (
@@ -192,7 +190,7 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
                             <TextField
                               fullWidth
                               label="Confirm password"
-                              type={showConfirmPassword ? 'text' : 'password'}
+                              type={showPassword ? 'text' : 'password'}
                               name="confirmPassword"
                               onChange={handleChange}
                               onBlur={handleBlur}
@@ -204,14 +202,10 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
                                   <InputAdornment position="end">
                                     <IconButton
                                       aria-label="toggle password visibility"
-                                      onClick={handleClickShowConfirmPassword}
-                                      onMouseDown={handleMouseDownConfirmPassword}
+                                      onClick={handleClickShowPassword}
+                                      onMouseDown={handleMouseDownPassword}
                                     >
-                                      {showConfirmPassword ? (
-                                        <VisibilityIcon />
-                                      ) : (
-                                        <VisibilityOffIcon />
-                                      )}
+                                      {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </IconButton>
                                   </InputAdornment>
                                 ),
