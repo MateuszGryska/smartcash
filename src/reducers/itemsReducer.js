@@ -8,15 +8,15 @@ const initialState = {
   error: null,
   deleteItem: {
     error: null,
-    loading: false,
+    isLoading: false,
   },
   fetchItem: {
     error: null,
-    loading: false,
+    isLoading: false,
   },
   updateItem: {
     error: null,
-    loading: false,
+    isLoading: false,
   },
 };
 
@@ -93,7 +93,13 @@ const deleteItemStart = (state) => {
 const deleteItemSuccess = (state, payload) => {
   return {
     ...state,
-
+    budgetElements: [
+      ...state.budgetElements.filter((item) =>
+        payload.itemType === 'categories'
+          ? item.category !== payload.id
+          : item.wallet !== payload.id,
+      ),
+    ],
     [payload.itemType]: [...state[payload.itemType].filter((item) => item._id !== payload.id)],
     deleteItem: {
       ...state.deleteItem,

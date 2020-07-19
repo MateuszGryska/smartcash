@@ -40,27 +40,44 @@ export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => 
     uid = storedData.userId;
   }
 
-  return axios
-    .get(`${process.env.REACT_APP_BACKEND_URL}/${itemURL}/user/${uid}`, {
-      headers: {
-        Authorization: `Bearer ${getState().auth.token}`,
-      },
-    })
-    .then(({ data }) => {
-      dispatch({
-        type: itemTypes.FETCH_DATA_SUCCESS,
-        payload: {
-          data,
-          itemType,
+  const { CancelToken } = axios;
+  const source = CancelToken.source();
+
+  const fetchData = () =>
+    axios
+      .get(
+        `${process.env.REACT_APP_BACKEND_URL}/${itemURL}/user/${uid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getState().auth.token}`,
+          },
         },
+        { cancelToken: source.token },
+      )
+      .then(({ data }) => {
+        return dispatch({
+          type: itemTypes.FETCH_DATA_SUCCESS,
+          payload: {
+            data,
+            itemType,
+          },
+        });
+      })
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('cancelled');
+        } else {
+          dispatch({
+            type: itemTypes.FETCH_DATA_FAILURE,
+            payload: { error: err.response.data.message },
+          });
+        }
       });
-    })
-    .catch((err) => {
-      dispatch({
-        type: itemTypes.FETCH_DATA_FAILURE,
-        payload: { error: err.response.data.message },
-      });
-    });
+  fetchData();
+
+  return () => {
+    source.cancel();
+  };
 };
 
 export const updateElement = (itemType, id, content) => (dispatch, getState) => {
@@ -99,25 +116,43 @@ export const updateElement = (itemType, id, content) => (dispatch, getState) => 
 export const deleteElement = (itemType, id) => (dispatch, getState) => {
   dispatch({ type: itemTypes.DELETE_ITEM_START });
 
-  return axios
-    .delete(`${process.env.REACT_APP_BACKEND_URL}/${itemType}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${getState().auth.token}`,
-      },
-    })
-    .then(() => {
-      dispatch({
-        type: itemTypes.DELETE_ITEM_SUCCESS,
-        payload: {
-          itemType,
-          id,
+  const { CancelToken } = axios;
+  const source = CancelToken.source();
+
+  const deleteItem = () =>
+    axios
+      .delete(
+        `${process.env.REACT_APP_BACKEND_URL}/${itemType}/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getState().auth.token}`,
+          },
         },
+        { cancelToken: source.token },
+      )
+      .then(() => {
+        dispatch({
+          type: itemTypes.DELETE_ITEM_SUCCESS,
+          payload: {
+            itemType,
+            id,
+          },
+        });
+      })
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('cancelled');
+        } else {
+          dispatch({
+            type: itemTypes.DELETE_ITEM_FAILURE,
+            payload: { error: err.response.data.message },
+          });
+        }
       });
-    })
-    .catch((err) => {
-      dispatch({
-        type: itemTypes.DELETE_ITEM_FAILURE,
-        payload: { error: err.response.data.message },
-      });
-    });
+
+  deleteItem();
+
+  return () => {
+    source.cancel();
+  };
 };

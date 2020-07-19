@@ -19,7 +19,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import EditBudgetElementModal from 'views/BudgetListView/components/EditBudgetElementModal';
 import DeleteModal from 'components/DeleteModal';
 
-import { deleteElement as deleteElementAction } from 'actions';
+import { deleteElement as deleteElementAction, clean as cleanUpAction } from 'actions';
 
 const BudgetListTableItem = ({
   id,
@@ -32,6 +32,7 @@ const BudgetListTableItem = ({
   category,
   handleSelectOne,
   deleteElement,
+  cleanUp,
 }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
@@ -89,6 +90,7 @@ const BudgetListTableItem = ({
         open={isDeleteModalVisible}
         handleClose={handleClose}
         deleteFn={handleDeleteClick}
+        cleanUp={cleanUp}
       />
       <EditBudgetElementModal
         name={name}
@@ -129,6 +131,7 @@ BudgetListTableItem.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+  cleanUp: () => dispatch(cleanUpAction()),
 });
 
 export default connect(null, mapDispatchToProps)(BudgetListTableItem);

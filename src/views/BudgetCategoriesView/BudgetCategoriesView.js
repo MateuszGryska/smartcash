@@ -27,7 +27,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading }) => {
+const BudgetCategoriesView = ({
+  categories,
+  fetchDataByUserId,
+  error,
+  isLoading,
+
+  deleteElement,
+}) => {
   useEffect(() => {
     fetchDataByUserId();
     // eslint-disable-next-line
@@ -71,16 +78,9 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
           {incomes.length > 0 ? (
             incomes
               .filter((category) => category.name.toLowerCase().includes(searchItem.toLowerCase()))
-              .map(({ _id: id, name, type, sum, date, budgetElements }) => (
+              .map(({ _id: id, name, type, sum, date }) => (
                 <Grid item lg={4} sm={6} xl={4} xs={12} key={id}>
-                  <BudgetCategoryCard
-                    name={name}
-                    id={id}
-                    type={type}
-                    sum={sum}
-                    date={date}
-                    budgetElements={budgetElements}
-                  />
+                  <BudgetCategoryCard name={name} id={id} type={type} sum={sum} date={date} />
                 </Grid>
               ))
           ) : (
@@ -94,7 +94,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
           {expenses.length > 0 ? (
             expenses
               .filter((category) => category.name.toLowerCase().includes(searchItem.toLowerCase()))
-              .map(({ _id: id, name, type, sum, date, budgetElements }) => (
+              .map(({ _id: id, name, type, sum, date }) => (
                 <Grid item lg={4} sm={6} xl={4} xs={12} key={id}>
                   <BudgetCategoryCard
                     name={name}
@@ -102,7 +102,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, error, isLoading 
                     type={type}
                     sum={sum}
                     date={date}
-                    budgetElements={budgetElements}
+                    deleteElement={deleteElement}
                   />
                 </Grid>
               ))

@@ -165,6 +165,7 @@ export const deleteUser = () => (dispatch, getState) => {
       });
     })
     .catch((err) => {
+      console.log(err.response);
       dispatch({
         type: authTypes.DELETE_USER_FAILURE,
         payload: { error: err.response.data.message },

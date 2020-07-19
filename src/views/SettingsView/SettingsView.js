@@ -12,6 +12,7 @@ import {
   getUserById as getUserByIdAction,
   deleteUser as deleteUserAction,
   logout as logoutAction,
+  clean as cleanUpAction,
 } from 'actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading }) => {
+const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading, cleanUp }) => {
   const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
@@ -77,6 +78,7 @@ const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading }) => {
                   handleClose={() => setDeleteModalVisibility(false)}
                   deleteFn={handleDeleteUser}
                   open={isDeleteModalVisible}
+                  cleanUp={cleanUp}
                 />
               </Grid>
             </Grid>
@@ -110,6 +112,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   getUserById: () => dispatch(getUserByIdAction()),
   deleteUser: () => dispatch(deleteUserAction()),
+  cleanUp: () => dispatch(cleanUpAction()),
   logout: () => dispatch(logoutAction()),
 });
 

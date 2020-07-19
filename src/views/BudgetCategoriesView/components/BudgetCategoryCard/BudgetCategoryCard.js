@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
-import { deleteElement as deleteElementAction } from 'actions';
+import { deleteElement as deleteElementAction, clean as cleanUpAction } from 'actions';
 
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id, budgetElements }) => {
+const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, cleanUp, id }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -61,15 +61,9 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id, budgetEl
   };
 
   const handleDeleteClick = async () => {
-    if (budgetElements.length > 0) {
-      enqueueSnackbar('Delete budget items before deleting the category!', {
-        variant: 'warning',
-      });
-    } else {
-      await deleteElement('categories', id);
-      enqueueSnackbar('Deleted category!', { variant: 'success' });
-    }
+    await deleteElement('categories', id);
 
+    enqueueSnackbar('Deleted category!', { variant: 'success' });
     setDeleteModalVisibility(false);
   };
 
@@ -118,6 +112,7 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, id, budgetEl
         open={isDeleteModalVisible}
         handleClose={handleClose}
         deleteFn={handleDeleteClick}
+        cleanUp={cleanUp}
       />
       <EditCategoryModal
         open={isEditModalVisible}
@@ -147,15 +142,12 @@ BudgetCategoryCard.propTypes = {
   date: PropTypes.string.isRequired,
   deleteElement: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-  budgetElements: PropTypes.arrayOf(PropTypes.string),
-};
-
-BudgetCategoryCard.defaultProps = {
-  budgetElements: [],
 };
 
 const mapDispatchToProps = (dispatch) => ({
   deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+
+  cleanUp: () => dispatch(cleanUpAction()),
 });
 
 export default connect(null, mapDispatchToProps)(BudgetCategoryCard);
