@@ -179,6 +179,40 @@ const updateUserFailure = (state, payload) => {
   };
 };
 
+const updatePasswordStart = (state) => {
+  return {
+    ...state,
+
+    updatePassword: {
+      ...state.updatePassword,
+      isLoading: true,
+    },
+  };
+};
+
+const updatePasswordSuccess = (state, payload) => {
+  return {
+    ...state,
+    user: { ...payload.data.users },
+    updatePassword: {
+      ...state.updatePassword,
+      isLoading: false,
+      error: false,
+    },
+  };
+};
+
+const updatePasswordFailure = (state, payload) => {
+  return {
+    ...state,
+    updatePassword: {
+      ...state.updatePassword,
+      isLoading: false,
+      error: payload.error,
+    },
+  };
+};
+
 const deleteUserStart = (state) => {
   return {
     ...state,
@@ -256,6 +290,12 @@ export default (state = initialState, { type, payload }) => {
       return updateUserSuccess(state, payload);
     case authTypes.UPDATE_USER_FAILURE:
       return updateUserFailure(state, payload);
+    case authTypes.UPDATE_PASSWORD_START:
+      return updatePasswordStart(state);
+    case authTypes.UPDATE_PASSWORD_SUCCESS:
+      return updatePasswordSuccess(state, payload);
+    case authTypes.UPDATE_PASSWORD_FAILURE:
+      return updatePasswordFailure(state, payload);
     case authTypes.DELETE_USER_START:
       return deleteUserStart(state);
 

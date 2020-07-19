@@ -150,6 +150,37 @@ export const logout = () => {
   };
 };
 
+export const updatePassword = (password) => (dispatch, getState) => {
+  dispatch({ type: authTypes.UPDATE_PASSWORD_START });
+
+  return axios
+    .patch(
+      `${process.env.REACT_APP_BACKEND_URL}/users/password/${getState().auth.userId}`,
+      {
+        ...password,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      },
+    )
+    .then(({ data }) => {
+      dispatch({
+        type: authTypes.UPDATE_PASSWORD_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: authTypes.UPDATE_PASSWORD_FAILURE,
+        payload: { error: err.response.data.message },
+      });
+    });
+};
+
 export const deleteUser = () => (dispatch, getState) => {
   dispatch({ type: authTypes.DELETE_USER_START });
 

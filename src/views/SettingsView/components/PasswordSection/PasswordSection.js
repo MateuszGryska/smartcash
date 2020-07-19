@@ -18,7 +18,9 @@ import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
 import { PasswordSectionSchema } from 'validation';
 
-const PasswordSection = ({ isLoading, error }) => {
+import { updatePassword as updatePasswordAction } from 'actions';
+
+const PasswordSection = ({ isLoading, error, updatePassword }) => {
   const { enqueueSnackbar } = useSnackbar();
   return (
     <Card>
@@ -31,8 +33,8 @@ const PasswordSection = ({ isLoading, error }) => {
           confirmPassword: '',
         }}
         validationSchema={PasswordSectionSchema}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          await updatePassword(values);
           if (!isLoading && error === null) {
             enqueueSnackbar('Password has been updated!', { variant: 'success' });
           }
@@ -119,4 +121,8 @@ const mapStateToProps = (state) => {
   return { isLoading, error };
 };
 
-export default connect(mapStateToProps)(PasswordSection);
+const mapDispatchToProps = (dispatch) => ({
+  updatePassword: (password) => dispatch(updatePasswordAction(password)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordSection);
