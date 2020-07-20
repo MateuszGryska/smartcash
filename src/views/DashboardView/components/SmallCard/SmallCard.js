@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
 import MoneyIcon from '@material-ui/icons/Money';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
@@ -29,12 +30,12 @@ const useStyles = makeStyles((theme) => ({
     width: 56,
   },
   avatarIncome: {
-    backgroundColor: theme.palette.success.main,
+    backgroundColor: theme.palette.success.dark,
     height: 56,
     width: 56,
   },
   avatarExpense: {
-    backgroundColor: theme.palette.error.main,
+    backgroundColor: theme.palette.error.dark,
     height: 56,
     width: 56,
   },
@@ -52,8 +53,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
-  differenceIcon: {
+  negativeDifferenceIcon: {
     color: theme.palette.error.dark,
+  },
+  positiveDifferenceIcon: {
+    color: theme.palette.success.dark,
   },
   differenceValue: {
     color: theme.palette.error.dark,
@@ -69,6 +73,10 @@ const useStyles = makeStyles((theme) => ({
   },
   total: {
     color: theme.palette.white,
+    marginRight: '5px',
+  },
+  caption: {
+    marginLeft: '5px',
   },
   loading: {
     display: 'flex',
@@ -77,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SmallCard = ({ title, amount, isLoading }) => {
+const SmallCard = ({ title, amount, lastMonth, isLoading }) => {
   const classes = useStyles();
 
   let currentIcon;
@@ -87,9 +95,9 @@ const SmallCard = ({ title, amount, isLoading }) => {
         <MoneyIcon className={classes.icon} />
       </Avatar>
     );
-  } else if (title === 'Income' || title === 'Expense') {
+  } else if (title === 'Incomes' || title === 'Expenses') {
     currentIcon = (
-      <Avatar className={clsx(title === 'Income' ? classes.avatarIncome : classes.avatarExpense)}>
+      <Avatar className={clsx(title === 'Incomes' ? classes.avatarIncome : classes.avatarExpense)}>
         <ShowChartIcon className={classes.icon} />
       </Avatar>
     );
@@ -98,6 +106,63 @@ const SmallCard = ({ title, amount, isLoading }) => {
       <Avatar className={classes.avatarTotal}>
         <AttachMoneyIcon className={classes.icon} />
       </Avatar>
+    );
+  }
+
+  let renderComparison;
+  if (lastMonth > 0) {
+    renderComparison = (
+      <>
+        <ArrowDropUpIcon
+          className={title === 'Total' ? classes.total : classes.positiveDifferenceIcon}
+        />
+        <Typography
+          className={title === 'Total' ? classes.total : classes.positiveDifferenceIcon}
+          variant="body2"
+        >
+          {lastMonth}%
+        </Typography>
+        <Typography
+          className={clsx(title === 'Total' ? classes.total : classes.caption)}
+          variant="caption"
+        >
+          Since last month
+        </Typography>
+      </>
+    );
+  } else if (lastMonth < 0) {
+    renderComparison = (
+      <>
+        <ArrowDropDownIcon
+          className={title === 'Total' ? classes.total : classes.negativeDifferenceIcon}
+        />
+        <Typography
+          className={title === 'Total' ? classes.total : classes.negativeDifferenceIcon}
+          variant="body2"
+        >
+          {lastMonth}%
+        </Typography>
+        <Typography
+          className={clsx(title === 'Total' ? classes.total : classes.caption)}
+          variant="caption"
+        >
+          Since last month
+        </Typography>
+      </>
+    );
+  } else {
+    renderComparison = (
+      <>
+        <Typography className={title === 'Total' ? classes.total : null} variant="body2">
+          {lastMonth}%
+        </Typography>
+        <Typography
+          className={clsx(title === 'Total' ? classes.total : classes.caption)}
+          variant="caption"
+        >
+          Since last month
+        </Typography>
+      </>
     );
   }
 
@@ -110,7 +175,10 @@ const SmallCard = ({ title, amount, isLoading }) => {
               {title}
             </Typography>
             {amount || !isLoading ? (
-              <Typography variant="h3" className={clsx(title === 'Total' ? classes.total : null)}>
+              <Typography
+                variant={title === 'Budget' ? 'h1' : 'h3'}
+                className={clsx(title === 'Total' ? classes.total : null)}
+              >
                 ${amount}
               </Typography>
             ) : (
@@ -121,25 +189,7 @@ const SmallCard = ({ title, amount, isLoading }) => {
           </Grid>
           <Grid item>{currentIcon}</Grid>
         </Grid>
-        <div className={classes.difference}>
-          <ArrowDropDownIcon
-            className={clsx(title === 'Total' ? classes.total : classes.differenceIcon)}
-          />
-          <Typography
-            className={clsx(
-              title === 'Total' ? classes.totalDifferenceValue : classes.differenceValue,
-            )}
-            variant="body2"
-          >
-            12%
-          </Typography>
-          <Typography
-            className={clsx(title === 'Total' ? classes.total : classes.caption)}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
+        <div className={classes.difference}>{title !== 'Budget' ? renderComparison : null}</div>
       </CardContent>
     </Card>
   );
