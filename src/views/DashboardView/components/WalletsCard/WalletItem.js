@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   walletValue: {
     paddingRight: '25px',
     paddingLeft: '5px',
+    width: '100px',
     color: theme.palette.success.main,
   },
 }));
