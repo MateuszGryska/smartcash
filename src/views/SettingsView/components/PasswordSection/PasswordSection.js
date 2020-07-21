@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -13,6 +13,8 @@ import {
   FormHelperText,
   FormControl,
   Typography,
+  InputAdornment,
+  IconButton,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
@@ -20,8 +22,15 @@ import { PasswordSectionSchema } from 'validation';
 
 import { updatePassword as updatePasswordAction } from 'actions';
 
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+
 const PasswordSection = ({ isLoading, error, updatePassword }) => {
+  const [showPassword, setShowPassword] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
   return (
     <Card>
       <CardHeader title="Password" subheader="Update password" />
@@ -49,7 +58,7 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
                     <TextField
                       fullWidth
                       label="Password"
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       margin="dense"
                       name="password"
                       onChange={handleChange}
@@ -58,6 +67,19 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
                       value={values.password}
                       variant="outlined"
                       error={errors.password && touched.password}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                     <FormHelperText error>
                       {errors.password && touched.password ? errors.password : null}
@@ -71,7 +93,7 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
                       fullWidth
                       label="Confirm password"
                       margin="dense"
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       name="confirmPassword"
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -79,6 +101,19 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
                       value={values.confirmPassword}
                       variant="outlined"
                       error={errors.confirmPassword && touched.confirmPassword}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                     <FormHelperText error>
                       {errors.confirmPassword && touched.confirmPassword
