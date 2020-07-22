@@ -25,6 +25,7 @@ import { useSnackbar } from 'notistack';
 
 import BudgetListTableItem from 'views/BudgetListView/components/BudgetListTableItem';
 import DeleteModal from 'components/DeleteModal';
+import { getName } from 'utils';
 
 import { deleteElements as deleteElementsAction, clean as cleanUpAction } from 'actions';
 
@@ -126,21 +127,13 @@ const BudgetListTable = ({
   };
 
   // change id to name
-  const getWalletName = (walletId) => {
-    if (wallets) {
-      const walletName = wallets.find((wallet) => wallet.id === walletId);
-      return walletName.name;
-    }
-    return 'Wallet name cannot be added!';
-  };
-
-  const getCategoryName = (categoryId) => {
-    if (categories) {
-      const categoryName = categories.find((category) => category.id === categoryId);
-      return categoryName.name;
-    }
-    return 'Category name cannot be added!';
-  };
+  // const getName = (itemId, itemType) => {
+  //   if (categories) {
+  //     const itemName = itemType.find((item) => item.id === itemId);
+  //     return itemName.name;
+  //   }
+  //   return 'Item name cannot be added!';
+  // };
 
   return (
     <Card className={classes.root}>
@@ -189,10 +182,10 @@ const BudgetListTable = ({
                           .filter(
                             ({ name, category, wallet }) =>
                               name.toLowerCase().includes(searchItem.toLowerCase()) ||
-                              getCategoryName(category)
+                              getName(category, categories)
                                 .toLowerCase()
                                 .includes(searchItem.toLowerCase()) ||
-                              getWalletName(wallet)
+                              getName(wallet, wallets)
                                 .toLowerCase()
                                 .includes(searchItem.toLowerCase()),
                           )
@@ -205,9 +198,9 @@ const BudgetListTable = ({
                               selectedItems={selectedItems}
                               date={date}
                               type={type}
-                              wallet={getWalletName(wallet)}
+                              wallet={getName(wallet, wallets)}
                               amount={amount}
-                              category={getCategoryName(category)}
+                              category={getName(category, categories)}
                               handleSelectOne={handleSelectOne}
                             />
                           ))}

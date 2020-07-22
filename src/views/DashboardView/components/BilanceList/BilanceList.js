@@ -24,6 +24,7 @@ import {
 
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import BudgetListModal from 'views/BudgetListView/components/BudgetListModal';
+import { getName } from 'utils';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -41,21 +42,6 @@ const useStyles = makeStyles(() => ({
 const BilanceList = ({ budgetElements, wallets, categories, isLoading }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const classes = useStyles();
-
-  const getWalletName = (walletId) => {
-    if (wallets.length > 0) {
-      const walletName = wallets.find((wallet) => wallet.id === walletId);
-      return walletName.name;
-    }
-    return 'hello';
-  };
-  const getCategoryName = (categoryId) => {
-    if (categories.length > 0) {
-      const categoryName = categories.find((category) => category.id === categoryId);
-      return categoryName.name;
-    }
-    return 'hello';
-  };
 
   return (
     <Card className={classes.root}>
@@ -102,9 +88,9 @@ const BilanceList = ({ budgetElements, wallets, categories, isLoading }) => {
                       <TableRow hover key={item.id}>
                         <TableCell>{format(parseISO(item.date), 'dd.MM.yyyy')}</TableCell>
                         <TableCell>{item.name}</TableCell>
-                        <TableCell>{getWalletName(item.wallet)}</TableCell>
+                        <TableCell>{getName(item.wallet, wallets)}</TableCell>
                         <TableCell>${item.amount}</TableCell>
-                        <TableCell>{getCategoryName(item.category)}</TableCell>
+                        <TableCell>{getName(item.category, categories)}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
