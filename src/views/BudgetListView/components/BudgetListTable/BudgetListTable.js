@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -18,9 +19,14 @@ import {
   TableSortLabel,
   TablePagination,
   CircularProgress,
+  Button,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 
 import BudgetListTableItem from 'views/BudgetListView/components/BudgetListTableItem';
+import DeleteModal from 'components/DeleteModal';
+
+import { deleteElement as deleteElementAction, clean as cleanUpAction } from 'actions';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -35,7 +41,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
   },
   actions: {
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   loading: {
     display: 'flex',
@@ -45,13 +51,26 @@ const useStyles = makeStyles(() => ({
 }));
 
 // const BudgetListTable = ({ searchItem, budgetElements, wallets, categories, error, isLoading }) => {
-const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) => {
+const BudgetListTable = ({
+  searchItem,
+  budgetElements,
+  wallets,
+  categories,
+  deleteElement,
+  cleanUp,
+}) => {
+  // table hooks
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  // delete hooks
+  const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const classes = useStyles();
   /* eslint-disable */
+
+  // handle selected items
   const handleSelectAll = (event) => {
     let selectedItems;
 
@@ -93,6 +112,20 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
     setRowsPerPage(event.target.value);
   };
 
+  // handle delete selected items
+
+  const handleDeleteModalClose = () => {
+    setDeleteModalVisibility(false);
+  };
+
+  const handleDeleteClick = async () => {
+    await deleteElement('budgetElements', selectedItems);
+    enqueueSnackbar('Deleted elements!', { variant: 'warning' });
+    setDeleteModalVisibility(false);
+    setSelectedItems([]);
+  };
+
+  // change id to name
   const getWalletName = (walletId) => {
     if (wallets) {
       const walletName = wallets.find((wallet) => wallet.id === walletId);
@@ -190,6 +223,14 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
             </CardContent>
             <Divider />
             <CardActions className={classes.actions}>
+              <Button
+                onClick={handleDeleteClick}
+                color="primary"
+                variant="contained"
+                disabled={selectedItems.length === 0}
+              >
+                Delete selected
+              </Button>
               <TablePagination
                 component="div"
                 count={budgetElements.length}
@@ -200,6 +241,12 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
                 rowsPerPageOptions={[5, 10, 25]}
               />
             </CardActions>
+            <DeleteModal
+              open={isDeleteModalVisible}
+              handleClose={handleDeleteModalClose}
+              deleteFn={handleDeleteClick}
+              cleanUp={cleanUp}
+            />
           </>
         )}
       </>
@@ -221,4 +268,9 @@ BudgetListTable.defaultProps = {
   categories: [],
 };
 
-export default BudgetListTable;
+const mapDispatchToProps = (dispatch) => ({
+  deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+  cleanUp: () => dispatch(cleanUpAction()),
+});
+
+export default connect(null, mapDispatchToProps)(BudgetListTable);

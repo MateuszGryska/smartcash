@@ -113,16 +113,16 @@ export const updateElement = (itemType, id, content) => (dispatch, getState) => 
     });
 };
 
-export const deleteElement = (itemType, id) => (dispatch, getState) => {
+export const deleteElement = (itemType, id) => async (dispatch, getState) => {
   dispatch({ type: itemTypes.DELETE_ITEM_START });
 
   const { CancelToken } = axios;
   const source = CancelToken.source();
 
-  const deleteItem = () =>
+  const deleteItem = (itemId) =>
     axios
       .delete(
-        `${process.env.REACT_APP_BACKEND_URL}/${itemType}/${id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/${itemType}/${itemId}`,
         {
           headers: {
             Authorization: `Bearer ${getState().auth.token}`,
@@ -135,7 +135,7 @@ export const deleteElement = (itemType, id) => (dispatch, getState) => {
           type: itemTypes.DELETE_ITEM_SUCCESS,
           payload: {
             itemType,
-            id,
+            id: itemId,
           },
         });
       })
@@ -150,7 +150,16 @@ export const deleteElement = (itemType, id) => (dispatch, getState) => {
         }
       });
 
-  deleteItem();
+  /* eslint-disable */
+
+  if (Array.isArray(id)) {
+    for (let i = 0; i < id.length; i++) {
+      await deleteItem(id[i]);
+    }
+  } else {
+    deleteItem(id);
+  }
+  /* eslint-enable */
 
   return () => {
     source.cancel();
