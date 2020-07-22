@@ -113,7 +113,51 @@ export const updateElement = (itemType, id, content) => (dispatch, getState) => 
     });
 };
 
-export const deleteElement = (itemType, id) => async (dispatch, getState) => {
+export const deleteElement = (itemType, id) => (dispatch, getState) => {
+  dispatch({ type: itemTypes.DELETE_ITEM_START });
+
+  const { CancelToken } = axios;
+  const source = CancelToken.source();
+
+  const deleteItem = (itemId) =>
+    axios
+      .delete(
+        `${process.env.REACT_APP_BACKEND_URL}/${itemType}/${itemId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getState().auth.token}`,
+          },
+        },
+        { cancelToken: source.token },
+      )
+      .then(() => {
+        dispatch({
+          type: itemTypes.DELETE_ITEM_SUCCESS,
+          payload: {
+            itemType,
+            id: itemId,
+          },
+        });
+      })
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('cancelled');
+        } else {
+          dispatch({
+            type: itemTypes.DELETE_ITEM_FAILURE,
+            payload: { error: err.response.data.message },
+          });
+        }
+      });
+
+  deleteItem(id);
+
+  return () => {
+    source.cancel();
+  };
+};
+
+export const deleteElements = (itemType, arrayWithIds) => async (dispatch, getState) => {
   dispatch({ type: itemTypes.DELETE_ITEM_START });
 
   const { CancelToken } = axios;
@@ -151,13 +195,8 @@ export const deleteElement = (itemType, id) => async (dispatch, getState) => {
       });
 
   /* eslint-disable */
-
-  if (Array.isArray(id)) {
-    for (let i = 0; i < id.length; i++) {
-      await deleteItem(id[i]);
-    }
-  } else {
-    deleteItem(id);
+  for (let i = 0; i < arrayWithIds.length; i++) {
+    await deleteItem(arrayWithIds[i]);
   }
   /* eslint-enable */
 

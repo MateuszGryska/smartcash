@@ -26,7 +26,7 @@ import { useSnackbar } from 'notistack';
 import BudgetListTableItem from 'views/BudgetListView/components/BudgetListTableItem';
 import DeleteModal from 'components/DeleteModal';
 
-import { deleteElement as deleteElementAction, clean as cleanUpAction } from 'actions';
+import { deleteElements as deleteElementsAction, clean as cleanUpAction } from 'actions';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -56,7 +56,7 @@ const BudgetListTable = ({
   budgetElements,
   wallets,
   categories,
-  deleteElement,
+  deleteElements,
   cleanUp,
 }) => {
   // table hooks
@@ -119,7 +119,7 @@ const BudgetListTable = ({
   };
 
   const handleDeleteClick = async () => {
-    await deleteElement('budgetElements', selectedItems);
+    await deleteElements('budgetElements', selectedItems);
     enqueueSnackbar('Deleted elements!', { variant: 'warning' });
     setDeleteModalVisibility(false);
     setSelectedItems([]);
@@ -224,7 +224,7 @@ const BudgetListTable = ({
             <Divider />
             <CardActions className={classes.actions}>
               <Button
-                onClick={handleDeleteClick}
+                onClick={() => setDeleteModalVisibility(true)}
                 color="primary"
                 variant="contained"
                 disabled={selectedItems.length === 0}
@@ -269,7 +269,7 @@ BudgetListTable.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+  deleteElements: (itemType, id) => dispatch(deleteElementsAction(itemType, id)),
   cleanUp: () => dispatch(cleanUpAction()),
 });
 

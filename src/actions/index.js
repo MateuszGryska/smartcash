@@ -1,4 +1,10 @@
-export { addElement, fetchDataByUserId, deleteElement, updateElement } from 'actions/itemActions';
+export {
+  addElement,
+  fetchDataByUserId,
+  deleteElement,
+  deleteElements,
+  updateElement,
+} from 'actions/itemActions';
 export {
   authenticate,
   signUp,
