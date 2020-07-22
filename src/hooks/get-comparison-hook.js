@@ -52,7 +52,10 @@ export const useComparisonData = (budgetElements, categories, wallets, isLoading
     lastMonthExpense =
       getLastMonthSum('expense') !== 0 ? (expense * 100) / getLastMonthSum('expense') - 100 : 0;
     total = income - expense;
-    lastMonthTotal = (total * 100) / (getLastMonthSum('income') - getLastMonthSum('expense')) - 100;
+    lastMonthTotal =
+      getLastMonthSum('income') - getLastMonthSum('expense') !== 0
+        ? (total * 100) / (getLastMonthSum('income') - getLastMonthSum('expense')) - 100
+        : 0;
   }
 
   return {
