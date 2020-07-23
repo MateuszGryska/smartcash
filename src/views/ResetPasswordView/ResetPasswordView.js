@@ -1,86 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Redirect, useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
+import { connect } from 'react-redux';
 import {
-  Grid,
   CardHeader,
   CardContent,
-  Typography,
+  Button,
+  Grid,
   TextField,
   FormHelperText,
   FormControl,
-  Button,
+  Typography,
   InputAdornment,
   IconButton,
 } from '@material-ui/core';
 import { Formik, Form } from 'formik';
-import { routes } from 'routes';
-import { authenticate as authenticateAction, clean as cleanAction } from 'actions';
-import { LoginSchema } from 'validation';
-
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { PasswordSectionSchema } from 'validation';
+
+import { setNewPassword as setNewPasswordAction } from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  signUpText: {
-    paddingTop: theme.spacing(4),
-    paddingLeft: theme.spacing(4),
-  },
+
   contentHeader: {
     fontSize: '88px',
     paddingLeft: theme.spacing(4),
+    marginTop: theme.spacing(4),
   },
   contentBody: {
     padding: theme.spacing(4),
   },
-  recoverPasswordText: {
-    paddingTop: theme.spacing(2),
-  },
+
   error: {
     paddingTop: theme.spacing(2),
     textAlign: 'center',
   },
 }));
 
-const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
+const ResetPasswordView = ({ isLoading, error, setNewPassword }) => {
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      cleanUp();
-    };
-  }, [cleanUp]);
+  const [toLogin, setToLogin] = useState(false);
 
   const classes = useStyles();
+  const { resetToken } = useParams();
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
   return (
     <>
-      <div className={classes.signUpText}>
-        <Typography variant="body2">
-          You don&#39;t have an account? <Link to="/register">Sign up</Link>
-        </Typography>
-      </div>
       <CardHeader
         className={classes.contentHeader}
-        title="Sign in to SmartCash"
-        subheader="Sign in on the internal platform"
+        title="Reset password"
+        subheader="Enter your new password."
       />
       <Formik
-        initialValues={{ email: '', password: '' }}
-        validationSchema={LoginSchema}
+        initialValues={{ password: '', confirmPassword: '' }}
+        validationSchema={PasswordSectionSchema}
         onSubmit={(values) => {
-          authenticate(values);
+          setNewPassword(values, resetToken);
+          setToLogin(true);
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => {
-          if (userId) {
-            return <Redirect to={routes.home} />;
-          }
           return (
             <CardContent className={classes.contentBody}>
               <Grid container spacing={2}>
@@ -91,25 +75,7 @@ const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
                         <FormControl variant="outlined" fullWidth margin="dense">
                           <TextField
                             fullWidth
-                            label="Email Address"
-                            variant="outlined"
-                            type="email"
-                            name="email"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.email}
-                            error={errors.email && touched.email}
-                          />
-                          <FormHelperText error>
-                            {errors.email && touched.email ? errors.email : null}
-                          </FormHelperText>
-                        </FormControl>
-                      </Grid>
-                      <Grid item md={12} xs={12}>
-                        <FormControl variant="outlined" fullWidth margin="dense">
-                          <TextField
-                            fullWidth
-                            label="Password"
+                            label="New password"
                             type={showPassword ? 'text' : 'password'}
                             name="password"
                             onChange={handleChange}
@@ -137,6 +103,39 @@ const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
                         </FormControl>
                       </Grid>
                       <Grid item md={12} xs={12}>
+                        <FormControl variant="outlined" fullWidth margin="dense">
+                          <TextField
+                            fullWidth
+                            label="Confirm password"
+                            type={showPassword ? 'text' : 'password'}
+                            name="confirmPassword"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.confirmPassword}
+                            variant="outlined"
+                            error={errors.confirmPassword && touched.confirmPassword}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                  >
+                                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                          <FormHelperText error>
+                            {errors.confirmPassword && touched.confirmPassword
+                              ? errors.confirmPassword
+                              : null}
+                          </FormHelperText>
+                        </FormControl>
+                      </Grid>
+                      <Grid item md={12} xs={12}>
                         <Button
                           fullWidth
                           color="primary"
@@ -144,7 +143,7 @@ const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
                           type="submit"
                           disabled={!isValid}
                         >
-                          {isLoading ? 'Signing in...' : 'Sign in'}
+                          {isLoading ? 'Updating...' : 'Update password'}
                         </Button>
                       </Grid>
                       <Grid item md={12} xs={12}>
@@ -152,19 +151,11 @@ const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
                           {error || null}
                         </Typography>
                       </Grid>
-                      <Grid item md={12} xs={12}>
-                        <Typography
-                          className={classes.recoverPasswordText}
-                          variant="body2"
-                          color="textSecondary"
-                        >
-                          <Link to="/send-reset-mail">You have problems with sign in?</Link>
-                        </Typography>
-                      </Grid>
                     </Grid>
                   </Form>
                 </Grid>
               </Grid>
+              {toLogin ? <Redirect to="/login" /> : null}
             </CardContent>
           );
         }}
@@ -173,14 +164,22 @@ const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  authenticate: (email, password) => dispatch(authenticateAction(email, password)),
-  cleanUp: () => dispatch(cleanAction()),
-});
-
-const mapStateToProps = (state) => {
-  const { userId, error, isLoading } = state.auth;
-  return { userId, error, isLoading };
+ResetPasswordView.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+ResetPasswordView.defaultProps = {
+  error: null,
+};
+
+const mapStateToProps = (state) => {
+  const { isLoading, error } = state.auth.setNewPassword;
+  return { isLoading, error };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  setNewPassword: (password, token) => dispatch(setNewPasswordAction(password, token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordView);

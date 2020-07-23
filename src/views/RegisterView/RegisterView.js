@@ -17,7 +17,7 @@ import {
 import { Formik, Form } from 'formik';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { routes } from 'routes';
-import AuthTemplate from 'templates/AuthTemplate/AuthTemplate';
+
 import { signUp as signUpAction, clean as cleanAction } from 'actions';
 import { RegisterSchema } from 'validation';
 
@@ -62,7 +62,7 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
 
   const classes = useStyles();
   return (
-    <AuthTemplate>
+    <>
       <div className={classes.headerText}>
         <Button component={Link} to="/login">
           <ArrowBackIcon /> <Typography variant="body2">Go back</Typography>
@@ -243,7 +243,7 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
           );
         }}
       </Formik>
-    </AuthTemplate>
+    </>
   );
 };
 

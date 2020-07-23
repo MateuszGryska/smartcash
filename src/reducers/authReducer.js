@@ -17,6 +17,10 @@ const initialState = {
     isLoading: false,
     error: null,
   },
+  setNewPassword: {
+    isLoading: false,
+    error: null,
+  },
   deleteUser: {
     isLoading: false,
     error: null,
@@ -234,6 +238,62 @@ const deleteUserFailure = (state, payload) => {
   };
 };
 
+const sendResetMailStart = (state) => {
+  return {
+    ...state,
+    isLoading: true,
+  };
+};
+
+const sendResetMailSuccess = (state, payload) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: payload.error,
+  };
+};
+
+const sendResetMailFailure = (state, payload) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: payload.error,
+  };
+};
+
+const setNewPasswordStart = (state) => {
+  return {
+    ...state,
+
+    setNewPassword: {
+      ...state.setNewPassword,
+      isLoading: true,
+    },
+  };
+};
+
+const setNewPasswordSuccess = (state, payload) => {
+  return {
+    ...state,
+    setNewPassword: {
+      ...state.setNewPassword,
+      isLoading: false,
+      error: payload.error,
+    },
+  };
+};
+
+const setNewPasswordFailure = (state, payload) => {
+  return {
+    ...state,
+    setNewPassword: {
+      ...state.setNewPassword,
+      isLoading: false,
+      error: payload.error,
+    },
+  };
+};
+
 const cleanUp = (state) => {
   return {
     ...state,
@@ -296,9 +356,20 @@ export default (state = initialState, { type, payload }) => {
       return updatePasswordSuccess(state, payload);
     case authTypes.UPDATE_PASSWORD_FAILURE:
       return updatePasswordFailure(state, payload);
+    case authTypes.SEND_RESET_MAIL_START:
+      return sendResetMailStart(state);
+    case authTypes.SEND_RESET_MAIL_SUCCESS:
+      return sendResetMailSuccess(state, payload);
+    case authTypes.SEND_RESET_MAIL_FAILURE:
+      return sendResetMailFailure(state, payload);
+    case authTypes.SET_NEW_PASSWORD_START:
+      return setNewPasswordStart(state);
+    case authTypes.SET_NEW_PASSWORD_SUCCESS:
+      return setNewPasswordSuccess(state, payload);
+    case authTypes.SET_NEW_PASSWORD_FAILURE:
+      return setNewPasswordFailure(state, payload);
     case authTypes.DELETE_USER_START:
       return deleteUserStart(state);
-
     case authTypes.DELETE_USER_FAIL:
       return deleteUserFailure(state, payload);
 

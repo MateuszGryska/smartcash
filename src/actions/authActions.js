@@ -204,6 +204,54 @@ export const deleteUser = () => (dispatch, getState) => {
     });
 };
 
+export const sendResetPasswordMail = (email) => (dispatch) => {
+  dispatch({ type: authTypes.SEND_RESET_MAIL_START });
+
+  return axios
+    .post(`${process.env.REACT_APP_BACKEND_URL}/users/reset-password`, {
+      ...email,
+    })
+    .then(({ data }) => {
+      dispatch({
+        type: authTypes.SEND_RESET_MAIL_SUCCESS,
+        payload: {
+          error: data.message,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err.response);
+      dispatch({
+        type: authTypes.SEND_RESET_MAIL_FAILURE,
+        payload: { error: err.response.data.message },
+      });
+    });
+};
+
+export const setNewPassword = (password, resetToken) => (dispatch) => {
+  dispatch({ type: authTypes.SET_NEW_PASSWORD_START });
+
+  return axios
+    .post(`${process.env.REACT_APP_BACKEND_URL}/users/new-password/`, {
+      ...password,
+      resetToken,
+    })
+    .then(({ data }) => {
+      dispatch({
+        type: authTypes.SET_NEW_PASSWORD_SUCCESS,
+        payload: {
+          error: data.message,
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: authTypes.SET_NEW_PASSWORD_FAILURE,
+        payload: { error: err.response.data.message },
+      });
+    });
+};
+
 // clean up messages
 export const clean = () => ({
   type: authTypes.CLEAN_UP,

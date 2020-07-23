@@ -18,12 +18,11 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { PasswordSectionSchema } from 'validation';
 
 import { updatePassword as updatePasswordAction } from 'actions';
-
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 const PasswordSection = ({ isLoading, error, updatePassword }) => {
   const [showPassword, setShowPassword] = useState(false);

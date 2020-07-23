@@ -11,7 +11,10 @@ import theme from 'theme/mainTheme';
 import { routes } from 'routes';
 import LoginView from 'views/LoginView/';
 import RegisterView from 'views/RegisterView/';
+import SendResetMailView from 'views/SendResetMailView';
+import ResetPasswordView from 'views/ResetPasswordView';
 import UserTemplate from 'templates/UserTemplate';
+import AuthTemplate from 'templates/AuthTemplate';
 import { setUserId as setUserIdAction, logout as logoutAction } from 'actions';
 
 // add corner radius to chart
@@ -51,11 +54,18 @@ function Root({ token, setUser, expiration, logout }) {
     );
   } else {
     routesWhenLoggedIn = (
-      <Switch>
-        <Route exact path={routes.login} component={LoginView} />
-        <Route exact path={routes.register} component={RegisterView} />
-        <Redirect to={routes.login} />
-      </Switch>
+      <>
+        <AuthTemplate>
+          <Switch>
+            <Route exact path={routes.home} render={() => <Redirect to="/login" />} />
+            <Route path={routes.login} component={LoginView} />
+            <Route path={routes.register} component={RegisterView} />
+            <Route path={routes.sendResetMail} component={SendResetMailView} />
+            <Route path={routes.resetPassword} component={ResetPasswordView} />
+            <Redirect to={routes.login} />
+          </Switch>
+        </AuthTemplate>
+      </>
     );
   }
 

@@ -16,4 +16,6 @@ export {
   updatePassword,
   logout,
   clean,
+  sendResetPasswordMail,
+  setNewPassword,
 } from 'actions/authActions';

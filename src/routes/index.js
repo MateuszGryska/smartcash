@@ -8,4 +8,6 @@ export const routes = {
   login: '/login',
   register: '/register',
   recover: '/recover',
+  resetPassword: '/reset/:resetToken',
+  sendResetMail: '/send-reset-mail/',
 };
