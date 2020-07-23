@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
 import { BudgetListTable, Toolbar, BudgetListModal } from 'views/BudgetListView/components';
-import UserTemplate from 'templates/UserTemplate';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,30 +47,28 @@ const BudgetListView = ({
   const classes = useStyles();
 
   return (
-    <UserTemplate>
-      <div className={classes.root}>
-        <Toolbar
-          handleOpen={() => setModalVisibility(true)}
-          handleSearchInputChange={handleSearchInputChange}
-        />
-        <div className={classes.content}>
-          <BudgetListTable
-            searchItem={searchItem}
-            budgetElements={budgetElements}
-            wallets={wallets}
-            categories={categories}
-            error={error}
-            isLoading={isLoading}
-          />
-        </div>
-        <BudgetListModal
-          open={isModalVisible}
-          handleClose={() => setModalVisibility(false)}
+    <div className={classes.root}>
+      <Toolbar
+        handleOpen={() => setModalVisibility(true)}
+        handleSearchInputChange={handleSearchInputChange}
+      />
+      <div className={classes.content}>
+        <BudgetListTable
+          searchItem={searchItem}
+          budgetElements={budgetElements}
           wallets={wallets}
           categories={categories}
+          error={error}
+          isLoading={isLoading}
         />
       </div>
-    </UserTemplate>
+      <BudgetListModal
+        open={isModalVisible}
+        handleClose={() => setModalVisibility(false)}
+        wallets={wallets}
+        categories={categories}
+      />
+    </div>
   );
 };
 

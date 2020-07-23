@@ -11,7 +11,7 @@ import theme from 'theme/mainTheme';
 import { routes } from 'routes';
 import LoginView from 'views/LoginView/';
 import RegisterView from 'views/RegisterView/';
-
+import UserTemplate from 'templates/UserTemplate';
 import { setUserId as setUserIdAction, logout as logoutAction } from 'actions';
 
 // add corner radius to chart
@@ -36,15 +36,17 @@ function Root({ token, setUser, expiration, logout }) {
   if (tokenId || token) {
     routesWhenLoggedIn = (
       <Switch>
-        <Suspense fallback={<LinearProgress />}>
-          <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
-          <Route exact path={routes.dashboard} component={DashboardView} />
-          <Route exact path={routes.budgetlist} component={BudgetListView} />
-          <Route exact path={routes.budgetcategories} component={BudgetCategoriesView} />
-          <Route exact path={routes.wallets} component={WalletsView} />
-          <Route exact path={routes.settings} component={SettingsView} />
-          <Redirect to={routes.home} />
-        </Suspense>
+        <UserTemplate>
+          <Suspense fallback={<LinearProgress />}>
+            <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
+            <Route exact path={routes.dashboard} component={DashboardView} />
+            <Route exact path={routes.budgetlist} component={BudgetListView} />
+            <Route exact path={routes.budgetcategories} component={BudgetCategoriesView} />
+            <Route exact path={routes.wallets} component={WalletsView} />
+            <Route exact path={routes.settings} component={SettingsView} />
+            <Redirect to={routes.home} />
+          </Suspense>
+        </UserTemplate>
       </Switch>
     );
   } else {

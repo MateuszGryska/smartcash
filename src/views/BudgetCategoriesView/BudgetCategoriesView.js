@@ -10,8 +10,6 @@ import {
   Toolbar,
 } from 'views/BudgetCategoriesView/components';
 
-import UserTemplate from 'templates/UserTemplate';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
@@ -123,19 +121,17 @@ const BudgetCategoriesView = ({
   }
 
   return (
-    <UserTemplate>
-      <div className={classes.root}>
-        <Toolbar
-          handleSearchInputChange={handleSearchInputChange}
-          handleOpen={() => setModalVisibility(true)}
-        />
-        <>
-          {renderData}
+    <div className={classes.root}>
+      <Toolbar
+        handleSearchInputChange={handleSearchInputChange}
+        handleOpen={() => setModalVisibility(true)}
+      />
+      <>
+        {renderData}
 
-          <CategoriesModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
-        </>
-      </div>
-    </UserTemplate>
+        <CategoriesModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
+      </>
+    </div>
   );
 };
 

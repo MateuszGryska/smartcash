@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, CircularProgress, Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import UserTemplate from 'templates/UserTemplate/UserTemplate';
 import DeleteModal from 'components/DeleteModal';
 import { AccountDetails, ProfileDetails, PasswordSection } from 'views/SettingsView/components';
 
@@ -53,7 +52,7 @@ const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading, cleanU
 
   const classes = useStyles();
   return (
-    <UserTemplate>
+    <>
       {isLoading ? (
         <div className={classes.loading}>
           <CircularProgress />
@@ -85,7 +84,7 @@ const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading, cleanU
           </Grid>
         </div>
       )}
-    </UserTemplate>
+    </>
   );
 };
 
