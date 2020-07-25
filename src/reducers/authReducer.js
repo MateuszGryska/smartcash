@@ -245,11 +245,11 @@ const sendResetMailStart = (state) => {
   };
 };
 
-const sendResetMailSuccess = (state, payload) => {
+const sendResetMailSuccess = (state) => {
   return {
     ...state,
     isLoading: false,
-    error: payload.error,
+    error: false,
   };
 };
 
@@ -272,13 +272,13 @@ const setNewPasswordStart = (state) => {
   };
 };
 
-const setNewPasswordSuccess = (state, payload) => {
+const setNewPasswordSuccess = (state) => {
   return {
     ...state,
     setNewPassword: {
       ...state.setNewPassword,
       isLoading: false,
-      error: payload.error,
+      error: false,
     },
   };
 };

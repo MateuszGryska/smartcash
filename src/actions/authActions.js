@@ -211,12 +211,9 @@ export const sendResetPasswordMail = (email) => (dispatch) => {
     .post(`${process.env.REACT_APP_BACKEND_URL}/users/reset-password`, {
       ...email,
     })
-    .then(({ data }) => {
+    .then(() => {
       dispatch({
         type: authTypes.SEND_RESET_MAIL_SUCCESS,
-        payload: {
-          error: data.message,
-        },
       });
     })
     .catch((err) => {
@@ -236,12 +233,9 @@ export const setNewPassword = (password, resetToken) => (dispatch) => {
       ...password,
       resetToken,
     })
-    .then(({ data }) => {
+    .then(() => {
       dispatch({
         type: authTypes.SET_NEW_PASSWORD_SUCCESS,
-        payload: {
-          error: data.message,
-        },
       });
     })
     .catch((err) => {

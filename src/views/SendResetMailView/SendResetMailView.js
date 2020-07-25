@@ -12,6 +12,7 @@ import {
   TextField,
   Button,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { routes } from 'routes';
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SendResetMailView = ({ sendResetPasswordMail, cleanUp, userId, error, isLoading }) => {
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     return () => {
       cleanUp();
@@ -74,8 +76,9 @@ const SendResetMailView = ({ sendResetPasswordMail, cleanUp, userId, error, isLo
           email: '',
         }}
         validationSchema={ResetSchema}
-        onSubmit={(values) => {
-          sendResetPasswordMail(values);
+        onSubmit={async (values) => {
+          await sendResetPasswordMail(values);
+          enqueueSnackbar('Check your email to reset your password.', { variant: 'info' });
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -15,6 +15,7 @@ import {
   InputAdornment,
   IconButton,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
@@ -42,7 +43,14 @@ const useStyles = makeStyles((theme) => ({
 
 const ResetPasswordView = ({ isLoading, error, setNewPassword }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [toLogin, setToLogin] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (isLoading === false && error === false) {
+      enqueueSnackbar('Password has been changed.', { variant: 'success' });
+    }
+  }, [error, isLoading, enqueueSnackbar]);
 
   const classes = useStyles();
   const { resetToken } = useParams();
@@ -59,9 +67,8 @@ const ResetPasswordView = ({ isLoading, error, setNewPassword }) => {
       <Formik
         initialValues={{ password: '', confirmPassword: '' }}
         validationSchema={PasswordSectionSchema}
-        onSubmit={(values) => {
-          setNewPassword(values, resetToken);
-          setToLogin(true);
+        onSubmit={async (values) => {
+          await setNewPassword(values, resetToken);
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => {
@@ -147,6 +154,13 @@ const ResetPasswordView = ({ isLoading, error, setNewPassword }) => {
                         </Button>
                       </Grid>
                       <Grid item md={12} xs={12}>
+                        {isLoading === false && error === false ? (
+                          <>
+                            <Redirect to="/login" />
+                          </>
+                        ) : null}
+                      </Grid>
+                      <Grid item md={12} xs={12}>
                         <Typography className={classes.error} variant="body2" color="error">
                           {error || null}
                         </Typography>
@@ -155,7 +169,7 @@ const ResetPasswordView = ({ isLoading, error, setNewPassword }) => {
                   </Form>
                 </Grid>
               </Grid>
-              {toLogin ? <Redirect to="/login" /> : null}
+              {/* {toLogin ? : null} */}
             </CardContent>
           );
         }}
@@ -166,7 +180,7 @@ const ResetPasswordView = ({ isLoading, error, setNewPassword }) => {
 
 ResetPasswordView.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.bool,
 };
 
 ResetPasswordView.defaultProps = {
