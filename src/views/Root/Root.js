@@ -39,17 +39,19 @@ function Root({ token, setUser, expiration, logout }) {
   if (tokenId || token) {
     routesWhenLoggedIn = (
       <Switch>
-        <UserTemplate>
-          <Suspense fallback={<LinearProgress />}>
-            <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
-            <Route exact path={routes.dashboard} component={DashboardView} />
-            <Route exact path={routes.budgetlist} component={BudgetListView} />
-            <Route exact path={routes.budgetcategories} component={BudgetCategoriesView} />
-            <Route exact path={routes.wallets} component={WalletsView} />
-            <Route exact path={routes.settings} component={SettingsView} />
-            <Redirect to={routes.home} />
-          </Suspense>
-        </UserTemplate>
+        <>
+          <UserTemplate>
+            <Suspense fallback={<LinearProgress />}>
+              <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
+              <Route exact path={routes.dashboard} component={DashboardView} />
+              <Route exact path={routes.budgetlist} component={BudgetListView} />
+              <Route exact path={routes.budgetcategories} component={BudgetCategoriesView} />
+              <Route exact path={routes.wallets} component={WalletsView} />
+              <Route exact path={routes.settings} component={SettingsView} />
+              <Redirect to={routes.home} />
+            </Suspense>
+          </UserTemplate>
+        </>
       </Switch>
     );
   } else {
