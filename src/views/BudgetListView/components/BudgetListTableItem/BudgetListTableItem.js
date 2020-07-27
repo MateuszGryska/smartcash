@@ -70,7 +70,7 @@ const BudgetListTableItem = ({
       <TableCell>{newDate}</TableCell>
       <TableCell>{name}</TableCell>
       <TableCell>{wallet}</TableCell>
-      <TableCell>
+      <TableCell align="right">
         {type === 'income' ? (
           <Typography color="inherit">${amount}</Typography>
         ) : (

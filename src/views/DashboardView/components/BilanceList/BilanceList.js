@@ -17,14 +17,13 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Tooltip,
-  TableSortLabel,
   LinearProgress,
 } from '@material-ui/core';
 
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import BudgetListModal from 'views/BudgetListView/components/BudgetListModal';
 import { getName } from 'utils';
+import { headCells } from 'views/BudgetListView/components/BudgetListTable/headCells';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -69,30 +68,37 @@ const BilanceList = ({ budgetElements, wallets, categories, isLoading }) => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell sortDirection="desc">
-                        <Tooltip enterDelay={300} title="Sort">
-                          <TableSortLabel active direction="desc">
-                            Date
-                          </TableSortLabel>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Wallet</TableCell>
-                      <TableCell>Amount</TableCell>
-                      <TableCell>Category</TableCell>
+                      {headCells.map(({ label, id, numeric, disablePadding }) => (
+                        <TableCell
+                          key={id}
+                          align={numeric ? 'right' : 'left'}
+                          padding={disablePadding ? 'none' : 'default'}
+                        >
+                          {label}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
-                    {budgetElements.map((item) => (
-                      <TableRow hover key={item.id}>
-                        <TableCell>{format(parseISO(item.date), 'dd.MM.yyyy')}</TableCell>
-                        <TableCell>{item.name}</TableCell>
-                        <TableCell>{getName(item.wallet, wallets)}</TableCell>
-                        <TableCell>${item.amount}</TableCell>
-                        <TableCell>{getName(item.category, categories)}</TableCell>
-                      </TableRow>
-                    ))}
+                    {[...budgetElements]
+                      .reverse()
+                      .slice(0, 5)
+                      .map((item) => (
+                        <TableRow hover key={item.id}>
+                          <TableCell>{format(parseISO(item.date), 'dd.MM.yyyy')}</TableCell>
+                          <TableCell>{item.name}</TableCell>
+                          <TableCell>{getName(item.wallet, wallets)}</TableCell>
+                          <TableCell align="right">
+                            {item.type === 'income' ? (
+                              <Typography color="inherit">${item.amount}</Typography>
+                            ) : (
+                              <Typography color="error">${item.amount}</Typography>
+                            )}
+                          </TableCell>
+                          <TableCell>{getName(item.category, categories)}</TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               ) : (

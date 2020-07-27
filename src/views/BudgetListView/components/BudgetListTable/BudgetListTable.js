@@ -14,7 +14,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
   TableSortLabel,
   TablePagination,
@@ -28,6 +27,7 @@ import DeleteModal from 'components/DeleteModal';
 import { getName } from 'utils';
 
 import { deleteElements as deleteElementsAction, clean as cleanUpAction } from 'actions';
+import { headCells } from './headCells';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -64,6 +64,9 @@ const BudgetListTable = ({
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  // table sort
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('calories');
   // delete hooks
   const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -126,14 +129,42 @@ const BudgetListTable = ({
     setSelectedItems([]);
   };
 
-  // change id to name
-  // const getName = (itemId, itemType) => {
-  //   if (categories) {
-  //     const itemName = itemType.find((item) => item.id === itemId);
-  //     return itemName.name;
-  //   }
-  //   return 'Item name cannot be added!';
-  // };
+  // handle sorting
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  const createSortHandler = (property) => (event) => {
+    handleRequestSort(event, property);
+  };
+
+  function descendingComparator(a, b, insideOrderBy) {
+    if (b[insideOrderBy] < a[insideOrderBy]) {
+      return -1;
+    }
+    if (b[insideOrderBy] > a[insideOrderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function getComparator(insideOrder, insideOrderBy) {
+    return insideOrder === 'desc'
+      ? (a, b) => descendingComparator(a, b, insideOrderBy)
+      : (a, b) => -descendingComparator(a, b, insideOrderBy);
+  }
+
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const insideOrder = comparator(a[0], b[0]);
+      if (insideOrder !== 0) return insideOrder;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
 
   return (
     <Card className={classes.root}>
@@ -163,22 +194,28 @@ const BudgetListTable = ({
                               onChange={handleSelectAll}
                             />
                           </TableCell>
-                          <TableCell sortDirection="desc">
-                            <Tooltip enterDelay={300} title="Sort">
-                              <TableSortLabel active direction="desc">
-                                Date
+                          {headCells.map((headCell) => (
+                            <TableCell
+                              sortDirection={orderBy === headCell.id ? order : false}
+                              key={headCell.id}
+                              align={headCell.numeric ? 'right' : 'left'}
+                              padding={headCell.disablePadding ? 'none' : 'default'}
+                            >
+                              <TableSortLabel
+                                active={orderBy === headCell.id}
+                                direction={orderBy === headCell.id ? order : 'asc'}
+                                onClick={createSortHandler(headCell.id)}
+                              >
+                                {headCell.label}
                               </TableSortLabel>
-                            </Tooltip>
-                          </TableCell>
-                          <TableCell>Name</TableCell>
-                          <TableCell>Wallet</TableCell>
-                          <TableCell>Amount</TableCell>
-                          <TableCell>Category</TableCell>
+                            </TableCell>
+                          ))}
+
                           <TableCell>Actions</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {budgetElements
+                        {stableSort(budgetElements, getComparator(order, orderBy))
                           .filter(
                             ({ name, category, wallet }) =>
                               name.toLowerCase().includes(searchItem.toLowerCase()) ||

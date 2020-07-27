@@ -30,8 +30,6 @@ Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
   draw: chartjs.draw,
 });
 
-// let expirationTimer;
-
 function Root({ token, setUser, expiration, logout }) {
   const { tokenId } = useAuth(setUser, expiration, token, logout);
 
