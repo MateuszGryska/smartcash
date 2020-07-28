@@ -27,7 +27,7 @@ import DeleteModal from 'components/DeleteModal';
 import { getName } from 'utils';
 
 import { deleteElements as deleteElementsAction, clean as cleanUpAction } from 'actions';
-import { headCells } from './headCells';
+import { headCells } from './data';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -51,7 +51,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-// const BudgetListTable = ({ searchItem, budgetElements, wallets, categories, error, isLoading }) => {
 const BudgetListTable = ({
   searchItem,
   budgetElements,
@@ -59,6 +58,8 @@ const BudgetListTable = ({
   categories,
   deleteElements,
   cleanUp,
+  error,
+  isLoading,
 }) => {
   // table hooks
   const [selectedItems, setSelectedItems] = useState([]);
@@ -170,14 +171,14 @@ const BudgetListTable = ({
     <Card className={classes.root}>
       {' '}
       <>
-        {!budgetElements ? (
+        {!budgetElements && isLoading ? (
           <div className={classes.loading}>
             <CircularProgress />
           </div>
         ) : (
           <>
             <CardContent className={classes.content}>
-              {budgetElements.length > 0 ? (
+              {budgetElements.length > 0 && !error ? (
                 <PerfectScrollbar>
                   <div className={classes.inner}>
                     <Table>
@@ -247,7 +248,7 @@ const BudgetListTable = ({
                 </PerfectScrollbar>
               ) : (
                 <Typography align="center" variant="h3">
-                  You don&#39;t have any data, add new one!
+                  {error || 'You don&#39;t have any data, add new one!'}
                 </Typography>
               )}
             </CardContent>

@@ -24,6 +24,7 @@ import {
   fetchDataByUserId as fetchDataByUserIdAction,
 } from 'actions/index';
 import { BudgetListModalSchema } from 'validation';
+import { itemTypes } from 'helpers/itemTypes';
 
 const EditBudgetElementModal = React.memo(
   ({
@@ -44,10 +45,9 @@ const EditBudgetElementModal = React.memo(
   }) => {
     useEffect(() => {
       if (!wallets && !categories) {
-        fetchDataByUserId('wallets', 'wallets');
-        fetchDataByUserId('categories', 'categories');
+        fetchDataByUserId(itemTypes.wallets);
+        fetchDataByUserId(itemTypes.categories);
       }
-
       // eslint-disable-next-line
     }, []);
 
@@ -62,7 +62,7 @@ const EditBudgetElementModal = React.memo(
             if (!isLoading && error === null) {
               enqueueSnackbar('Updated element!', { variant: 'success' });
             }
-            fetchDataByUserId('budgetElements', 'budgetElements');
+            fetchDataByUserId('budgetElements');
           }}
         >
           {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -238,7 +238,7 @@ EditBudgetElementModal.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   updateElement: (itemType, id, content) => dispatch(updateElementAction(itemType, id, content)),
-  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
 });
 
 const mapStateToProps = (state) => {

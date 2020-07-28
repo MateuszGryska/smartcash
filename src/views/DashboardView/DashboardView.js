@@ -11,6 +11,8 @@ import {
   getUserById as getUserByIdAction,
 } from 'actions';
 
+import { itemTypes } from 'helpers/itemTypes';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
@@ -32,17 +34,17 @@ const DashboardView = ({
   userId,
 }) => {
   useEffect(() => {
-    fetchDataByUserId('categories', 'categories');
+    fetchDataByUserId(itemTypes.categories);
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    fetchDataByUserId('budgetElements', 'budgetElements');
+    fetchDataByUserId(itemTypes.budgetElements);
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    fetchDataByUserId('wallets', 'wallets');
+    fetchDataByUserId(itemTypes.wallets);
     // eslint-disable-next-line
   }, []);
 
@@ -136,7 +138,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
   getUserById: () => dispatch(getUserByIdAction()),
 });
 

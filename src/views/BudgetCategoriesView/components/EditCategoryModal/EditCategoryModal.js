@@ -24,6 +24,7 @@ import {
 } from 'actions';
 
 import { CategoriesModalSchema } from 'validation';
+import { itemTypes } from 'helpers/itemTypes';
 
 const EditCategoryModal = ({
   open,
@@ -47,7 +48,7 @@ const EditCategoryModal = ({
           if (!isLoading && error === null) {
             enqueueSnackbar('Updated category!', { variant: 'success' });
           }
-          fetchDataByUserId('categories', 'categories');
+          fetchDataByUserId(itemTypes.categories);
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -139,7 +140,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   updateElement: (itemType, id, content) => dispatch(updateElementAction(itemType, id, content)),
-  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditCategoryModal);

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Divider, Typography, CircularProgress } from '@material-ui/core';
 import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
+import { itemTypes } from 'helpers/itemTypes';
 
 import {
   BudgetCategoryCard,
@@ -34,7 +35,7 @@ const BudgetCategoriesView = ({
   deleteElement,
 }) => {
   useEffect(() => {
-    fetchDataByUserId();
+    fetchDataByUserId(itemTypes.categories);
     // eslint-disable-next-line
   }, []);
 
@@ -141,7 +142,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: () => dispatch(fetchDataByUserIdAction('categories', 'categories')),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetCategoriesView);

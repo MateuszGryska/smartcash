@@ -5,6 +5,7 @@ import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import { Toolbar, WalletCard, WalletsModal } from 'views/WalletsView/components';
 
 import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
+import { itemTypes } from 'helpers/itemTypes';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
   useEffect(() => {
-    fetchDataByUserId();
+    fetchDataByUserId(itemTypes.wallets);
     // eslint-disable-next-line
   }, []);
 
@@ -95,7 +96,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: () => dispatch(fetchDataByUserIdAction('wallets', 'wallets')),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletsView);
