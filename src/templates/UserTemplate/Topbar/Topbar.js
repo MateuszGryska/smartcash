@@ -10,7 +10,7 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
-import { logout as logoutAction } from '../../../actions';
+import { logout as logoutAction } from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,6 +68,15 @@ const Topbar = ({ className, onSidebarOpen, logout, ...rest }) => {
             <div className={classes.flexGrow} />
             <IconButton color="inherit" onClick={onSidebarOpen}>
               <MenuIcon fontSize="large" />
+            </IconButton>
+            <IconButton
+              as={Link}
+              to="/login"
+              className={classes.signOutButton}
+              color="inherit"
+              onClick={() => logout()}
+            >
+              <InputIcon fontSize="large" />
             </IconButton>
           </Hidden>
         </>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography, CircularProgress } from '@material-ui/core';
-import UserTemplate from 'templates/UserTemplate/UserTemplate';
 import { Toolbar, WalletCard, WalletsModal } from 'views/WalletsView/components';
 
 import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
@@ -75,20 +74,18 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
   }
 
   return (
-    <UserTemplate>
-      <div className={classes.root}>
-        <Toolbar
-          handleOpen={() => setModalVisibility(true)}
-          handleSearchInputChange={handleSearchInputChange}
-        />
+    <div className={classes.root}>
+      <Toolbar
+        handleOpen={() => setModalVisibility(true)}
+        handleSearchInputChange={handleSearchInputChange}
+      />
 
-        <>
-          <div className={classes.content}>{renderData}</div>
+      <>
+        <div className={classes.content}>{renderData}</div>
 
-          <WalletsModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
-        </>
-      </div>
-    </UserTemplate>
+        <WalletsModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
+      </>
+    </div>
   );
 };
 

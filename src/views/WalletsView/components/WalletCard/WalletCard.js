@@ -23,7 +23,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import EditWalletModal from 'views/WalletsView/components/EditWalletModal';
 import DeleteModal from 'components/DeleteModal/DeleteModal';
 
-import { deleteElement as deleteElementAction } from 'actions';
+import { deleteElement as deleteElementAction, clean as cleanUpAction } from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletCard = ({ sum, name, date, deleteElement, id, budgetElements }) => {
+const WalletCard = ({ sum, name, date, deleteElement, id, cleanUp }) => {
   const [isEditModalVisible, setEditModalVisibility] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -53,14 +53,8 @@ const WalletCard = ({ sum, name, date, deleteElement, id, budgetElements }) => {
   };
 
   const handleDeleteClick = async () => {
-    if (budgetElements.length > 0) {
-      enqueueSnackbar('Delete budget items before deleting the wallet!', {
-        variant: 'warning',
-      });
-    } else {
-      await deleteElement('wallets', id);
-      enqueueSnackbar('Deleted wallet!', { variant: 'success' });
-    }
+    await deleteElement('wallets', id);
+    enqueueSnackbar('Deleted wallet!', { variant: 'success' });
 
     setDeleteModalVisibility(false);
   };
@@ -111,6 +105,7 @@ const WalletCard = ({ sum, name, date, deleteElement, id, budgetElements }) => {
         open={isDeleteModalVisible}
         handleClose={handleClose}
         deleteFn={handleDeleteClick}
+        cleanUp={cleanUp}
       />
       <Menu
         id="simple-menu"
@@ -133,6 +128,7 @@ WalletCard.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+  cleanUp: () => dispatch(cleanUpAction()),
 });
 
 export default connect(null, mapDispatchToProps)(WalletCard);

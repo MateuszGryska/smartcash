@@ -5,6 +5,26 @@ const initialState = {
   user: {},
   isLoading: false,
   error: null,
+  getUser: {
+    isLoading: false,
+    error: null,
+  },
+  uploadImage: {
+    isLoading: false,
+    error: null,
+  },
+  updateUser: {
+    isLoading: false,
+    error: null,
+  },
+  setNewPassword: {
+    isLoading: false,
+    error: null,
+  },
+  deleteUser: {
+    isLoading: false,
+    error: null,
+  },
 };
 
 // helper functions
@@ -22,6 +42,7 @@ const authSuccess = (state, payload) => {
     token: payload.data.token,
     expiration: payload.expiration,
     isLoading: false,
+    error: false,
   };
 };
 
@@ -47,6 +68,7 @@ const signUpSuccess = (state, payload) => {
     token: payload.data.token,
     expiration: payload.expiration,
     isLoading: false,
+    error: false,
   };
 };
 
@@ -58,33 +80,13 @@ const signUpFailure = (state, payload) => {
   };
 };
 
-const editUserStart = (state) => {
-  return {
-    ...state,
-    isLoading: true,
-  };
-};
-
-const editUserSuccess = (state, payload) => {
-  return {
-    ...state,
-    users: [...state.users, payload],
-    isLoading: false,
-  };
-};
-
-const editUserFailure = (state, payload) => {
-  return {
-    ...state,
-    isLoading: false,
-    error: payload.error,
-  };
-};
-
 const getUserStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+    getUser: {
+      ...state.getUser,
+      isLoading: true,
+    },
   };
 };
 
@@ -92,23 +94,32 @@ const getUserSuccess = (state, payload) => {
   return {
     ...state,
     ...payload.data,
-    isLoading: false,
-    error: null,
+    getUser: {
+      ...state.getUser,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
 const getUserFailure = (state, payload) => {
   return {
     ...state,
-    isLoading: false,
-    error: payload.error,
+    getUser: {
+      ...state.getUser,
+      isLoading: false,
+      error: payload.error,
+    },
   };
 };
 
 const uploadUserImageStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+    uploadImage: {
+      ...state.uploadImage,
+      isLoading: true,
+    },
   };
 };
 
@@ -119,23 +130,33 @@ const uploadUserImageSuccess = (state, payload) => {
       ...state.user,
       ...payload.data,
     },
-    isLoading: false,
-    error: null,
+    uploadImage: {
+      ...state.uploadImage,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
 const uploadUserImageFailure = (state, payload) => {
   return {
     ...state,
-    isLoading: false,
-    error: payload.error,
+    uploadImage: {
+      ...state.uploadImage,
+      isLoading: false,
+      error: payload.error,
+    },
   };
 };
 
 const updateUserStart = (state) => {
   return {
     ...state,
-    isLoading: true,
+
+    updateUser: {
+      ...state.updateUser,
+      isLoading: true,
+    },
   };
 };
 
@@ -143,16 +164,156 @@ const updateUserSuccess = (state, payload) => {
   return {
     ...state,
     user: { ...payload.data.users },
-    isLoading: false,
-    error: null,
+    updateUser: {
+      ...state.updateUser,
+      isLoading: false,
+      error: false,
+    },
   };
 };
 
 const updateUserFailure = (state, payload) => {
   return {
     ...state,
+    updateUser: {
+      ...state.updateUser,
+      isLoading: false,
+      error: payload.error,
+    },
+  };
+};
+
+const updatePasswordStart = (state) => {
+  return {
+    ...state,
+
+    updatePassword: {
+      ...state.updatePassword,
+      isLoading: true,
+    },
+  };
+};
+
+const updatePasswordSuccess = (state, payload) => {
+  return {
+    ...state,
+    user: { ...payload.data.users },
+    updatePassword: {
+      ...state.updatePassword,
+      isLoading: false,
+      error: false,
+    },
+  };
+};
+
+const updatePasswordFailure = (state, payload) => {
+  return {
+    ...state,
+    updatePassword: {
+      ...state.updatePassword,
+      isLoading: false,
+      error: payload.error,
+    },
+  };
+};
+
+const deleteUserStart = (state) => {
+  return {
+    ...state,
+    deleteUser: {
+      ...state.deleteUser,
+      isLoading: true,
+    },
+  };
+};
+
+const deleteUserFailure = (state, payload) => {
+  return {
+    ...state,
+    deleteUser: {
+      ...state.deleteUser,
+      isLoading: false,
+      error: payload.error,
+    },
+  };
+};
+
+const sendResetMailStart = (state) => {
+  return {
+    ...state,
+    isLoading: true,
+  };
+};
+
+const sendResetMailSuccess = (state) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: false,
+  };
+};
+
+const sendResetMailFailure = (state, payload) => {
+  return {
+    ...state,
     isLoading: false,
     error: payload.error,
+  };
+};
+
+const setNewPasswordStart = (state) => {
+  return {
+    ...state,
+
+    setNewPassword: {
+      ...state.setNewPassword,
+      isLoading: true,
+    },
+  };
+};
+
+const setNewPasswordSuccess = (state) => {
+  return {
+    ...state,
+    setNewPassword: {
+      ...state.setNewPassword,
+      isLoading: false,
+      error: false,
+    },
+  };
+};
+
+const setNewPasswordFailure = (state, payload) => {
+  return {
+    ...state,
+    setNewPassword: {
+      ...state.setNewPassword,
+      isLoading: false,
+      error: payload.error,
+    },
+  };
+};
+
+const cleanUp = (state) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: null,
+    updateUser: {
+      ...state.updateUser,
+      isLoading: false,
+      error: null,
+    },
+    getUser: {
+      ...state.getUser,
+      isLoading: false,
+      error: null,
+    },
+    uploadImage: {
+      ...state.uploadImage,
+      isLoading: false,
+      error: null,
+    },
   };
 };
 
@@ -171,12 +332,6 @@ export default (state = initialState, { type, payload }) => {
       return signUpSuccess(state, payload);
     case authTypes.SIGNUP_FAILURE:
       return signUpFailure(state, payload);
-    case authTypes.EDIT_USER_START:
-      return editUserStart(state);
-    case authTypes.EDIT_USER_SUCCESS:
-      return editUserSuccess(state, payload);
-    case authTypes.EDIT_USER_FAILURE:
-      return editUserFailure(state, payload);
     case authTypes.GET_USER_START:
       return getUserStart(state);
     case authTypes.GET_USER_SUCCESS:
@@ -195,6 +350,31 @@ export default (state = initialState, { type, payload }) => {
       return updateUserSuccess(state, payload);
     case authTypes.UPDATE_USER_FAILURE:
       return updateUserFailure(state, payload);
+    case authTypes.UPDATE_PASSWORD_START:
+      return updatePasswordStart(state);
+    case authTypes.UPDATE_PASSWORD_SUCCESS:
+      return updatePasswordSuccess(state, payload);
+    case authTypes.UPDATE_PASSWORD_FAILURE:
+      return updatePasswordFailure(state, payload);
+    case authTypes.SEND_RESET_MAIL_START:
+      return sendResetMailStart(state);
+    case authTypes.SEND_RESET_MAIL_SUCCESS:
+      return sendResetMailSuccess(state, payload);
+    case authTypes.SEND_RESET_MAIL_FAILURE:
+      return sendResetMailFailure(state, payload);
+    case authTypes.SET_NEW_PASSWORD_START:
+      return setNewPasswordStart(state);
+    case authTypes.SET_NEW_PASSWORD_SUCCESS:
+      return setNewPasswordSuccess(state, payload);
+    case authTypes.SET_NEW_PASSWORD_FAILURE:
+      return setNewPasswordFailure(state, payload);
+    case authTypes.DELETE_USER_START:
+      return deleteUserStart(state);
+    case authTypes.DELETE_USER_FAIL:
+      return deleteUserFailure(state, payload);
+
+    case authTypes.CLEAN_UP:
+      return cleanUp(state);
     case 'SET_USER':
       return {
         ...state,

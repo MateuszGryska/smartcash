@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -13,13 +13,23 @@ import {
   FormHelperText,
   FormControl,
   Typography,
+  InputAdornment,
+  IconButton,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { PasswordSectionSchema } from 'validation';
 
-const PasswordSection = ({ isLoading, error }) => {
+import { updatePassword as updatePasswordAction } from 'actions';
+
+const PasswordSection = ({ isLoading, error, updatePassword }) => {
+  const [showPassword, setShowPassword] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
   return (
     <Card>
       <CardHeader title="Password" subheader="Update password" />
@@ -31,8 +41,8 @@ const PasswordSection = ({ isLoading, error }) => {
           confirmPassword: '',
         }}
         validationSchema={PasswordSectionSchema}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          await updatePassword(values);
           if (!isLoading && error === null) {
             enqueueSnackbar('Password has been updated!', { variant: 'success' });
           }
@@ -47,7 +57,7 @@ const PasswordSection = ({ isLoading, error }) => {
                     <TextField
                       fullWidth
                       label="Password"
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       margin="dense"
                       name="password"
                       onChange={handleChange}
@@ -56,8 +66,21 @@ const PasswordSection = ({ isLoading, error }) => {
                       value={values.password}
                       variant="outlined"
                       error={errors.password && touched.password}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.password && touched.password ? errors.password : null}
                     </FormHelperText>
                   </FormControl>
@@ -69,7 +92,7 @@ const PasswordSection = ({ isLoading, error }) => {
                       fullWidth
                       label="Confirm password"
                       margin="dense"
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       name="confirmPassword"
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -77,8 +100,21 @@ const PasswordSection = ({ isLoading, error }) => {
                       value={values.confirmPassword}
                       variant="outlined"
                       error={errors.confirmPassword && touched.confirmPassword}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.confirmPassword && touched.confirmPassword
                         ? errors.confirmPassword
                         : null}
@@ -119,4 +155,8 @@ const mapStateToProps = (state) => {
   return { isLoading, error };
 };
 
-export default connect(mapStateToProps)(PasswordSection);
+const mapDispatchToProps = (dispatch) => ({
+  updatePassword: (password) => dispatch(updatePasswordAction(password)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordSection);

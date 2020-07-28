@@ -32,47 +32,54 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletsCard = ({ wallets, isLoading }) => {
-  const classes = useStyles();
-  return (
-    <Card className={classes.root}>
-      <CardHeader title="Wallets" />
-      <Divider />
-      {isLoading ? (
-        <LinearProgress />
-      ) : (
-        <CardContent className={classes.content}>
-          <List>
-            {wallets.length > 0 ? (
-              wallets.map((wallet, i) => (
-                <WalletItem
-                  key={wallet.id}
-                  id={wallet.id}
-                  index={i}
-                  name={wallet.name}
-                  sum={wallet.sum}
-                  date={wallet.date}
-                  walletsLength={wallets.length}
-                  budgetElements={wallet.budgetElements}
-                />
-              ))
-            ) : (
-              <Typography align="center" variant="h3">
-                You don&#39;t have any wallets, add new one!
-              </Typography>
-            )}
-          </List>
-        </CardContent>
-      )}
+const WalletsCard = React.memo(
+  ({ wallets, isLoading }) => {
+    const classes = useStyles();
 
-      <Divider />
-      <CardActions className={classes.actions}>
-        <Button color="primary" size="large" variant="text" component={Link} to="/wallets">
-          View all <ArrowRightIcon />
-        </Button>
-      </CardActions>
-    </Card>
-  );
-};
+    return (
+      <Card className={classes.root}>
+        <CardHeader title="Wallets" />
+        <Divider />
+        {isLoading ? (
+          <LinearProgress />
+        ) : (
+          <CardContent className={classes.content}>
+            <List>
+              {wallets.length > 0 ? (
+                wallets.map((wallet, i) => (
+                  <WalletItem
+                    key={wallet.id}
+                    id={wallet.id}
+                    index={i}
+                    name={wallet.name}
+                    sum={wallet.sum}
+                    date={wallet.date}
+                    walletsLength={wallets.length}
+                    budgetElements={wallet.budgetElements}
+                  />
+                ))
+              ) : (
+                <Typography align="center" variant="h3">
+                  You don&#39;t have any wallets, add new one!
+                </Typography>
+              )}
+            </List>
+          </CardContent>
+        )}
+
+        <Divider />
+        <CardActions className={classes.actions}>
+          <Button color="primary" size="large" variant="text" component={Link} to="/wallets">
+            View all <ArrowRightIcon />
+          </Button>
+        </CardActions>
+      </Card>
+    );
+  },
+
+  (prevProps, nextProps) => {
+    return prevProps.wallets === nextProps.wallets;
+  },
+);
 
 export default WalletsCard;

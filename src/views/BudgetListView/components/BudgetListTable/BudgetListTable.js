@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -13,14 +14,20 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
   TableSortLabel,
   TablePagination,
   CircularProgress,
+  Button,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 
 import BudgetListTableItem from 'views/BudgetListView/components/BudgetListTableItem';
+import DeleteModal from 'components/DeleteModal';
+import { getName } from 'utils';
+
+import { deleteElements as deleteElementsAction, clean as cleanUpAction } from 'actions';
+import { headCells } from './headCells';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -35,7 +42,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
   },
   actions: {
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   loading: {
     display: 'flex',
@@ -45,13 +52,29 @@ const useStyles = makeStyles(() => ({
 }));
 
 // const BudgetListTable = ({ searchItem, budgetElements, wallets, categories, error, isLoading }) => {
-const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) => {
+const BudgetListTable = ({
+  searchItem,
+  budgetElements,
+  wallets,
+  categories,
+  deleteElements,
+  cleanUp,
+}) => {
+  // table hooks
   const [selectedItems, setSelectedItems] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  // table sort
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('calories');
+  // delete hooks
+  const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const classes = useStyles();
   /* eslint-disable */
+
+  // handle selected items
   const handleSelectAll = (event) => {
     let selectedItems;
 
@@ -93,20 +116,55 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
     setRowsPerPage(event.target.value);
   };
 
-  const getWalletName = (walletId) => {
-    if (wallets) {
-      const walletName = wallets.find((wallet) => wallet.id === walletId);
-      return walletName.name;
-    }
-    return 'ERROR';
+  // handle delete selected items
+
+  const handleDeleteModalClose = () => {
+    setDeleteModalVisibility(false);
   };
-  const getCategoryName = (categoryId) => {
-    if (categories) {
-      const categoryName = categories.find((category) => category.id === categoryId);
-      return categoryName.name;
-    }
-    return 'ERROR';
+
+  const handleDeleteClick = async () => {
+    await deleteElements('budgetElements', selectedItems);
+    enqueueSnackbar('Deleted elements!', { variant: 'warning' });
+    setDeleteModalVisibility(false);
+    setSelectedItems([]);
   };
+
+  // handle sorting
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  const createSortHandler = (property) => (event) => {
+    handleRequestSort(event, property);
+  };
+
+  function descendingComparator(a, b, insideOrderBy) {
+    if (b[insideOrderBy] < a[insideOrderBy]) {
+      return -1;
+    }
+    if (b[insideOrderBy] > a[insideOrderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function getComparator(insideOrder, insideOrderBy) {
+    return insideOrder === 'desc'
+      ? (a, b) => descendingComparator(a, b, insideOrderBy)
+      : (a, b) => -descendingComparator(a, b, insideOrderBy);
+  }
+
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const insideOrder = comparator(a[0], b[0]);
+      if (insideOrder !== 0) return insideOrder;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
 
   return (
     <Card className={classes.root}>
@@ -136,24 +194,37 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
                               onChange={handleSelectAll}
                             />
                           </TableCell>
-                          <TableCell sortDirection="desc">
-                            <Tooltip enterDelay={300} title="Sort">
-                              <TableSortLabel active direction="desc">
-                                Date
+                          {headCells.map((headCell) => (
+                            <TableCell
+                              sortDirection={orderBy === headCell.id ? order : false}
+                              key={headCell.id}
+                              align={headCell.numeric ? 'right' : 'left'}
+                              padding={headCell.disablePadding ? 'none' : 'default'}
+                            >
+                              <TableSortLabel
+                                active={orderBy === headCell.id}
+                                direction={orderBy === headCell.id ? order : 'asc'}
+                                onClick={createSortHandler(headCell.id)}
+                              >
+                                {headCell.label}
                               </TableSortLabel>
-                            </Tooltip>
-                          </TableCell>
-                          <TableCell>Name</TableCell>
-                          <TableCell>Wallet</TableCell>
-                          <TableCell>Amount</TableCell>
-                          <TableCell>Category</TableCell>
+                            </TableCell>
+                          ))}
+
                           <TableCell>Actions</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {budgetElements
-                          .filter((item) =>
-                            item.name.toLowerCase().includes(searchItem.toLowerCase()),
+                        {stableSort(budgetElements, getComparator(order, orderBy))
+                          .filter(
+                            ({ name, category, wallet }) =>
+                              name.toLowerCase().includes(searchItem.toLowerCase()) ||
+                              getName(category, categories)
+                                .toLowerCase()
+                                .includes(searchItem.toLowerCase()) ||
+                              getName(wallet, wallets)
+                                .toLowerCase()
+                                .includes(searchItem.toLowerCase()),
                           )
                           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                           .map(({ _id: id, name, date, wallet, amount, category, type }) => (
@@ -164,9 +235,9 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
                               selectedItems={selectedItems}
                               date={date}
                               type={type}
-                              wallet={getWalletName(wallet)}
+                              wallet={getName(wallet, wallets)}
                               amount={amount}
-                              category={getCategoryName(category)}
+                              category={getName(category, categories)}
                               handleSelectOne={handleSelectOne}
                             />
                           ))}
@@ -182,6 +253,14 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
             </CardContent>
             <Divider />
             <CardActions className={classes.actions}>
+              <Button
+                onClick={() => setDeleteModalVisibility(true)}
+                color="primary"
+                variant="contained"
+                disabled={selectedItems.length === 0}
+              >
+                Delete selected
+              </Button>
               <TablePagination
                 component="div"
                 count={budgetElements.length}
@@ -192,6 +271,12 @@ const BudgetListTable = ({ searchItem, budgetElements, wallets, categories }) =>
                 rowsPerPageOptions={[5, 10, 25]}
               />
             </CardActions>
+            <DeleteModal
+              open={isDeleteModalVisible}
+              handleClose={handleDeleteModalClose}
+              deleteFn={handleDeleteClick}
+              cleanUp={cleanUp}
+            />
           </>
         )}
       </>
@@ -213,4 +298,9 @@ BudgetListTable.defaultProps = {
   categories: [],
 };
 
-export default BudgetListTable;
+const mapDispatchToProps = (dispatch) => ({
+  deleteElements: (itemType, id) => dispatch(deleteElementsAction(itemType, id)),
+  cleanUp: () => dispatch(cleanUpAction()),
+});
+
+export default connect(null, mapDispatchToProps)(BudgetListTable);

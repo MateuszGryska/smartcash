@@ -9,13 +9,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useSnackbar } from 'notistack';
 import DeleteModal from 'components/DeleteModal/DeleteModal';
 
-import { deleteElement as deleteElementAction } from 'actions';
+import { deleteElement as deleteElementAction, clean as cleanUpAction } from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   walletValue: {
     paddingRight: '25px',
     paddingLeft: '5px',
+    width: '100px',
     color: theme.palette.success.main,
   },
 }));
@@ -29,6 +30,7 @@ const WalletItem = ({
   walletsLength,
   deleteElement,
   budgetElements,
+  cleanUp,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
@@ -73,6 +75,7 @@ const WalletItem = ({
         open={isDeleteModalVisible}
         handleClose={handleClose}
         deleteFn={handleDeleteClick}
+        cleanUp={cleanUp}
       />
       <Menu
         id="simple-menu"
@@ -98,6 +101,7 @@ WalletItem.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   deleteElement: (itemType, id) => dispatch(deleteElementAction(itemType, id)),
+  cleanUp: () => dispatch(cleanUpAction()),
 });
 
 export default connect(null, mapDispatchToProps)(WalletItem);

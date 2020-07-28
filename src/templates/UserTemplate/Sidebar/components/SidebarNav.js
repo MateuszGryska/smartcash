@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SidebarNav = ({ className, pages }) => {
+const SidebarNav = ({ className, pages, onClose }) => {
   const classes = useStyles();
 
   return (
@@ -51,6 +51,7 @@ const SidebarNav = ({ className, pages }) => {
             component={NavLink}
             to={page.href}
             exact={page.exact}
+            onClick={onClose}
           >
             <div className={classes.icon}>{page.icon}</div>
             {page.title}

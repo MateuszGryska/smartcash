@@ -1,12 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, CircularProgress } from '@material-ui/core';
-import UserTemplate from 'templates/UserTemplate/UserTemplate';
+import { Grid, CircularProgress, Button } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
+import DeleteModal from 'components/DeleteModal';
 import { AccountDetails, ProfileDetails, PasswordSection } from 'views/SettingsView/components';
 
-import { getUserById as getUserByIdAction } from 'actions';
+import {
+  getUserById as getUserByIdAction,
+  deleteUser as deleteUserAction,
+  logout as logoutAction,
+  clean as cleanUpAction,
+} from 'actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,17 +27,32 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     marginTop: '100px',
   },
+  deleteButton: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
-const SettingsView = ({ getUserById, user, isLoading }) => {
+const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading, cleanUp }) => {
+  const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     getUserById();
     // eslint-disable-next-line
   }, []);
 
+  const handleDeleteUser = async () => {
+    try {
+      await deleteUser();
+      logout();
+    } catch (err) {
+      enqueueSnackbar(`${err}`, { variant: 'error' });
+    }
+  };
+
   const classes = useStyles();
   return (
-    <UserTemplate>
+    <>
       {isLoading ? (
         <div className={classes.loading}>
           <CircularProgress />
@@ -49,11 +70,21 @@ const SettingsView = ({ getUserById, user, isLoading }) => {
               <Grid className={classes.passwordSection} item>
                 <PasswordSection />
               </Grid>
+              <Grid item className={classes.deleteButton}>
+                <Button onClick={() => setDeleteModalVisibility(true)}>Delete your account</Button>
+                <DeleteModal
+                  user
+                  handleClose={() => setDeleteModalVisibility(false)}
+                  deleteFn={handleDeleteUser}
+                  open={isDeleteModalVisible}
+                  cleanUp={cleanUp}
+                />
+              </Grid>
             </Grid>
           </Grid>
         </div>
       )}
-    </UserTemplate>
+    </>
   );
 };
 
@@ -79,6 +110,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getUserById: () => dispatch(getUserByIdAction()),
+  deleteUser: () => dispatch(deleteUserAction()),
+  cleanUp: () => dispatch(cleanUpAction()),
+  logout: () => dispatch(logoutAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);

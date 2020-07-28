@@ -1,20 +1,4 @@
-import palette from '../../../../theme/palette';
-
-export const data = {
-  labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug'],
-  datasets: [
-    {
-      label: 'Expense',
-      backgroundColor: palette.error.main,
-      data: [18, 5, 19, 27, 29, 19],
-    },
-    {
-      label: 'Income',
-      backgroundColor: palette.success.main,
-      data: [25, 23, 12, 29, 30, 25],
-    },
-  ],
-};
+import palette from 'theme/palette';
 
 export const options = {
   responsive: true,
@@ -37,10 +21,6 @@ export const options = {
   scales: {
     xAxes: [
       {
-        barThickness: 15,
-        maxBarThickness: 10,
-        barPercentage: 0.5,
-        categoryPercentage: 0.5,
         ticks: {
           fontColor: palette.text.secondary,
         },

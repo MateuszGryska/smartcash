@@ -11,7 +11,10 @@ import theme from 'theme/mainTheme';
 import { routes } from 'routes';
 import LoginView from 'views/LoginView/';
 import RegisterView from 'views/RegisterView/';
-
+import SendResetMailView from 'views/SendResetMailView';
+import ResetPasswordView from 'views/ResetPasswordView';
+import UserTemplate from 'templates/UserTemplate';
+import AuthTemplate from 'templates/AuthTemplate';
 import { setUserId as setUserIdAction, logout as logoutAction } from 'actions';
 
 // add corner radius to chart
@@ -27,8 +30,6 @@ Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
   draw: chartjs.draw,
 });
 
-// let expirationTimer;
-
 function Root({ token, setUser, expiration, logout }) {
   const { tokenId } = useAuth(setUser, expiration, token, logout);
 
@@ -36,24 +37,35 @@ function Root({ token, setUser, expiration, logout }) {
   if (tokenId || token) {
     routesWhenLoggedIn = (
       <Switch>
-        <Suspense fallback={<LinearProgress />}>
-          <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
-          <Route exact path={routes.dashboard} component={DashboardView} />
-          <Route exact path={routes.budgetlist} component={BudgetListView} />
-          <Route exact path={routes.budgetcategories} component={BudgetCategoriesView} />
-          <Route exact path={routes.wallets} component={WalletsView} />
-          <Route exact path={routes.settings} component={SettingsView} />
-          <Redirect to={routes.home} />
-        </Suspense>
+        <>
+          <UserTemplate>
+            <Suspense fallback={<LinearProgress />}>
+              <Route exact path={routes.home} render={() => <Redirect to="/dashboard" />} />
+              <Route exact path={routes.dashboard} component={DashboardView} />
+              <Route exact path={routes.budgetlist} component={BudgetListView} />
+              <Route exact path={routes.budgetcategories} component={BudgetCategoriesView} />
+              <Route exact path={routes.wallets} component={WalletsView} />
+              <Route exact path={routes.settings} component={SettingsView} />
+              <Redirect to={routes.home} />
+            </Suspense>
+          </UserTemplate>
+        </>
       </Switch>
     );
   } else {
     routesWhenLoggedIn = (
-      <Switch>
-        <Route exact path={routes.login} component={LoginView} />
-        <Route exact path={routes.register} component={RegisterView} />
-        <Redirect to={routes.login} />
-      </Switch>
+      <>
+        <AuthTemplate>
+          <Switch>
+            <Route exact path={routes.home} render={() => <Redirect to="/login" />} />
+            <Route path={routes.login} component={LoginView} />
+            <Route path={routes.register} component={RegisterView} />
+            <Route path={routes.sendResetMail} component={SendResetMailView} />
+            <Route path={routes.resetPassword} component={ResetPasswordView} />
+            <Redirect to={routes.login} />
+          </Switch>
+        </AuthTemplate>
+      </>
     );
   }
 

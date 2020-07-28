@@ -73,7 +73,7 @@ const EditCategoryModal = ({
                     value={values.name}
                     error={errors.name && touched.name}
                   />
-                  <FormHelperText>
+                  <FormHelperText error>
                     {errors.name && touched.name ? errors.name : null}
                   </FormHelperText>
                 </FormControl>
@@ -92,7 +92,7 @@ const EditCategoryModal = ({
                     <MenuItem value="income">Income</MenuItem>
                     <MenuItem value="expense">Expense</MenuItem>
                   </Select>
-                  <FormHelperText>
+                  <FormHelperText error>
                     {errors.type && touched.type ? errors.type : null}
                   </FormHelperText>
                 </FormControl>

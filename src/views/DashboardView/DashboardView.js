@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
+import { useComparisonData } from 'hooks/get-comparison-hook';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, CircularProgress } from '@material-ui/core';
-import UserTemplate from 'templates/UserTemplate/UserTemplate';
 import { BilanceList, WalletsCard, BilanceChart, SmallCard } from 'views/DashboardView/components';
 
 import {
@@ -53,72 +53,69 @@ const DashboardView = ({
     // eslint-disable-next-line
   }, []);
 
-  // get wallets sum total value
-  const walletsAllSumValues = [];
-  if (wallets && !isLoading) {
-    wallets.forEach((wallet) => walletsAllSumValues.push(wallet.sum));
-  }
-  const walletsTotal = walletsAllSumValues.reduce((w, sum) => w + sum, 0);
-
-  // get income and expense total value
-  const incomeAllSumValues = [];
-  const expenseAllSumValues = [];
-  if (categories && !isLoading) {
-    const filteredIncomes = categories.filter((item) => {
-      return item.type === 'income';
-    });
-    filteredIncomes.forEach((income) => incomeAllSumValues.push(income.sum));
-    const filteredExpenses = categories.filter((item) => {
-      return item.type === 'expense';
-    });
-    filteredExpenses.forEach((expense) => expenseAllSumValues.push(expense.sum));
-  }
-
-  const income = incomeAllSumValues.reduce((incomeTotal, sum) => incomeTotal + sum, 0);
-  const expense = expenseAllSumValues.reduce((expenseTotal, sum) => expenseTotal + sum, 0);
-
-  const total = income - expense;
+  const {
+    walletsTotal,
+    income,
+    expense,
+    lastMonthIncome,
+    lastMonthExpense,
+    total,
+    lastMonthTotal,
+  } = useComparisonData(budgetElements, categories, wallets, isLoading);
 
   const classes = useStyles();
   return (
-    <UserTemplate>
-      <div className={classes.root}>
-        <Grid container spacing={4}>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Budget" amount={walletsTotal} isLoading={isLoading} />
-          </Grid>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Income" amount={income} isLoading={isLoading} />
-          </Grid>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Expense" amount={expense} isLoading={isLoading} />
-          </Grid>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <SmallCard title="Total" amount={total} isLoading={isLoading} />
-          </Grid>
-          <Grid item lg={8} md={12} xl={9} xs={12}>
-            <BilanceChart />
-          </Grid>
-          <Grid item lg={4} md={12} xl={3} xs={12}>
-            <WalletsCard wallets={wallets} isLoading={isLoading} />
-          </Grid>
-          <Grid item lg={12} md={12} xl={12} xs={12}>
-            {isLoading ? (
-              <div className={classes.loading}>
-                <CircularProgress />
-              </div>
-            ) : (
-              <BilanceList
-                budgetElements={budgetElements}
-                wallets={wallets}
-                categories={categories}
-                isLoading={isLoading}
-              />
-            )}
-          </Grid>
+    <div className={classes.root}>
+      <Grid container spacing={4}>
+        <Grid item lg={3} sm={6} xl={3} xs={12}>
+          <SmallCard title="Budget" amount={walletsTotal} isLoading={isLoading} />
         </Grid>
-      </div>
-    </UserTemplate>
+        <Grid item lg={3} sm={6} xl={3} xs={12}>
+          <SmallCard
+            title="Incomes"
+            amount={income}
+            lastMonth={lastMonthIncome.toFixed(1)}
+            isLoading={isLoading}
+          />
+        </Grid>
+        <Grid item lg={3} sm={6} xl={3} xs={12}>
+          <SmallCard
+            title="Expenses"
+            amount={expense}
+            lastMonth={lastMonthExpense.toFixed(1)}
+            isLoading={isLoading}
+          />
+        </Grid>
+        <Grid item lg={3} sm={6} xl={3} xs={12}>
+          <SmallCard
+            title="Total"
+            amount={total}
+            lastMonth={lastMonthTotal.toFixed(1)}
+            isLoading={isLoading}
+          />
+        </Grid>
+        <Grid item lg={8} md={12} xl={9} xs={12}>
+          <BilanceChart budgetElements={budgetElements} />
+        </Grid>
+        <Grid item lg={4} md={12} xl={3} xs={12}>
+          <WalletsCard wallets={wallets} isLoading={isLoading} />
+        </Grid>
+        <Grid item lg={12} md={12} xl={12} xs={12}>
+          {isLoading ? (
+            <div className={classes.loading}>
+              <CircularProgress />
+            </div>
+          ) : (
+            <BilanceList
+              budgetElements={budgetElements}
+              wallets={wallets}
+              categories={categories}
+              isLoading={isLoading}
+            />
+          )}
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 

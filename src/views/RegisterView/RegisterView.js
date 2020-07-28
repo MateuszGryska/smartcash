@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, CardHeader, CardContent, Typography, TextField, Button } from '@material-ui/core';
+import {
+  Grid,
+  CardHeader,
+  CardContent,
+  Typography,
+  FormHelperText,
+  FormControl,
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton,
+} from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { routes } from 'routes';
-import AuthTemplate from 'templates/AuthTemplate/AuthTemplate';
-import { signUp as signUpAction } from 'actions';
+
+import { signUp as signUpAction, clean as cleanAction } from 'actions';
 import { RegisterSchema } from 'validation';
+
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -34,10 +48,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterView = ({ signUp, userId, error }) => {
+const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
   const classes = useStyles();
   return (
-    <AuthTemplate>
+    <>
       <div className={classes.headerText}>
         <Button component={Link} to="/login">
           <ArrowBackIcon /> <Typography variant="body2">Go back</Typography>
@@ -76,89 +101,122 @@ const RegisterView = ({ signUp, userId, error }) => {
                     <Form>
                       <Grid container spacing={2}>
                         <Grid item md={12} xs={12}>
-                          <TextField
-                            fullWidth
-                            label="First name"
-                            type="text"
-                            margin="none"
-                            name="firstName"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.firstName}
-                            variant="outlined"
-                            error={errors.firstName && touched.firstName}
-                            helperText={
-                              errors.firstName && touched.firstName ? errors.firstName : null
-                            }
-                          />
+                          <FormControl variant="outlined" fullWidth margin="dense">
+                            <TextField
+                              fullWidth
+                              label="First name"
+                              type="text"
+                              name="firstName"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.firstName}
+                              variant="outlined"
+                              error={errors.firstName && touched.firstName}
+                            />
+                            <FormHelperText error>
+                              {errors.firstName && touched.firstName ? errors.firstName : null}
+                            </FormHelperText>
+                          </FormControl>
                         </Grid>
                         <Grid item md={12} xs={12}>
-                          <TextField
-                            fullWidth
-                            label="Last name"
-                            type="text"
-                            margin="none"
-                            name="lastName"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.lastName}
-                            variant="outlined"
-                            error={errors.lastName && touched.lastName}
-                            helperText={
-                              errors.lastName && touched.lastName ? errors.lastName : null
-                            }
-                          />
+                          <FormControl variant="outlined" fullWidth margin="dense">
+                            <TextField
+                              fullWidth
+                              label="Last name"
+                              type="text"
+                              name="lastName"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.lastName}
+                              variant="outlined"
+                              error={errors.lastName && touched.lastName}
+                            />
+                            <FormHelperText error>
+                              {errors.lastName && touched.lastName ? errors.lastName : null}
+                            </FormHelperText>
+                          </FormControl>
                         </Grid>
                         <Grid item md={12} xs={12}>
-                          <TextField
-                            fullWidth
-                            label="Email Address"
-                            type="email"
-                            margin="none"
-                            name="email"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.email}
-                            variant="outlined"
-                            error={errors.email && touched.email}
-                            helperText={errors.email && touched.email ? errors.email : null}
-                          />
+                          <FormControl variant="outlined" fullWidth margin="dense">
+                            <TextField
+                              fullWidth
+                              label="Email Address"
+                              type="email"
+                              name="email"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.email}
+                              variant="outlined"
+                              error={errors.email && touched.email}
+                            />
+                            <FormHelperText error>
+                              {errors.email && touched.email ? errors.email : null}
+                            </FormHelperText>
+                          </FormControl>
                         </Grid>
                         <Grid item md={12} xs={12}>
-                          <TextField
-                            fullWidth
-                            label="Password"
-                            type="password"
-                            margin="none"
-                            name="password"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.password}
-                            variant="outlined"
-                            error={errors.password && touched.password}
-                            helperText={
-                              errors.password && touched.password ? errors.password : null
-                            }
-                          />
+                          <FormControl variant="outlined" fullWidth margin="dense">
+                            <TextField
+                              fullWidth
+                              label="Password"
+                              type={showPassword ? 'text' : 'password'}
+                              name="password"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.password}
+                              variant="outlined"
+                              error={errors.password && touched.password}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      aria-label="toggle password visibility"
+                                      onClick={handleClickShowPassword}
+                                      onMouseDown={handleMouseDownPassword}
+                                    >
+                                      {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                            <FormHelperText error>
+                              {errors.password && touched.password ? errors.password : null}
+                            </FormHelperText>
+                          </FormControl>
                         </Grid>
                         <Grid item md={12} xs={12}>
-                          <TextField
-                            fullWidth
-                            label="Confirm password"
-                            type="password"
-                            margin="none"
-                            name="confirmPassword"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.confirmPassword}
-                            variant="outlined"
-                            error={errors.confirmPassword && touched.confirmPassword}
-                            helperText={
-                              errors.confirmPassword && touched.confirmPassword
+                          <FormControl variant="outlined" fullWidth margin="dense">
+                            <TextField
+                              fullWidth
+                              label="Confirm password"
+                              type={showPassword ? 'text' : 'password'}
+                              name="confirmPassword"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.confirmPassword}
+                              variant="outlined"
+                              error={errors.confirmPassword && touched.confirmPassword}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      aria-label="toggle password visibility"
+                                      onClick={handleClickShowPassword}
+                                      onMouseDown={handleMouseDownPassword}
+                                    >
+                                      {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                            <FormHelperText error>
+                              {errors.confirmPassword && touched.confirmPassword
                                 ? errors.confirmPassword
-                                : null
-                            }
-                          />
+                                : null}
+                            </FormHelperText>
+                          </FormControl>
                         </Grid>
                         <Grid item md={12} xs={12}>
                           <Button
@@ -168,7 +226,7 @@ const RegisterView = ({ signUp, userId, error }) => {
                             type="submit"
                             disabled={!isValid}
                           >
-                            Sign up now
+                            {isLoading ? 'Signing up...' : 'Sign up now'}
                           </Button>
                         </Grid>
                         <Grid item md={12} xs={12}>
@@ -185,18 +243,19 @@ const RegisterView = ({ signUp, userId, error }) => {
           );
         }}
       </Formik>
-    </AuthTemplate>
+    </>
   );
 };
 
 const mapDispatchToProps = (dispatch) => ({
   signUp: (firstName, lastName, email, password) =>
     dispatch(signUpAction(firstName, lastName, email, password)),
+  cleanUp: () => dispatch(cleanAction()),
 });
 
 const mapStateToProps = (state) => {
-  const { userId, error } = state.auth;
-  return { userId, error };
+  const { userId, error, isLoading } = state.auth;
+  return { userId, error, isLoading };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);

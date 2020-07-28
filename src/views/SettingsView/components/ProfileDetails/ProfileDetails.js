@@ -16,10 +16,10 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
-import { editUser as editUserAction } from 'actions';
+import { updateUser as updateUserAction } from 'actions';
 import { ProfileDetailsSchema } from 'validation';
 
-const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
+const ProfileDetails = ({ updateUser, userData, isLoading, error }) => {
   const { enqueueSnackbar } = useSnackbar();
   return (
     <Card>
@@ -36,7 +36,7 @@ const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
         }}
         validationSchema={ProfileDetailsSchema}
         onSubmit={async (values) => {
-          await editUser(values);
+          await updateUser(values);
           if (!isLoading && error === null) {
             enqueueSnackbar('The user has been updated!', { variant: 'success' });
           }
@@ -60,7 +60,7 @@ const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.firstName && touched.firstName}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.firstName && touched.firstName ? errors.firstName : null}
                     </FormHelperText>
                   </FormControl>
@@ -79,7 +79,7 @@ const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.lastName && touched.lastName}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.lastName && touched.lastName ? errors.lastName : null}
                     </FormHelperText>
                   </FormControl>
@@ -99,7 +99,7 @@ const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.email && touched.email}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.email && touched.email ? errors.email : null}
                     </FormHelperText>
                   </FormControl>
@@ -118,7 +118,7 @@ const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.phoneNumber && touched.phoneNumber}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.phoneNumber && touched.phoneNumber ? errors.phoneNumber : null}
                     </FormHelperText>
                   </FormControl>
@@ -136,7 +136,7 @@ const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
                       variant="outlined"
                       error={errors.country && touched.country}
                     />
-                    <FormHelperText>
+                    <FormHelperText error>
                       {errors.country && touched.country ? errors.country : null}
                     </FormHelperText>
                   </FormControl>
@@ -151,7 +151,7 @@ const ProfileDetails = ({ editUser, userData, isLoading, error }) => {
             <Divider />
             <CardActions>
               <Button color="primary" variant="contained" type="submit" disabled={!isValid}>
-                Save details
+                {isLoading ? 'Saving...' : 'Save details'}
               </Button>
             </CardActions>
           </Form>
@@ -169,7 +169,7 @@ ProfileDetails.propTypes = {
     country: PropTypes.string.isRequired,
     phoneNumber: PropTypes.number.isRequired,
   }),
-  editUser: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string,
 };
@@ -180,12 +180,12 @@ ProfileDetails.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isLoading, error } = state.auth;
+  const { isLoading, error } = state.auth.updateUser;
   return { isLoading, error };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  editUser: (data) => dispatch(editUserAction(data)),
+  updateUser: (data) => dispatch(updateUserAction(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileDetails);

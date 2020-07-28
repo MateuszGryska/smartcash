@@ -10,7 +10,7 @@ import store from './store';
 ReactDOM.render(
   <React.StrictMode>
     <StylesProvider injectFirst>
-      <SnackbarProvider maxSnack="3">
+      <SnackbarProvider>
         <Provider store={store}>
           <Root />
         </Provider>

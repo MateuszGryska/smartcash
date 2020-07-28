@@ -33,8 +33,12 @@ const Toolbar = ({ handleOpen, handleSearchInputChange }) => {
     <div className={classes.root}>
       <div className={classes.row}>
         <span className={classes.spacer} />
-        <Button className={classes.importButton}>Import</Button>
-        <Button className={classes.exportButton}>Export</Button>
+        <Button disabled className={classes.importButton}>
+          Import
+        </Button>
+        <Button disabled className={classes.exportButton}>
+          Export
+        </Button>
         <Button onClick={handleOpen} color="primary" variant="contained">
           Add new
         </Button>
