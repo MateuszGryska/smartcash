@@ -146,6 +146,7 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
 PasswordSection.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string,
+  updatePassword: PropTypes.func.isRequired,
 };
 
 PasswordSection.defaultProps = {

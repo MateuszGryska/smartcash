@@ -142,6 +142,7 @@ BudgetCategoryCard.propTypes = {
   date: PropTypes.string.isRequired,
   deleteElement: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
+  cleanUp: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

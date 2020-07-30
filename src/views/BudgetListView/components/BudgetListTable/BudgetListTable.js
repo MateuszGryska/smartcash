@@ -290,6 +290,10 @@ BudgetListTable.propTypes = {
   budgetElements: PropTypes.arrayOf(PropTypes.object),
   wallets: PropTypes.arrayOf(PropTypes.object),
   categories: PropTypes.arrayOf(PropTypes.object),
+  deleteElements: PropTypes.func.isRequired,
+  cleanUp: PropTypes.func.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  isLoading: PropTypes.bool.isRequired,
 };
 
 BudgetListTable.defaultProps = {
@@ -297,6 +301,7 @@ BudgetListTable.defaultProps = {
   budgetElements: [],
   wallets: [],
   categories: [],
+  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({

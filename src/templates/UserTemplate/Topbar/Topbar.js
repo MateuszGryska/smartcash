@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Typography, Hidden, IconButton, Badge } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -33,12 +32,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Topbar = ({ className, onSidebarOpen, logout, ...rest }) => {
+const Topbar = ({ onSidebarOpen, logout }) => {
   const [notifications] = useState([]);
   const classes = useStyles();
 
   return (
-    <AppBar {...rest} className={clsx(classes.root, className)} position="fixed">
+    <AppBar className={classes.root} position="fixed">
       <Toolbar>
         <>
           <Link to="/dashboard" className={classes.logo}>
@@ -86,12 +85,7 @@ const Topbar = ({ className, onSidebarOpen, logout, ...rest }) => {
 };
 
 Topbar.propTypes = {
-  className: PropTypes.string,
   onSidebarOpen: PropTypes.func.isRequired,
-};
-
-Topbar.defaultProps = {
-  className: '',
 };
 
 const mapDispatchToProps = (dispatch) => ({

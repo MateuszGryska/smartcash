@@ -9,5 +9,5 @@ export const routes = {
   register: '/register',
   recover: '/recover',
   resetPassword: '/reset/:resetToken',
-  sendResetMail: '/send-reset-mail/',
+  sendResetMail: '/send-reset-mail',
 };

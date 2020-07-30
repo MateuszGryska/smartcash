@@ -101,6 +101,9 @@ SettingsView.propTypes = {
     image: PropTypes.string.isRequired,
   }).isRequired,
   isLoading: PropTypes.bool.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  cleanUp: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {

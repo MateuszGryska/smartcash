@@ -20,21 +20,13 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '400px',
     minWidth: '400px',
   },
-  appName: {
-    position: 'absolute',
-    bottom: '30px',
-    right: '20px',
-    color: theme.palette.white,
-    fontWeight: 'bold',
-    fontSize: '48px',
-  },
 }));
 
 const AuthTemplate = ({ children }) => {
   const classes = useStyles();
 
   return (
-    <main className={classes.root}>
+    <section className={classes.root}>
       <Grid
         container
         justify="center"
@@ -49,7 +41,7 @@ const AuthTemplate = ({ children }) => {
           <Card className={classes.children}>{children}</Card>
         </Grid>
       </Grid>
-    </main>
+    </section>
   );
 };
 

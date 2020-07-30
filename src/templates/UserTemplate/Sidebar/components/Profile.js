@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography, CircularProgress } from '@material-ui/core';
 
@@ -27,15 +26,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = ({ className, user, isLoading }) => {
+const Profile = ({ user, isLoading }) => {
   const classes = useStyles();
 
   return (
-    <div className={clsx(classes.root, className)}>
+    <div className={classes.root}>
       {isLoading ? (
-        <div className={classes.loading}>
+        <progress className={classes.loading}>
           <CircularProgress />
-        </div>
+        </progress>
       ) : (
         <>
           {user.image && (
@@ -56,11 +55,8 @@ const Profile = ({ className, user, isLoading }) => {
 };
 
 Profile.propTypes = {
-  className: PropTypes.string,
-};
-
-Profile.defaultProps = {
-  className: '',
+  user: PropTypes.objectOf(PropTypes.string).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {

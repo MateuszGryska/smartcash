@@ -127,6 +127,7 @@ BudgetListTableItem.propTypes = {
   handleSelectOne: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   deleteElement: PropTypes.func.isRequired,
+  cleanUp: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
