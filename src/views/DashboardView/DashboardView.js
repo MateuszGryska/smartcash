@@ -67,7 +67,7 @@ const DashboardView = ({
 
   const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <section className={classes.root}>
       <Grid container spacing={4}>
         <Grid item lg={3} sm={6} xl={3} xs={12}>
           <SmallCard title="Budget" amount={walletsTotal} isLoading={isLoading} />
@@ -117,7 +117,7 @@ const DashboardView = ({
           )}
         </Grid>
       </Grid>
-    </div>
+    </section>
   );
 };
 

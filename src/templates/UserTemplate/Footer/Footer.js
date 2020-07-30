@@ -13,9 +13,9 @@ const useStyles = makeStyles((theme) => ({
 const Footer = ({ className, ...rest }) => {
   const classes = useStyles();
   return (
-    <div {...rest} className={clsx(classes.root, className)}>
+    <footer {...rest} className={clsx(classes.root, className)}>
       <Typography variant="body1">&copy; SmartCash</Typography>
-    </div>
+    </footer>
   );
 };
 

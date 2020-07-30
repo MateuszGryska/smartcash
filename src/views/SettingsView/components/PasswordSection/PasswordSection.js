@@ -62,6 +62,7 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
                       name="password"
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      autocomplete="new-password"
                       required
                       value={values.password}
                       variant="outlined"
@@ -96,6 +97,7 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
                       name="confirmPassword"
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      autocomplete="new-password"
                       required
                       value={values.confirmPassword}
                       variant="outlined"

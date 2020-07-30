@@ -15,11 +15,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '48px',
     marginBottom: '50px',
   },
-  imageContainer: {
-    position: 'relative',
-    flexShrink: 0,
-    flexGrow: 0,
-  },
   children: {
     minHeight: '640px',
     maxWidth: '400px',
@@ -39,7 +34,7 @@ const AuthTemplate = ({ children }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <main className={classes.root}>
       <Grid
         container
         justify="center"
@@ -47,14 +42,14 @@ const AuthTemplate = ({ children }) => {
         direction="column"
         className={classes.grid}
       >
-        <div className={classes.logo}>
+        <Grid item className={classes.logo}>
           <Typography className={classes.logoText}>SmartCash</Typography>
-        </div>
-        <Grid item mg={6} xs={6}>
+        </Grid>
+        <Grid item>
           <Card className={classes.children}>{children}</Card>
         </Grid>
       </Grid>
-    </div>
+    </main>
   );
 };
 

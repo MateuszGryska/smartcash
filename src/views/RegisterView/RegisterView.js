@@ -163,6 +163,7 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
                               name="password"
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              autocomplete="new-password"
                               value={values.password}
                               variant="outlined"
                               error={errors.password && touched.password}
@@ -192,6 +193,7 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
                               label="Confirm password"
                               type={showPassword ? 'text' : 'password'}
                               name="confirmPassword"
+                              autocomplete="new-password"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.confirmPassword}
