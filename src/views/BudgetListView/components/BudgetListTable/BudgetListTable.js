@@ -27,6 +27,7 @@ import DeleteModal from 'components/DeleteModal';
 import { getName } from 'utils';
 
 import { deleteElements as deleteElementsAction, clean as cleanUpAction } from 'actions';
+import { itemTypes } from 'helpers/itemTypes';
 import { headCells } from './data';
 
 const useStyles = makeStyles(() => ({
@@ -124,7 +125,7 @@ const BudgetListTable = ({
   };
 
   const handleDeleteClick = async () => {
-    await deleteElements('budgetElements', selectedItems);
+    await deleteElements(itemTypes.budgetElements, selectedItems);
     enqueueSnackbar('Deleted elements!', { variant: 'warning' });
     setDeleteModalVisibility(false);
     setSelectedItems([]);
@@ -248,7 +249,7 @@ const BudgetListTable = ({
                 </PerfectScrollbar>
               ) : (
                 <Typography align="center" variant="h3">
-                  {error || 'You don&#39;t have any data, add new one!'}
+                  You don&#39;t have any data, add new one!
                 </Typography>
               )}
             </CardContent>

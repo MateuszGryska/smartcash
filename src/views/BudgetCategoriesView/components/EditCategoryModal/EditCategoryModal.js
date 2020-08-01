@@ -39,12 +39,17 @@ const EditCategoryModal = ({
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   return (
-    <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
+    <Dialog
+      fullWidth
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="max-width-dialog-title select-outlined-label"
+    >
       <Formik
         initialValues={{ name, type }}
         validationSchema={CategoriesModalSchema}
         onSubmit={async (values) => {
-          await updateElement('categories', id, values);
+          await updateElement(itemTypes.categories, id, values);
           if (!isLoading && error === null) {
             enqueueSnackbar('Updated category!', { variant: 'success' });
           }
@@ -79,7 +84,7 @@ const EditCategoryModal = ({
                   </FormHelperText>
                 </FormControl>
                 <FormControl variant="outlined" fullWidth margin="dense">
-                  <InputLabel id="demo-simple-select-outlined-label">Type</InputLabel>
+                  <InputLabel id="select-outlined-label">Type</InputLabel>
                   <Select
                     labelId="type"
                     id="type"
@@ -126,7 +131,7 @@ EditCategoryModal.propTypes = {
   fetchDataByUserId: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 EditCategoryModal.defaultProps = {
@@ -134,7 +139,7 @@ EditCategoryModal.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isLoading, error } = state.items;
+  const { isLoading, error } = state.items.updateItem;
   return { isLoading, error };
 };
 

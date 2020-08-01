@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Chart } from 'react-chartjs-2';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -77,6 +78,18 @@ function Root({ token, setUser, expiration, logout }) {
     </MuiThemeProvider>
   );
 }
+
+Root.propTypes = {
+  token: PropTypes.string,
+  setUser: PropTypes.func.isRequired,
+  expiration: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+  logout: PropTypes.func.isRequired,
+};
+
+Root.defaultProps = {
+  expiration: new Date(),
+  token: '',
+};
 
 const mapStateToProps = (state) => {
   const { token, expiration } = state.auth;

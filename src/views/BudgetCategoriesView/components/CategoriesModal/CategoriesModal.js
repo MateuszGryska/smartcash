@@ -20,18 +20,24 @@ import { Formik, Form } from 'formik';
 import { useSnackbar } from 'notistack';
 import { addElement as addElementAction } from 'actions';
 import { CategoriesModalSchema } from 'validation';
+import { itemTypes } from 'helpers/itemTypes';
 
 const CategoriesModal = React.memo(
   ({ open, handleClose, addElement, isLoading, error }) => {
     const { enqueueSnackbar } = useSnackbar();
 
     return (
-      <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
+      <Dialog
+        fullWidth
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="max-width-dialog-title select-outlined-label"
+      >
         <Formik
           initialValues={{ name: '', type: '' }}
           validationSchema={CategoriesModalSchema}
           onSubmit={async (values) => {
-            await addElement('categories', values);
+            await addElement(itemTypes.categories, values);
             if (!isLoading && error === null) {
               enqueueSnackbar('Created new category!', { variant: 'success' });
             }
@@ -65,7 +71,7 @@ const CategoriesModal = React.memo(
                     </FormHelperText>
                   </FormControl>
                   <FormControl variant="outlined" fullWidth margin="dense">
-                    <InputLabel id="demo-simple-select-outlined-label">Type</InputLabel>
+                    <InputLabel id="select-outlined-label">Type</InputLabel>
                     <Select
                       labelId="type"
                       id="type"
@@ -111,6 +117,12 @@ CategoriesModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   addElement: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+};
+
+CategoriesModal.defaultProps = {
+  error: null,
 };
 
 const mapStateToProps = (state) => {

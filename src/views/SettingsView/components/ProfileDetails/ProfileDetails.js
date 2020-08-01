@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -21,6 +21,13 @@ import { ProfileDetailsSchema } from 'validation';
 
 const ProfileDetails = ({ updateUser, userData, isLoading, error }) => {
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (isLoading === false && error === false) {
+      enqueueSnackbar('The user has been updated!', { variant: 'success' });
+    }
+  }, [error, isLoading, enqueueSnackbar]);
+
   return (
     <Card>
       <CardHeader title="Profile" subheader="The information can be edited" />
@@ -37,9 +44,6 @@ const ProfileDetails = ({ updateUser, userData, isLoading, error }) => {
         validationSchema={ProfileDetailsSchema}
         onSubmit={async (values) => {
           await updateUser(values);
-          if (!isLoading && error === null) {
-            enqueueSnackbar('The user has been updated!', { variant: 'success' });
-          }
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -171,11 +175,17 @@ ProfileDetails.propTypes = {
   }),
   updateUser: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 ProfileDetails.defaultProps = {
-  userData: {},
+  userData: {
+    firstName: '',
+    lastName: '',
+    email: '',
+    country: '',
+    phoneNumber: 0,
+  },
   error: null,
 };
 
@@ -185,7 +195,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  updateUser: (data) => dispatch(updateUserAction(data)),
+  updateUser: (userData) => dispatch(updateUserAction(userData)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileDetails);

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useChartData } from 'hooks/chart-data-hook';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
@@ -103,5 +104,13 @@ const BilanceChart = React.memo(
     return prevProps.budgetElements === nextProps.budgetElements;
   },
 );
+
+BilanceChart.propTypes = {
+  budgetElements: PropTypes.arrayOf(PropTypes.object),
+};
+
+BilanceChart.defaultProps = {
+  budgetElements: [],
+};
 
 export default BilanceChart;

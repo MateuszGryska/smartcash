@@ -32,9 +32,9 @@ const Profile = ({ user, isLoading }) => {
   return (
     <div className={classes.root}>
       {isLoading ? (
-        <progress className={classes.loading}>
+        <div className={classes.loading}>
           <CircularProgress />
-        </progress>
+        </div>
       ) : (
         <>
           {user.image && (
@@ -55,7 +55,19 @@ const Profile = ({ user, isLoading }) => {
 };
 
 Profile.propTypes = {
-  user: PropTypes.objectOf(PropTypes.string).isRequired,
+  user: PropTypes.shape({
+    _id: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    email: PropTypes.string,
+    password: PropTypes.string,
+    phoneNumber: PropTypes.number,
+    country: PropTypes.string,
+    image: PropTypes.string,
+    budgetElements: PropTypes.arrayOf(PropTypes.string),
+    categories: PropTypes.arrayOf(PropTypes.string),
+    wallets: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
 

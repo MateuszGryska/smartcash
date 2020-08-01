@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -28,6 +28,12 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
+  useEffect(() => {
+    if (isLoading === false && error === false) {
+      enqueueSnackbar('Password has been changed.', { variant: 'success' });
+    }
+  }, [error, isLoading, enqueueSnackbar]);
+
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
   return (
@@ -43,9 +49,6 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
         validationSchema={PasswordSectionSchema}
         onSubmit={async (values) => {
           await updatePassword(values);
-          if (!isLoading && error === null) {
-            enqueueSnackbar('Password has been updated!', { variant: 'success' });
-          }
         }}
       >
         {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -62,7 +65,7 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
                       name="password"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      autocomplete="new-password"
+                      autoComplete="new-password"
                       required
                       value={values.password}
                       variant="outlined"
@@ -97,7 +100,7 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
                       name="confirmPassword"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      autocomplete="new-password"
+                      autoComplete="new-password"
                       required
                       value={values.confirmPassword}
                       variant="outlined"
@@ -145,7 +148,7 @@ const PasswordSection = ({ isLoading, error, updatePassword }) => {
 
 PasswordSection.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   updatePassword: PropTypes.func.isRequired,
 };
 
@@ -154,7 +157,7 @@ PasswordSection.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isLoading, error } = state.auth;
+  const { isLoading, error } = state.auth.setNewPassword;
   return { isLoading, error };
 };
 

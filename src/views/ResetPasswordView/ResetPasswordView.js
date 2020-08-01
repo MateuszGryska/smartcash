@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ResetPasswordView = ({ isLoading, error, setNewPassword }) => {
   const [showPassword, setShowPassword] = useState(false);
-
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -169,7 +168,6 @@ const ResetPasswordView = ({ isLoading, error, setNewPassword }) => {
                   </Form>
                 </Grid>
               </Grid>
-              {/* {toLogin ? : null} */}
             </CardContent>
           );
         }}
@@ -180,7 +178,8 @@ const ResetPasswordView = ({ isLoading, error, setNewPassword }) => {
 
 ResetPasswordView.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.bool,
+  setNewPassword: PropTypes.func.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 ResetPasswordView.defaultProps = {

@@ -31,7 +31,7 @@ const EditWalletModal = React.memo(
           initialValues={{ name, sum }}
           validationSchema={WalletsModalSchema}
           onSubmit={async (values) => {
-            await updateElement('wallets', id, values);
+            await updateElement(itemTypes.wallets, id, values);
             enqueueSnackbar('Updated wallet!', { variant: 'success' });
             fetchDataByUserId(itemTypes.wallets);
           }}
@@ -105,6 +105,10 @@ EditWalletModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   updateElement: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  sum: PropTypes.number.isRequired,
+  fetchDataByUserId: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

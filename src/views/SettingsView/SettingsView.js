@@ -99,11 +99,15 @@ SettingsView.propTypes = {
     phoneNumber: PropTypes.number.isRequired,
     country: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
   isLoading: PropTypes.bool.isRequired,
   deleteUser: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   cleanUp: PropTypes.func.isRequired,
+};
+
+SettingsView.defaultProps = {
+  user: {},
 };
 
 const mapStateToProps = (state) => {

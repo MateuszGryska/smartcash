@@ -20,8 +20,7 @@ const BudgetListView = ({
   budgetElements,
   wallets,
   categories,
-  error,
-  isLoading,
+  fetchData: { error, isLoading },
 }) => {
   const [searchItem, setSearchItem] = useState('');
   const [isModalVisible, setModalVisibility] = useState(false);
@@ -77,18 +76,31 @@ BudgetListView.propTypes = {
   budgetElements: PropTypes.arrayOf(PropTypes.object),
   categories: PropTypes.arrayOf(PropTypes.object),
   wallets: PropTypes.arrayOf(PropTypes.object),
+  fetchDataByUserId: PropTypes.func.isRequired,
+  fetchData: PropTypes.shape({
+    isLoading: PropTypes.bool,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  }),
 };
 
 BudgetListView.defaultProps = {
   budgetElements: [],
   categories: [],
   wallets: [],
+  fetchData: {
+    isLoading: false,
+    error: null,
+  },
 };
 
 const mapStateToProps = (state) => {
-  const { budgetElements, wallets, categories } = state.items;
-  const { isLoading, error } = state.items.fetchData;
-  return { budgetElements, wallets, categories, error, isLoading };
+  const {
+    budgetElements,
+    wallets,
+    categories,
+    fetchData: { isLoading, error },
+  } = state.items;
+  return { budgetElements, wallets, categories, fetchData: { error, isLoading } };
 };
 
 const mapDispatchToProps = (dispatch) => ({

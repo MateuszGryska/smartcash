@@ -31,7 +31,7 @@ const Toolbar = ({ handleOpen, handleSearchInputChange }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <section className={classes.root}>
       <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
@@ -44,7 +44,7 @@ const Toolbar = ({ handleOpen, handleSearchInputChange }) => {
         </Button>
       </div>
       <div className={classes.row} />
-    </div>
+    </section>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { format } from 'date-fns';
 import parseISO from 'date-fns/parseISO';
@@ -125,6 +126,19 @@ const BilanceList = ({ budgetElements, wallets, categories, isLoading }) => {
       />
     </Card>
   );
+};
+
+BilanceList.propTypes = {
+  budgetElements: PropTypes.arrayOf(PropTypes.object),
+  wallets: PropTypes.arrayOf(PropTypes.object),
+  categories: PropTypes.arrayOf(PropTypes.object),
+  isLoading: PropTypes.bool.isRequired,
+};
+
+BilanceList.defaultProps = {
+  budgetElements: [],
+  wallets: [],
+  categories: [],
 };
 
 export default BilanceList;

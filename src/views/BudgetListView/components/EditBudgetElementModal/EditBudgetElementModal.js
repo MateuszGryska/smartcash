@@ -37,8 +37,6 @@ const EditBudgetElementModal = React.memo(
     categories,
     name,
     amount,
-    wallet,
-    category,
     type,
     isLoading,
     error,
@@ -53,16 +51,21 @@ const EditBudgetElementModal = React.memo(
 
     const { enqueueSnackbar } = useSnackbar();
     return (
-      <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
+      <Dialog
+        fullWidth
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="max-width-dialog-title select-outlined-label"
+      >
         <Formik
-          initialValues={{ name, amount, wallet, category, type }}
+          initialValues={{ name, amount, wallet: '', category: '', type }}
           validationSchema={BudgetListModalSchema}
           onSubmit={async (values) => {
-            await updateElement('budgetElements', id, values);
+            await updateElement(itemTypes.budgetElements, id, values);
             if (!isLoading && error === null) {
               enqueueSnackbar('Updated element!', { variant: 'success' });
             }
-            fetchDataByUserId('budgetElements');
+            fetchDataByUserId(itemTypes.budgetElements);
           }}
         >
           {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -113,7 +116,7 @@ const EditBudgetElementModal = React.memo(
                         </FormHelperText>
                       </FormControl>
                       <FormControl variant="outlined" fullWidth margin="dense">
-                        <InputLabel id="demo-simple-select-outlined-label">Type</InputLabel>
+                        <InputLabel id="select-outlined-label">Type</InputLabel>
                         <Select
                           labelId="type"
                           id="type"
@@ -134,9 +137,9 @@ const EditBudgetElementModal = React.memo(
                       {wallets.length > 0 && categories.length > 0 ? (
                         <>
                           <FormControl variant="outlined" fullWidth margin="dense">
-                            <InputLabel id="demo-simple-select-outlined-label">Wallet</InputLabel>
+                            <InputLabel id="select-outlined-label">Wallet</InputLabel>
                             <Select
-                              labelId="demo-simple-select-outlined-label"
+                              labelId="wallet"
                               id="wallet"
                               label="Wallet"
                               name="wallet"
@@ -156,9 +159,9 @@ const EditBudgetElementModal = React.memo(
                             </FormHelperText>
                           </FormControl>
                           <FormControl variant="outlined" fullWidth margin="dense" name="category">
-                            <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
+                            <InputLabel id="select-outlined-label">Category</InputLabel>
                             <Select
-                              labelId="demo-simple-select-outlined-label"
+                              labelId="category"
                               id="category"
                               label="Category"
                               name="category"
@@ -223,11 +226,9 @@ EditBudgetElementModal.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.object),
   name: PropTypes.string.isRequired,
   amount: PropTypes.number.isRequired,
-  wallet: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 EditBudgetElementModal.defaultProps = {
