@@ -314,6 +314,16 @@ const cleanUp = (state) => {
       isLoading: false,
       error: null,
     },
+    setNewPassword: {
+      ...state.setNewPassword,
+      isLoading: false,
+      error: null,
+    },
+    deleteUser: {
+      ...state.deleteUser,
+      isLoading: false,
+      error: null,
+    },
   };
 };
 

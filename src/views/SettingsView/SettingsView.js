@@ -41,6 +41,12 @@ const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading, cleanU
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
+
   const handleDeleteUser = async () => {
     try {
       await deleteUser();
