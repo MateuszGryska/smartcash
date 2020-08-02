@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
@@ -38,11 +37,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SidebarNav = ({ className, pages, onClose }) => {
+const SidebarNav = ({ pages, onClose }) => {
   const classes = useStyles();
 
   return (
-    <List className={clsx(classes.root, className)}>
+    <List className={classes.root}>
       {pages.map((page) => (
         <ListItem className={classes.item} disableGutters key={page.title}>
           <Button
@@ -63,12 +62,7 @@ const SidebarNav = ({ className, pages, onClose }) => {
 };
 
 SidebarNav.propTypes = {
-  className: PropTypes.string,
   pages: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
-
-SidebarNav.defaultProps = {
-  className: '',
 };
 
 export default SidebarNav;

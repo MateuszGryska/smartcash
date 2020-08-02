@@ -50,7 +50,7 @@ const AccountDetails = ({ userData }) => {
               src={`${process.env.REACT_APP_ASSET_URL}${userData.image}`}
             />
           )}
-          {!userData.image && <Avatar className={classes.avatar} alt="Person Avatar" src="" />}
+          {!userData.image && <Avatar className={classes.avatar} alt="Profile avatar" src="" />}
         </div>
       </CardContent>
       <Divider />
@@ -62,7 +62,6 @@ const AccountDetails = ({ userData }) => {
         >
           Upload Picture
         </Button>
-        <Button variant="text">remove Picture</Button>
       </CardActions>
       <AddAvatarModal
         open={isUploadModalVisible}
@@ -82,7 +81,12 @@ AccountDetails.propTypes = {
 };
 
 AccountDetails.defaultProps = {
-  userData: {},
+  userData: {
+    firstName: '',
+    lastName: '',
+    image: '',
+    country: '',
+  },
 };
 
 export default AccountDetails;

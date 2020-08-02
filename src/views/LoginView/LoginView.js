@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -171,6 +172,17 @@ const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
       </Formik>
     </>
   );
+};
+LoginView.propTypes = {
+  authenticate: PropTypes.func.isRequired,
+  cleanUp: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+};
+
+LoginView.defaultProps = {
+  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({

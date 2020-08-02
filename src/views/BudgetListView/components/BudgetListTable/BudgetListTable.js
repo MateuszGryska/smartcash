@@ -27,7 +27,8 @@ import DeleteModal from 'components/DeleteModal';
 import { getName } from 'utils';
 
 import { deleteElements as deleteElementsAction, clean as cleanUpAction } from 'actions';
-import { headCells } from './headCells';
+import { itemTypes } from 'helpers/itemTypes';
+import { headCells } from './data';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -51,7 +52,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-// const BudgetListTable = ({ searchItem, budgetElements, wallets, categories, error, isLoading }) => {
 const BudgetListTable = ({
   searchItem,
   budgetElements,
@@ -59,6 +59,8 @@ const BudgetListTable = ({
   categories,
   deleteElements,
   cleanUp,
+  error,
+  isLoading,
 }) => {
   // table hooks
   const [selectedItems, setSelectedItems] = useState([]);
@@ -123,7 +125,7 @@ const BudgetListTable = ({
   };
 
   const handleDeleteClick = async () => {
-    await deleteElements('budgetElements', selectedItems);
+    await deleteElements(itemTypes.budgetElements, selectedItems);
     enqueueSnackbar('Deleted elements!', { variant: 'warning' });
     setDeleteModalVisibility(false);
     setSelectedItems([]);
@@ -170,14 +172,14 @@ const BudgetListTable = ({
     <Card className={classes.root}>
       {' '}
       <>
-        {!budgetElements ? (
+        {!budgetElements && isLoading ? (
           <div className={classes.loading}>
             <CircularProgress />
           </div>
         ) : (
           <>
             <CardContent className={classes.content}>
-              {budgetElements.length > 0 ? (
+              {budgetElements.length > 0 && !error ? (
                 <PerfectScrollbar>
                   <div className={classes.inner}>
                     <Table>
@@ -289,6 +291,10 @@ BudgetListTable.propTypes = {
   budgetElements: PropTypes.arrayOf(PropTypes.object),
   wallets: PropTypes.arrayOf(PropTypes.object),
   categories: PropTypes.arrayOf(PropTypes.object),
+  deleteElements: PropTypes.func.isRequired,
+  cleanUp: PropTypes.func.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  isLoading: PropTypes.bool.isRequired,
 };
 
 BudgetListTable.defaultProps = {
@@ -296,6 +302,7 @@ BudgetListTable.defaultProps = {
   budgetElements: [],
   wallets: [],
   categories: [],
+  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({

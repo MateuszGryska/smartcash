@@ -6,6 +6,7 @@ export const useAuth = (setUser, expiration, token, logout) => {
   const [tokenId, setTokenId] = useState(false);
   const [expirationDate, setExpirationDate] = useState();
 
+  // checking local storage and set data
   useEffect(() => {
     const storedData = JSON.parse(window.localStorage.getItem('userData'));
     if (storedData && storedData.userId && new Date(storedData.expiration) > new Date()) {
@@ -17,6 +18,7 @@ export const useAuth = (setUser, expiration, token, logout) => {
     // eslint-disable-next-line
   }, [tokenId]);
 
+  // set user data and expiration date
   useEffect(() => {
     setExpirationDate(new Date(expiration));
   }, [expiration]);

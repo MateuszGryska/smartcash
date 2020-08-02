@@ -30,7 +30,7 @@ export const addElement = (itemType, content) => (dispatch, getState) => {
     });
 };
 
-export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => {
+export const fetchDataByUserId = (itemType) => (dispatch, getState) => {
   dispatch({ type: itemTypes.FETCH_DATA_START });
 
   const storedData = JSON.parse(window.localStorage.getItem('userData'));
@@ -46,7 +46,7 @@ export const fetchDataByUserId = (itemURL, itemType) => (dispatch, getState) => 
   const fetchData = () =>
     axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URL}/${itemURL}/user/${uid}`,
+        `${process.env.REACT_APP_BACKEND_URL}/${itemType}/user/${uid}`,
         {
           headers: {
             Authorization: `Bearer ${getState().auth.token}`,

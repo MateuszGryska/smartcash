@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import { Toolbar, WalletCard, WalletsModal } from 'views/WalletsView/components';
 
 import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
+import { itemTypes } from 'helpers/itemTypes';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
   useEffect(() => {
-    fetchDataByUserId();
+    fetchDataByUserId(itemTypes.wallets);
     // eslint-disable-next-line
   }, []);
 
@@ -74,19 +76,31 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
   }
 
   return (
-    <div className={classes.root}>
+    <article className={classes.root}>
       <Toolbar
         handleOpen={() => setModalVisibility(true)}
         handleSearchInputChange={handleSearchInputChange}
       />
 
       <>
-        <div className={classes.content}>{renderData}</div>
+        <section className={classes.content}>{renderData}</section>
 
         <WalletsModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
       </>
-    </div>
+    </article>
   );
+};
+
+WalletsView.propTypes = {
+  wallets: PropTypes.arrayOf(PropTypes.object),
+  fetchDataByUserId: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+};
+
+WalletsView.defaultProps = {
+  wallets: [],
+  error: null,
 };
 
 const mapStateToProps = (state) => {
@@ -95,7 +109,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: () => dispatch(fetchDataByUserIdAction('wallets', 'wallets')),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletsView);

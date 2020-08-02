@@ -22,18 +22,24 @@ import { Formik, Form } from 'formik';
 import { useSnackbar } from 'notistack';
 import { addElement as addElementAction } from 'actions';
 import { BudgetListModalSchema } from 'validation';
+import { itemTypes } from 'helpers/itemTypes';
 
 const BudgetListModal = React.memo(
   ({ open, handleClose, addElement, wallets, categories, isLoading, error }) => {
     const { enqueueSnackbar } = useSnackbar();
 
     return (
-      <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
+      <Dialog
+        fullWidth
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="max-width-dialog-title select-outlined-label"
+      >
         <Formik
           initialValues={{ name: '', amount: '', wallet: '', category: '', type: '' }}
           validationSchema={BudgetListModalSchema}
           onSubmit={async (values) => {
-            await addElement('budgetElements', values);
+            await addElement(itemTypes.budgetElements, values);
             if (!isLoading && error === null) {
               enqueueSnackbar('Created new element!', { variant: 'success' });
             }
@@ -87,7 +93,7 @@ const BudgetListModal = React.memo(
                         </FormHelperText>
                       </FormControl>
                       <FormControl variant="outlined" fullWidth margin="dense">
-                        <InputLabel id="demo-simple-select-outlined-label">Type</InputLabel>
+                        <InputLabel id="select-outlined-label">Type</InputLabel>
                         <Select
                           labelId="type"
                           id="type"
@@ -108,9 +114,9 @@ const BudgetListModal = React.memo(
                       {wallets.length > 0 && categories.length > 0 ? (
                         <>
                           <FormControl variant="outlined" fullWidth margin="dense">
-                            <InputLabel id="demo-simple-select-outlined-label">Wallet</InputLabel>
+                            <InputLabel id="select-outlined-label">Wallet</InputLabel>
                             <Select
-                              labelId="demo-simple-select-outlined-label"
+                              labelId="wallet"
                               id="wallet"
                               label="Wallet"
                               name="wallet"
@@ -130,9 +136,9 @@ const BudgetListModal = React.memo(
                             </FormHelperText>
                           </FormControl>
                           <FormControl variant="outlined" fullWidth margin="dense" name="category">
-                            <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
+                            <InputLabel id="select-outlined-label">Category</InputLabel>
                             <Select
-                              labelId="demo-simple-select-outlined-label"
+                              labelId="category"
                               id="category"
                               label="Category"
                               name="category"
@@ -191,6 +197,14 @@ BudgetListModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   addElement: PropTypes.func.isRequired,
+  wallets: PropTypes.arrayOf(PropTypes.object).isRequired,
+  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+};
+
+BudgetListModal.defaultProps = {
+  error: null,
 };
 
 const mapStateToProps = (state) => {

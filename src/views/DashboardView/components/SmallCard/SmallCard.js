@@ -205,6 +205,12 @@ const SmallCard = React.memo(
 SmallCard.propTypes = {
   title: PropTypes.string.isRequired,
   amount: PropTypes.number.isRequired,
+  lastMonth: PropTypes.string,
+  isLoading: PropTypes.bool.isRequired,
+};
+
+SmallCard.defaultProps = {
+  lastMonth: '0.0',
 };
 
 export default SmallCard;

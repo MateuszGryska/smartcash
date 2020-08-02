@@ -75,16 +75,14 @@ const BudgetCategoryCard = ({ name, type, sum, date, deleteElement, cleanUp, id 
   return (
     <Card>
       <CardContent>
-        <div>
-          <Typography
-            align="center"
-            gutterBottom
-            variant="h1"
-            className={clsx(type === 'income' ? classes.income : classes.expense)}
-          >
-            ${sum}
-          </Typography>
-        </div>
+        <Typography
+          align="center"
+          gutterBottom
+          variant="h1"
+          className={clsx(type === 'income' ? classes.income : classes.expense)}
+        >
+          ${sum}
+        </Typography>
         <Typography align="center" gutterBottom variant="h4">
           {name}
         </Typography>
@@ -142,6 +140,7 @@ BudgetCategoryCard.propTypes = {
   date: PropTypes.string.isRequired,
   deleteElement: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
+  cleanUp: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

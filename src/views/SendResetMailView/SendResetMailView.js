@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -138,6 +139,18 @@ const SendResetMailView = ({ sendResetPasswordMail, cleanUp, userId, error, isLo
       </Formik>
     </>
   );
+};
+
+SendResetMailView.propTypes = {
+  sendResetPasswordMail: PropTypes.func.isRequired,
+  cleanUp: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  isLoading: PropTypes.bool.isRequired,
+};
+
+SendResetMailView.defaultProps = {
+  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({

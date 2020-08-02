@@ -20,6 +20,7 @@ import EditBudgetElementModal from 'views/BudgetListView/components/EditBudgetEl
 import DeleteModal from 'components/DeleteModal';
 
 import { deleteElement as deleteElementAction, clean as cleanUpAction } from 'actions';
+import { itemTypes } from 'helpers/itemTypes';
 
 const BudgetListTableItem = ({
   id,
@@ -49,7 +50,7 @@ const BudgetListTableItem = ({
   };
 
   const handleDeleteClick = async () => {
-    await deleteElement('budgetElements', id);
+    await deleteElement(itemTypes.budgetElements, id);
     enqueueSnackbar('Deleted element!', { variant: 'warning' });
     setDeleteModalVisibility(false);
   };
@@ -127,6 +128,7 @@ BudgetListTableItem.propTypes = {
   handleSelectOne: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   deleteElement: PropTypes.func.isRequired,
+  cleanUp: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

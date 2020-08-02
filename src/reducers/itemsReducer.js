@@ -10,7 +10,7 @@ const initialState = {
     error: null,
     isLoading: false,
   },
-  fetchItem: {
+  fetchData: {
     error: null,
     isLoading: false,
   },
@@ -50,8 +50,8 @@ const addItemFailure = (state, payload) => {
 const fetchDataStart = (state) => {
   return {
     ...state,
-    fetchItem: {
-      ...state.fetchItem,
+    fetchData: {
+      ...state.fetchData,
       isLoading: true,
     },
   };
@@ -61,8 +61,8 @@ const fetchDataSuccess = (state, payload) => {
   return {
     ...state,
     [payload.itemType]: [...payload.data[payload.itemType]],
-    fetchItem: {
-      ...state.fetchItem,
+    fetchData: {
+      ...state.fetchData,
       isLoading: false,
       error: false,
     },
@@ -72,8 +72,8 @@ const fetchDataSuccess = (state, payload) => {
 const fetchDataFailure = (state, payload) => {
   return {
     ...state,
-    fetchItem: {
-      ...state.fetchItem,
+    fetchData: {
+      ...state.fetchData,
       error: payload.error,
       isLoading: false,
     },

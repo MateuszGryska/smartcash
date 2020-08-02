@@ -11,6 +11,8 @@ import {
   getUserById as getUserByIdAction,
 } from 'actions';
 
+import { itemTypes } from 'helpers/itemTypes';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
@@ -28,21 +30,21 @@ const DashboardView = ({
   wallets,
   categories,
   budgetElements,
-  isLoading,
+  fetchData: { isLoading },
   userId,
 }) => {
   useEffect(() => {
-    fetchDataByUserId('categories', 'categories');
+    fetchDataByUserId(itemTypes.categories);
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    fetchDataByUserId('budgetElements', 'budgetElements');
+    fetchDataByUserId(itemTypes.budgetElements);
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    fetchDataByUserId('wallets', 'wallets');
+    fetchDataByUserId(itemTypes.wallets);
     // eslint-disable-next-line
   }, []);
 
@@ -65,78 +67,96 @@ const DashboardView = ({
 
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <Grid container spacing={4}>
-        <Grid item lg={3} sm={6} xl={3} xs={12}>
-          <SmallCard title="Budget" amount={walletsTotal} isLoading={isLoading} />
-        </Grid>
-        <Grid item lg={3} sm={6} xl={3} xs={12}>
-          <SmallCard
-            title="Incomes"
-            amount={income}
-            lastMonth={lastMonthIncome.toFixed(1)}
-            isLoading={isLoading}
-          />
-        </Grid>
-        <Grid item lg={3} sm={6} xl={3} xs={12}>
-          <SmallCard
-            title="Expenses"
-            amount={expense}
-            lastMonth={lastMonthExpense.toFixed(1)}
-            isLoading={isLoading}
-          />
-        </Grid>
-        <Grid item lg={3} sm={6} xl={3} xs={12}>
-          <SmallCard
-            title="Total"
-            amount={total}
-            lastMonth={lastMonthTotal.toFixed(1)}
-            isLoading={isLoading}
-          />
-        </Grid>
-        <Grid item lg={8} md={12} xl={9} xs={12}>
-          <BilanceChart budgetElements={budgetElements} />
-        </Grid>
-        <Grid item lg={4} md={12} xl={3} xs={12}>
-          <WalletsCard wallets={wallets} isLoading={isLoading} />
-        </Grid>
-        <Grid item lg={12} md={12} xl={12} xs={12}>
-          {isLoading ? (
-            <div className={classes.loading}>
-              <CircularProgress />
-            </div>
-          ) : (
+    <section className={classes.root}>
+      {isLoading ? (
+        <div className={classes.loading}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <Grid container spacing={4}>
+          <Grid item lg={3} sm={6} xl={3} xs={12}>
+            <SmallCard title="Budget" amount={walletsTotal} isLoading={isLoading} />
+          </Grid>
+          <Grid item lg={3} sm={6} xl={3} xs={12}>
+            <SmallCard
+              title="Incomes"
+              amount={income}
+              lastMonth={lastMonthIncome.toFixed(1)}
+              isLoading={isLoading}
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xl={3} xs={12}>
+            <SmallCard
+              title="Expenses"
+              amount={expense}
+              lastMonth={lastMonthExpense.toFixed(1)}
+              isLoading={isLoading}
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xl={3} xs={12}>
+            <SmallCard
+              title="Total"
+              amount={total}
+              lastMonth={lastMonthTotal.toFixed(1)}
+              isLoading={isLoading}
+            />
+          </Grid>
+          <Grid item lg={8} md={12} xl={9} xs={12}>
+            <BilanceChart budgetElements={budgetElements} />
+          </Grid>
+          <Grid item lg={4} md={12} xl={3} xs={12}>
+            <WalletsCard wallets={wallets} isLoading={isLoading} />
+          </Grid>
+          <Grid item lg={12} md={12} xl={12} xs={12}>
             <BilanceList
               budgetElements={budgetElements}
               wallets={wallets}
               categories={categories}
               isLoading={isLoading}
             />
-          )}
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      )}
+    </section>
   );
 };
 
 DashboardView.propTypes = {
   budgetElements: PropTypes.arrayOf(PropTypes.object),
   wallets: PropTypes.arrayOf(PropTypes.object),
+  categories: PropTypes.arrayOf(PropTypes.object),
+  userId: PropTypes.string.isRequired,
+  getUserById: PropTypes.func.isRequired,
+  fetchDataByUserId: PropTypes.func.isRequired,
+  fetchData: PropTypes.shape({
+    isLoading: PropTypes.bool,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  }),
 };
 
 DashboardView.defaultProps = {
   budgetElements: [],
   wallets: [],
+  categories: [],
+  fetchData: {
+    isLoading: false,
+    error: null,
+  },
 };
 
 const mapStateToProps = (state) => {
-  const { wallets, categories, budgetElements, isLoading } = state.items;
+  const {
+    wallets,
+    categories,
+    budgetElements,
+    fetchData: { isLoading },
+  } = state.items;
   const { userId } = state.auth;
-  return { wallets, categories, userId, budgetElements, isLoading };
+  return { wallets, categories, userId, budgetElements, fetchData: { isLoading } };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
   getUserById: () => dispatch(getUserByIdAction()),
 });
 

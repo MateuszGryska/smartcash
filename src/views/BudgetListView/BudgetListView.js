@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
 import { BudgetListTable, Toolbar, BudgetListModal } from 'views/BudgetListView/components';
+import { itemTypes } from 'helpers/itemTypes';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,24 +20,23 @@ const BudgetListView = ({
   budgetElements,
   wallets,
   categories,
-  error,
-  isLoading,
+  fetchData: { error, isLoading },
 }) => {
   const [searchItem, setSearchItem] = useState('');
   const [isModalVisible, setModalVisibility] = useState(false);
 
   useEffect(() => {
-    fetchDataByUserId('categories', 'categories');
+    fetchDataByUserId(itemTypes.categories);
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    fetchDataByUserId('budgetElements', 'budgetElements');
+    fetchDataByUserId(itemTypes.budgetElements);
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    fetchDataByUserId('wallets', 'wallets');
+    fetchDataByUserId(itemTypes.wallets);
     // eslint-disable-next-line
   }, []);
 
@@ -76,21 +76,35 @@ BudgetListView.propTypes = {
   budgetElements: PropTypes.arrayOf(PropTypes.object),
   categories: PropTypes.arrayOf(PropTypes.object),
   wallets: PropTypes.arrayOf(PropTypes.object),
+  fetchDataByUserId: PropTypes.func.isRequired,
+  fetchData: PropTypes.shape({
+    isLoading: PropTypes.bool,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  }),
 };
 
 BudgetListView.defaultProps = {
   budgetElements: [],
   categories: [],
   wallets: [],
+  fetchData: {
+    isLoading: false,
+    error: null,
+  },
 };
 
 const mapStateToProps = (state) => {
-  const { budgetElements, wallets, categories, error, isLoading } = state.items;
-  return { budgetElements, wallets, categories, error, isLoading };
+  const {
+    budgetElements,
+    wallets,
+    categories,
+    fetchData: { isLoading, error },
+  } = state.items;
+  return { budgetElements, wallets, categories, fetchData: { error, isLoading } };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetListView);

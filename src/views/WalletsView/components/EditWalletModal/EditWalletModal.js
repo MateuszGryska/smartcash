@@ -19,6 +19,7 @@ import {
   fetchDataByUserId as fetchDataByUserIdAction,
 } from 'actions';
 import { WalletsModalSchema } from 'validation';
+import { itemTypes } from 'helpers/itemTypes';
 
 const EditWalletModal = React.memo(
   ({ open, handleClose, id, name, sum, updateElement, fetchDataByUserId }) => {
@@ -30,9 +31,9 @@ const EditWalletModal = React.memo(
           initialValues={{ name, sum }}
           validationSchema={WalletsModalSchema}
           onSubmit={async (values) => {
-            await updateElement('wallets', id, values);
+            await updateElement(itemTypes.wallets, id, values);
             enqueueSnackbar('Updated wallet!', { variant: 'success' });
-            fetchDataByUserId('wallets', 'wallets');
+            fetchDataByUserId(itemTypes.wallets);
           }}
         >
           {({ values, handleChange, handleBlur, errors, touched, isValid }) => (
@@ -104,11 +105,15 @@ EditWalletModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   updateElement: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  sum: PropTypes.number.isRequired,
+  fetchDataByUserId: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   updateElement: (itemType, id, content) => dispatch(updateElementAction(itemType, id, content)),
-  fetchDataByUserId: (itemURL, itemType) => dispatch(fetchDataByUserIdAction(itemURL, itemType)),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
 });
 
 export default connect(null, mapDispatchToProps)(EditWalletModal);

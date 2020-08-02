@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Divider, Typography, CircularProgress } from '@material-ui/core';
 import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
+import { itemTypes } from 'helpers/itemTypes';
 
 import {
   BudgetCategoryCard,
@@ -28,19 +30,16 @@ const useStyles = makeStyles((theme) => ({
 const BudgetCategoriesView = ({
   categories,
   fetchDataByUserId,
-  error,
-  isLoading,
-
-  deleteElement,
+  fetchData: { error, isLoading },
 }) => {
-  useEffect(() => {
-    fetchDataByUserId();
-    // eslint-disable-next-line
-  }, []);
-
-  const classes = useStyles();
   const [isModalVisible, setModalVisibility] = useState(false);
   const [searchItem, setSearchItem] = useState('');
+  const classes = useStyles();
+
+  useEffect(() => {
+    fetchDataByUserId(itemTypes.categories);
+    // eslint-disable-next-line
+  }, []);
 
   const handleSearchInputChange = (e) => {
     setSearchItem(e.target.value);
@@ -53,7 +52,7 @@ const BudgetCategoriesView = ({
         <CircularProgress />
       </div>
     );
-  } else if (error !== null || !categories) {
+  } else if (typeof error === 'string' || !categories) {
     renderData = (
       <Typography align="center" variant="h3">
         You don&#39;t have any categories! Add new one!
@@ -94,14 +93,7 @@ const BudgetCategoriesView = ({
               .filter((category) => category.name.toLowerCase().includes(searchItem.toLowerCase()))
               .map(({ _id: id, name, type, sum, date }) => (
                 <Grid item lg={4} sm={6} xl={4} xs={12} key={id}>
-                  <BudgetCategoryCard
-                    name={name}
-                    id={id}
-                    type={type}
-                    sum={sum}
-                    date={date}
-                    deleteElement={deleteElement}
-                  />
+                  <BudgetCategoryCard name={name} id={id} type={type} sum={sum} date={date} />
                 </Grid>
               ))
           ) : (
@@ -128,20 +120,38 @@ const BudgetCategoriesView = ({
       />
       <>
         {renderData}
-
         <CategoriesModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
       </>
     </div>
   );
 };
 
+BudgetCategoriesView.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchDataByUserId: PropTypes.func.isRequired,
+  fetchData: PropTypes.shape({
+    isLoading: PropTypes.bool,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  }),
+};
+
+BudgetCategoriesView.defaultProps = {
+  fetchData: {
+    isLoading: false,
+    error: null,
+  },
+};
+
 const mapStateToProps = (state) => {
-  const { categories, error, isLoading } = state.items;
-  return { categories, error, isLoading };
+  const {
+    categories,
+    fetchData: { error, isLoading },
+  } = state.items;
+  return { categories, fetchData: { error, isLoading } };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchDataByUserId: () => dispatch(fetchDataByUserIdAction('categories', 'categories')),
+  fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetCategoriesView);

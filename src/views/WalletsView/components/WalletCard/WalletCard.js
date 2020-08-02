@@ -22,6 +22,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import EditWalletModal from 'views/WalletsView/components/EditWalletModal';
 import DeleteModal from 'components/DeleteModal/DeleteModal';
+import { itemTypes } from 'helpers/itemTypes';
 
 import { deleteElement as deleteElementAction, clean as cleanUpAction } from 'actions';
 
@@ -53,7 +54,7 @@ const WalletCard = ({ sum, name, date, deleteElement, id, cleanUp }) => {
   };
 
   const handleDeleteClick = async () => {
-    await deleteElement('wallets', id);
+    await deleteElement(itemTypes.wallets, id);
     enqueueSnackbar('Deleted wallet!', { variant: 'success' });
 
     setDeleteModalVisibility(false);
@@ -124,6 +125,9 @@ WalletCard.propTypes = {
   sum: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
+  deleteElement: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  cleanUp: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

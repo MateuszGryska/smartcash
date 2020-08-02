@@ -187,8 +187,8 @@ const updatePasswordStart = (state) => {
   return {
     ...state,
 
-    updatePassword: {
-      ...state.updatePassword,
+    setNewPassword: {
+      ...state.setNewPassword,
       isLoading: true,
     },
   };
@@ -198,8 +198,8 @@ const updatePasswordSuccess = (state, payload) => {
   return {
     ...state,
     user: { ...payload.data.users },
-    updatePassword: {
-      ...state.updatePassword,
+    setNewPassword: {
+      ...state.setNewPassword,
       isLoading: false,
       error: false,
     },
@@ -209,8 +209,8 @@ const updatePasswordSuccess = (state, payload) => {
 const updatePasswordFailure = (state, payload) => {
   return {
     ...state,
-    updatePassword: {
-      ...state.updatePassword,
+    setNewPassword: {
+      ...state.setNewPassword,
       isLoading: false,
       error: payload.error,
     },

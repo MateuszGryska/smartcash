@@ -17,6 +17,7 @@ import { useSnackbar } from 'notistack';
 import { Formik, Form } from 'formik';
 import { addElement as addElementAction } from 'actions/index';
 import { WalletsModalSchema } from 'validation';
+import { itemTypes } from 'helpers/itemTypes';
 
 const WalletsModal = React.memo(
   ({ open, handleClose, addElement, isLoading, error }) => {
@@ -27,8 +28,8 @@ const WalletsModal = React.memo(
           initialValues={{ name: '', sum: '' }}
           validationSchema={WalletsModalSchema}
           onSubmit={async (values) => {
-            await addElement('wallets', values);
-            if (!isLoading && error === null) {
+            await addElement(itemTypes.wallets, values);
+            if (!isLoading && error === false) {
               enqueueSnackbar('Created new wallet!', { variant: 'success' });
             }
           }}
@@ -105,6 +106,12 @@ WalletsModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   addElement: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+};
+
+WalletsModal.defaultProps = {
+  error: null,
 };
 
 const mapStateToProps = (state) => {

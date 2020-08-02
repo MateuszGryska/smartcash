@@ -66,7 +66,7 @@ const AddAvatarModal = React.memo(
 
     const submitHandler = async () => {
       await updateUserImage(file);
-      if (!isLoading && error === null) {
+      if (!isLoading && error === false) {
         enqueueSnackbar('Changed avatar!', { variant: 'success' });
       }
       handleClose();
@@ -142,7 +142,7 @@ AddAvatarModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   updateUserImage: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 AddAvatarModal.defaultProps = {
@@ -150,7 +150,7 @@ AddAvatarModal.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { isLoading, error } = state.items;
+  const { isLoading, error } = state.auth.uploadImage;
   return { isLoading, error };
 };
 

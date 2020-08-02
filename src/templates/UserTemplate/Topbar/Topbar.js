@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { AppBar, Toolbar, Typography, Hidden, IconButton, Badge } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
@@ -33,12 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Topbar = ({ className, onSidebarOpen, logout, ...rest }) => {
-  const [notifications] = useState([]);
+const Topbar = ({ onSidebarOpen, logout }) => {
   const classes = useStyles();
 
   return (
-    <AppBar {...rest} className={clsx(classes.root, className)} position="fixed">
+    <AppBar className={classes.root} position="fixed">
       <Toolbar>
         <>
           <Link to="/dashboard" className={classes.logo}>
@@ -49,11 +46,7 @@ const Topbar = ({ className, onSidebarOpen, logout, ...rest }) => {
           </Link>
           <Hidden mdDown>
             <div className={classes.flexGrow} />
-            <IconButton color="inherit">
-              <Badge badgeContent={notifications.length} color="primary" variant="dot">
-                <NotificationsIcon fontSize="large" />
-              </Badge>
-            </IconButton>
+
             <IconButton
               as={Link}
               to="/login"
@@ -86,12 +79,7 @@ const Topbar = ({ className, onSidebarOpen, logout, ...rest }) => {
 };
 
 Topbar.propTypes = {
-  className: PropTypes.string,
   onSidebarOpen: PropTypes.func.isRequired,
-};
-
-Topbar.defaultProps = {
-  className: '',
 };
 
 const mapDispatchToProps = (dispatch) => ({

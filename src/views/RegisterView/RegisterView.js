@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -163,6 +164,7 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
                               name="password"
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              autoComplete="new-password"
                               value={values.password}
                               variant="outlined"
                               error={errors.password && touched.password}
@@ -192,6 +194,7 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
                               label="Confirm password"
                               type={showPassword ? 'text' : 'password'}
                               name="confirmPassword"
+                              autoComplete="new-password"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.confirmPassword}
@@ -245,6 +248,18 @@ const RegisterView = ({ signUp, cleanUp, userId, error, isLoading }) => {
       </Formik>
     </>
   );
+};
+
+RegisterView.propTypes = {
+  signUp: PropTypes.func.isRequired,
+  cleanUp: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+};
+
+RegisterView.defaultProps = {
+  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
