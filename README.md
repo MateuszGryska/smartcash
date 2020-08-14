@@ -1,7 +1,7 @@
-![GitHub Logo](/screenshot4.png)
-![GitHub Logo](/screenshot1.png)
-![GitHub Logo](/screenshot2.png)
-![GitHub Logo](/screenshot3.png)
+![login view](/screenshot4.png)
+![dashboard view](/screenshot1.png)
+![categories view](/screenshot2.png)
+![incomes and expenses view](/screenshot3.png)
 
 
 ## Description
