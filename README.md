@@ -1,3 +1,5 @@
+# Smartcash
+
 ![login view](/screenshot4.png)
 ![dashboard view](/screenshot1.png)
 ![categories view](/screenshot2.png)
