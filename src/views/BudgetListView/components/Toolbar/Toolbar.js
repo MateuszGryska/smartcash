@@ -43,6 +43,7 @@ const Toolbar = ({ handleOpen, handleSearchInputChange }) => {
           Add new
         </Button>
       </div>
+
       <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}

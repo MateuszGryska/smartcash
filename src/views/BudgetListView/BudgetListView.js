@@ -5,12 +5,17 @@ import { makeStyles } from '@material-ui/styles';
 import { fetchDataByUserId as fetchDataByUserIdAction, clean as cleanAction } from 'actions';
 import { BudgetListTable, Toolbar, BudgetListModal } from 'views/BudgetListView/components';
 import { itemTypes } from 'helpers/itemTypes';
+import { sectionsInfo } from 'helpers/sectionsInfo';
+import InfoTooltip from 'components/InfoTooltip';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
   },
   content: {
+    marginTop: theme.spacing(2),
+  },
+  infoIcon: {
     marginTop: theme.spacing(2),
   },
 }));
@@ -55,11 +60,12 @@ const BudgetListView = ({
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <section className={classes.root}>
       <Toolbar
         handleOpen={() => setModalVisibility(true)}
         handleSearchInputChange={handleSearchInputChange}
       />
+
       <div className={classes.content}>
         <BudgetListTable
           searchItem={searchItem}
@@ -69,6 +75,7 @@ const BudgetListView = ({
           error={error}
           isLoading={isLoading}
         />
+        <InfoTooltip info={sectionsInfo.budgetList} />
       </div>
       <BudgetListModal
         open={isModalVisible}
@@ -76,7 +83,7 @@ const BudgetListView = ({
         wallets={wallets}
         categories={categories}
       />
-    </div>
+    </section>
   );
 };
 

@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import { Toolbar, WalletCard, WalletsModal } from 'views/WalletsView/components';
+import InfoTooltip from 'components/InfoTooltip';
 
 import { fetchDataByUserId as fetchDataByUserIdAction, clean as cleanAction } from 'actions';
 import { itemTypes } from 'helpers/itemTypes';
+import { sectionsInfo } from 'helpers/sectionsInfo';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,7 +88,7 @@ const WalletsView = ({ wallets, fetchDataByUserId, cleanUp, isLoading, error }) 
 
       <>
         <section className={classes.content}>{renderData}</section>
-
+        <InfoTooltip info={sectionsInfo.budgetWallets} />
         <WalletsModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
       </>
     </article>

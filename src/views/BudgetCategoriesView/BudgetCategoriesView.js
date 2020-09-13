@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid, Divider, Typography, CircularProgress } from '@material-ui/core';
 import { fetchDataByUserId as fetchDataByUserIdAction, clean as cleanAction } from 'actions';
 import { itemTypes } from 'helpers/itemTypes';
-
+import { sectionsInfo } from 'helpers/sectionsInfo';
+import InfoTooltip from 'components/InfoTooltip';
 import {
   BudgetCategoryCard,
   CategoriesModal,
@@ -118,6 +119,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, cleanUp, isLoadin
       />
       <>
         {renderData}
+        <InfoTooltip info={sectionsInfo.budgetCategories} />
         <CategoriesModal
           fetchDataByUserId={fetchDataByUserId}
           open={isModalVisible}
