@@ -63,6 +63,9 @@ const BudgetListView = ({
     <section className={classes.root}>
       <Toolbar
         handleOpen={() => setModalVisibility(true)}
+        budgetElements={budgetElements}
+        wallets={wallets}
+        categories={categories}
         handleSearchInputChange={handleSearchInputChange}
       />
 
