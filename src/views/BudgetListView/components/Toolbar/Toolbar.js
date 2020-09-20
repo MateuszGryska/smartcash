@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Button } from '@material-ui/core';
+import { Button, Box } from '@material-ui/core';
 import { CSVLink } from 'react-csv';
 
 import SearchInput from 'components/SearchInput/SearchInput';
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 const Toolbar = ({ handleOpen, handleSearchInputChange, budgetElements, wallets, categories }) => {
   const [convertedBudgetElements, addConvertedBudgetElements] = useState([]);
 
+  // convert data for CSV
   const convertBudgetElements = () => {
     const convertedData = [];
     budgetElements.forEach((budgetElement) => {
@@ -44,8 +45,8 @@ const Toolbar = ({ handleOpen, handleSearchInputChange, budgetElements, wallets,
 
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <div className={classes.row}>
+    <Box className={classes.root}>
+      <menu className={classes.row}>
         <span className={classes.spacer} />
         <Button
           className={classes.exportButton}
@@ -63,7 +64,7 @@ const Toolbar = ({ handleOpen, handleSearchInputChange, budgetElements, wallets,
         <Button onClick={handleOpen} color="primary" variant="contained">
           Add new
         </Button>
-      </div>
+      </menu>
 
       <div className={classes.row}>
         <SearchInput
@@ -72,7 +73,7 @@ const Toolbar = ({ handleOpen, handleSearchInputChange, budgetElements, wallets,
           placeholder="Search..."
         />
       </div>
-    </div>
+    </Box>
   );
 };
 

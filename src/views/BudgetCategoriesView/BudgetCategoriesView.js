@@ -67,7 +67,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, cleanUp, isLoadin
       });
     }
     renderData = (
-      <div>
+      <>
         <Grid container spacing={4} className={classes.gridContainer}>
           {incomes.length > 0 ? (
             incomes
@@ -99,7 +99,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, cleanUp, isLoadin
             </Typography>
           )}
         </Grid>
-      </div>
+      </>
     );
   } else {
     renderData = (
@@ -112,7 +112,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, cleanUp, isLoadin
   }
 
   return (
-    <div className={classes.root}>
+    <article className={classes.root}>
       <Toolbar
         handleSearchInputChange={handleSearchInputChange}
         handleOpen={() => setModalVisibility(true)}
@@ -126,7 +126,7 @@ const BudgetCategoriesView = ({ categories, fetchDataByUserId, cleanUp, isLoadin
           handleClose={() => setModalVisibility(false)}
         />
       </>
-    </div>
+    </article>
   );
 };
 

@@ -74,13 +74,13 @@ const Sidebar = ({ onClose, open, variant }) => {
       open={open}
       variant={variant}
     >
-      <section className={classes.root}>
+      <aside className={classes.root}>
         <Profile />
         <Divider className={classes.divider} />
         <nav>
           <SidebarNav pages={pages} onClose={onClose} />
         </nav>
-      </section>
+      </aside>
     </Drawer>
   );
 };

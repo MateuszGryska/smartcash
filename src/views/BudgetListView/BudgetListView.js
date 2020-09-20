@@ -60,7 +60,7 @@ const BudgetListView = ({
   const classes = useStyles();
 
   return (
-    <section className={classes.root}>
+    <article className={classes.root}>
       <Toolbar
         handleOpen={() => setModalVisibility(true)}
         budgetElements={budgetElements}
@@ -69,7 +69,7 @@ const BudgetListView = ({
         handleSearchInputChange={handleSearchInputChange}
       />
 
-      <div className={classes.content}>
+      <section className={classes.content}>
         <BudgetListTable
           searchItem={searchItem}
           budgetElements={budgetElements}
@@ -79,14 +79,14 @@ const BudgetListView = ({
           isLoading={isLoading}
         />
         <InfoTooltip info={sectionsInfo.budgetList} />
-      </div>
+      </section>
       <BudgetListModal
         open={isModalVisible}
         handleClose={() => setModalVisibility(false)}
         wallets={wallets}
         categories={categories}
       />
-    </section>
+    </article>
   );
 };
 

@@ -75,7 +75,7 @@ const DashboardView = ({
 
   const classes = useStyles();
   return (
-    <section className={classes.root}>
+    <article className={classes.root}>
       {isLoading ? (
         <div className={classes.loading}>
           <CircularProgress />
@@ -125,7 +125,7 @@ const DashboardView = ({
           </Grid>
         </Grid>
       )}
-    </section>
+    </article>
   );
 };
 

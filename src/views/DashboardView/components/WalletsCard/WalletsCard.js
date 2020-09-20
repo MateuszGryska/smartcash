@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 import {
@@ -80,5 +81,14 @@ const WalletsCard = React.memo(
     return prevProps.wallets === nextProps.wallets;
   },
 );
+
+WalletsCard.propTypes = {
+  wallets: PropTypes.arrayOf(PropTypes.object),
+  isLoading: PropTypes.bool.isRequired,
+};
+
+WalletsCard.defaultProps = {
+  wallets: [],
+};
 
 export default WalletsCard;

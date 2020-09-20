@@ -59,14 +59,14 @@ const SendResetMailView = ({ sendResetPasswordMail, cleanUp, userId, error, isLo
   const classes = useStyles();
   return (
     <>
-      <div className={classes.headerText}>
+      <aside className={classes.headerText}>
         <Button component={Link} to="/login">
           <ArrowBackIcon /> <Typography variant="body2">Go back</Typography>
         </Button>
         <Typography variant="body2">
           Have an account? <Link to="/login">Sign in</Link>
         </Typography>
-      </div>
+      </aside>
       <CardHeader
         className={classes.contentHeader}
         title="Reset password"

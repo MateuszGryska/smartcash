@@ -35,7 +35,9 @@ const AuthTemplate = ({ children }) => {
         className={classes.grid}
       >
         <Grid item className={classes.logo}>
-          <Typography className={classes.logoText}>SmartCash</Typography>
+          <Typography className={classes.logoText} variant="h1">
+            SmartCash
+          </Typography>
         </Grid>
         <Grid item>
           <Card className={classes.children}>{children}</Card>
