@@ -41,6 +41,12 @@ const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading, cleanU
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
+
   const handleDeleteUser = async () => {
     try {
       await deleteUser();
@@ -58,7 +64,7 @@ const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading, cleanU
           <CircularProgress />
         </div>
       ) : (
-        <div className={classes.root}>
+        <article className={classes.root}>
           <Grid container spacing={4}>
             <Grid item lg={4} md={6} xl={4} xs={12}>
               <AccountDetails userData={user} />
@@ -82,7 +88,7 @@ const SettingsView = ({ getUserById, deleteUser, logout, user, isLoading, cleanU
               </Grid>
             </Grid>
           </Grid>
-        </div>
+        </article>
       )}
     </>
   );

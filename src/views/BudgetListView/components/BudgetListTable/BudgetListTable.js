@@ -59,8 +59,8 @@ const BudgetListTable = ({
   categories,
   deleteElements,
   cleanUp,
-  error,
   isLoading,
+  error,
 }) => {
   // table hooks
   const [selectedItems, setSelectedItems] = useState([]);
@@ -168,122 +168,119 @@ const BudgetListTable = ({
     return stabilizedThis.map((el) => el[0]);
   }
 
-  return (
-    <Card className={classes.root}>
-      {' '}
+  let renderData;
+  if (isLoading) {
+    renderData = (
+      <div className={classes.loading}>
+        <CircularProgress />
+      </div>
+    );
+  } else if (budgetElements.length > 0) {
+    renderData = (
       <>
-        {!budgetElements && isLoading ? (
-          <div className={classes.loading}>
-            <CircularProgress />
-          </div>
-        ) : (
-          <>
-            <CardContent className={classes.content}>
-              {budgetElements.length > 0 && !error ? (
-                <PerfectScrollbar>
-                  <div className={classes.inner}>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={selectedItems.length === budgetElements.length}
-                              color="primary"
-                              indeterminate={
-                                selectedItems.length > 0 &&
-                                selectedItems.length < budgetElements.length
-                              }
-                              onChange={handleSelectAll}
-                            />
-                          </TableCell>
-                          {headCells.map((headCell) => (
-                            <TableCell
-                              sortDirection={orderBy === headCell.id ? order : false}
-                              key={headCell.id}
-                              align={headCell.numeric ? 'right' : 'left'}
-                              padding={headCell.disablePadding ? 'none' : 'default'}
-                            >
-                              <TableSortLabel
-                                active={orderBy === headCell.id}
-                                direction={orderBy === headCell.id ? order : 'asc'}
-                                onClick={createSortHandler(headCell.id)}
-                              >
-                                {headCell.label}
-                              </TableSortLabel>
-                            </TableCell>
-                          ))}
+        <CardContent className={classes.content}>
+          <PerfectScrollbar>
+            <div className={classes.inner}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={selectedItems.length === budgetElements.length}
+                        color="primary"
+                        indeterminate={
+                          selectedItems.length > 0 && selectedItems.length < budgetElements.length
+                        }
+                        onChange={handleSelectAll}
+                      />
+                    </TableCell>
+                    {headCells.map((headCell) => (
+                      <TableCell
+                        sortDirection={orderBy === headCell.id ? order : false}
+                        key={headCell.id}
+                        align={headCell.numeric ? 'right' : 'left'}
+                        padding={headCell.disablePadding ? 'none' : 'default'}
+                      >
+                        <TableSortLabel
+                          active={orderBy === headCell.id}
+                          direction={orderBy === headCell.id ? order : 'asc'}
+                          onClick={createSortHandler(headCell.id)}
+                        >
+                          {headCell.label}
+                        </TableSortLabel>
+                      </TableCell>
+                    ))}
 
-                          <TableCell>Actions</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {stableSort(budgetElements, getComparator(order, orderBy))
-                          .filter(
-                            ({ name, category, wallet }) =>
-                              name.toLowerCase().includes(searchItem.toLowerCase()) ||
-                              getName(category, categories)
-                                .toLowerCase()
-                                .includes(searchItem.toLowerCase()) ||
-                              getName(wallet, wallets)
-                                .toLowerCase()
-                                .includes(searchItem.toLowerCase()),
-                          )
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map(({ _id: id, name, date, wallet, amount, category, type }) => (
-                            <BudgetListTableItem
-                              key={id}
-                              id={id}
-                              name={name}
-                              selectedItems={selectedItems}
-                              date={date}
-                              type={type}
-                              wallet={getName(wallet, wallets)}
-                              amount={amount}
-                              category={getName(category, categories)}
-                              handleSelectOne={handleSelectOne}
-                            />
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </PerfectScrollbar>
-              ) : (
-                <Typography align="center" variant="h3">
-                  You don&#39;t have any data, add new one!
-                </Typography>
-              )}
-            </CardContent>
-            <Divider />
-            <CardActions className={classes.actions}>
-              <Button
-                onClick={() => setDeleteModalVisibility(true)}
-                color="primary"
-                variant="contained"
-                disabled={selectedItems.length === 0}
-              >
-                Delete selected
-              </Button>
-              <TablePagination
-                component="div"
-                count={budgetElements.length}
-                onChangePage={handlePageChange}
-                onChangeRowsPerPage={handleRowsPerPageChange}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={[5, 10, 25]}
-              />
-            </CardActions>
-            <DeleteModal
-              open={isDeleteModalVisible}
-              handleClose={handleDeleteModalClose}
-              deleteFn={handleDeleteClick}
-              cleanUp={cleanUp}
-            />
-          </>
-        )}
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {stableSort(budgetElements, getComparator(order, orderBy))
+                    .filter(
+                      ({ name, category, wallet }) =>
+                        name.toLowerCase().includes(searchItem.toLowerCase()) ||
+                        getName(category, categories)
+                          .toLowerCase()
+                          .includes(searchItem.toLowerCase()) ||
+                        getName(wallet, wallets).toLowerCase().includes(searchItem.toLowerCase()),
+                    )
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map(({ _id: id, name, date, wallet, amount, category, type }) => (
+                      <BudgetListTableItem
+                        key={id}
+                        id={id}
+                        name={name}
+                        selectedItems={selectedItems}
+                        date={date}
+                        type={type}
+                        wallet={getName(wallet, wallets)}
+                        amount={amount}
+                        category={getName(category, categories)}
+                        handleSelectOne={handleSelectOne}
+                      />
+                    ))}
+                </TableBody>
+              </Table>
+            </div>
+          </PerfectScrollbar>
+        </CardContent>
+        <Divider />
+        <CardActions className={classes.actions}>
+          <Button
+            onClick={() => setDeleteModalVisibility(true)}
+            color="primary"
+            variant="contained"
+            disabled={selectedItems.length === 0}
+          >
+            Delete selected
+          </Button>
+          <TablePagination
+            component="div"
+            count={budgetElements.length}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleRowsPerPageChange}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
+        </CardActions>
+        <DeleteModal
+          open={isDeleteModalVisible}
+          handleClose={handleDeleteModalClose}
+          deleteFn={handleDeleteClick}
+          cleanUp={cleanUp}
+        />
       </>
-    </Card>
-  );
+    );
+  } else {
+    renderData = (
+      <Typography align="center" variant="h3">
+        {budgetElements.length === 0 ? "You don't have any budget elements, add new one!" : error}
+      </Typography>
+    );
+  }
+
+  return <Card className={classes.root}>{renderData}</Card>;
 };
 
 BudgetListTable.propTypes = {

@@ -77,7 +77,10 @@ export const BudgetListModalSchema = Yup.object().shape({
     .trim()
     .matches(stringRegex, 'Special characters are not allowed')
     .required('Name is required.'),
-  amount: Yup.number().positive('Amount must be positive.').required('Amount is required.'),
+  amount: Yup.number()
+    .positive('Amount must be positive.')
+    .max(9999999, 'Too high.')
+    .required('Amount is required.'),
   type: Yup.string().required('Type is required!'),
   wallet: Yup.string().required('Wallet is required!'),
   category: Yup.string().required('Category is required!'),
@@ -90,7 +93,10 @@ export const WalletsModalSchema = Yup.object().shape({
     .trim()
     .matches(stringRegex, 'Special characters are not allowed')
     .required('Name is required.'),
-  sum: Yup.number().positive('Bilance must be positive.').required('Bilance is required.'),
+  sum: Yup.number()
+    .positive('Bilance must be positive.')
+    .max(9999999, 'Too high.')
+    .required('Bilance is required.'),
 });
 
 export const CategoriesModalSchema = Yup.object().shape({

@@ -61,11 +61,11 @@ const LoginView = ({ authenticate, cleanUp, userId, error, isLoading }) => {
 
   return (
     <>
-      <div className={classes.signUpText}>
+      <aside className={classes.signUpText}>
         <Typography variant="body2">
           You don&#39;t have an account? <Link to="/register">Sign up</Link>
         </Typography>
-      </div>
+      </aside>
       <CardHeader
         className={classes.contentHeader}
         title="Sign in to SmartCash"

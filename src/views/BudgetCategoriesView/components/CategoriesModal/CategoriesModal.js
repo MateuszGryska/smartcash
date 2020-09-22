@@ -38,7 +38,7 @@ const CategoriesModal = React.memo(
           validationSchema={CategoriesModalSchema}
           onSubmit={async (values) => {
             await addElement(itemTypes.categories, values);
-            if (!isLoading && error === null) {
+            if (!isLoading && error === false) {
               enqueueSnackbar('Created new category!', { variant: 'success' });
             }
           }}

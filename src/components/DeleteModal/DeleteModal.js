@@ -54,6 +54,12 @@ DeleteModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   deleteFn: PropTypes.func.isRequired,
+  user: PropTypes.bool,
+  cleanUp: PropTypes.func.isRequired,
+};
+
+DeleteModal.defaultProps = {
+  user: undefined,
 };
 
 export default DeleteModal;
