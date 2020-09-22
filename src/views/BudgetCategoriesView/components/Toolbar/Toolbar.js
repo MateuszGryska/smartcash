@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Button } from '@material-ui/core';
+import { Button, Box } from '@material-ui/core';
 
 import SearchInput from 'components/SearchInput';
 
@@ -31,8 +31,8 @@ const Toolbar = ({ handleOpen, handleSearchInputChange }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <div className={classes.row}>
+    <Box className={classes.root}>
+      <menu className={classes.row}>
         <SearchInput
           className={classes.searchInput}
           onChange={handleSearchInputChange}
@@ -42,9 +42,9 @@ const Toolbar = ({ handleOpen, handleSearchInputChange }) => {
         <Button color="primary" variant="contained" onClick={handleOpen}>
           New category
         </Button>
-      </div>
+      </menu>
       <div className={classes.row} />
-    </div>
+    </Box>
   );
 };
 

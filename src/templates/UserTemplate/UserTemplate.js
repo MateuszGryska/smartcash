@@ -44,7 +44,7 @@ const UserTemplate = ({ children }) => {
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
   return (
-    <main
+    <section
       className={clsx({
         [classes.root]: true,
         [classes.shiftContent]: isDesktop,
@@ -56,11 +56,11 @@ const UserTemplate = ({ children }) => {
         open={shouldOpenSidebar}
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
-      <section className={classes.content}>
+      <div className={classes.content}>
         {children}
         <Footer />
-      </section>
-    </main>
+      </div>
+    </section>
   );
 };
 

@@ -97,7 +97,7 @@ const AddAvatarModal = React.memo(
               MB.
             </DialogContentText>
             <>
-              <div className={classes.formControl}>
+              <form className={classes.formControl}>
                 {previewURL && <Avatar alt="preview" src={previewURL} className={classes.avatar} />}
                 {!previewURL && <Avatar alt="preview" src="" className={classes.avatar} />}
 
@@ -114,7 +114,7 @@ const AddAvatarModal = React.memo(
                 <Button component="span" onClick={pickImageHandler} className={classes.button}>
                   Pick image
                 </Button>
-              </div>
+              </form>
               <Typography variant="body2" color="error">
                 {error || null}
               </Typography>

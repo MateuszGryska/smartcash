@@ -51,7 +51,7 @@ const BudgetListTableItem = ({
 
   const handleDeleteClick = async () => {
     await deleteElement(itemTypes.budgetElements, id);
-    enqueueSnackbar('Deleted element!', { variant: 'warning' });
+    enqueueSnackbar('Deleted element!', { variant: 'success' });
     setDeleteModalVisibility(false);
   };
 

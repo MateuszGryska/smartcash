@@ -24,6 +24,7 @@ export const useComparisonData = (budgetElements, categories, wallets, isLoading
     return lastMonthAmountSum || 0;
   };
 
+  // filter all data
   const incomeAllSumValues = [];
   const expenseAllSumValues = [];
   if (categories && !isLoading) {
@@ -37,6 +38,7 @@ export const useComparisonData = (budgetElements, categories, wallets, isLoading
     filteredExpenses.forEach((expense) => expenseAllSumValues.push(expense.sum));
   }
 
+  // set and create all new data
   let income;
   let expense;
   let lastMonthIncome;

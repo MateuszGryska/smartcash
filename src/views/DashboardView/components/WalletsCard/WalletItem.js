@@ -16,22 +16,12 @@ const useStyles = makeStyles((theme) => ({
   walletValue: {
     paddingRight: '25px',
     paddingLeft: '5px',
-    width: '100px',
+    width: '150px',
     color: theme.palette.success.main,
   },
 }));
 
-const WalletItem = ({
-  id,
-  index,
-  name,
-  date,
-  sum,
-  walletsLength,
-  deleteElement,
-  budgetElements,
-  cleanUp,
-}) => {
+const WalletItem = ({ id, index, name, date, sum, walletsLength, deleteElement, cleanUp }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isDeleteModalVisible, setDeleteModalVisibility] = useState(false);
   const classes = useStyles();
@@ -47,14 +37,8 @@ const WalletItem = ({
   };
 
   const handleDeleteClick = async () => {
-    if (budgetElements.length > 0) {
-      enqueueSnackbar('Delete budget items before deleting the wallet!', {
-        variant: 'warning',
-      });
-    } else {
-      await deleteElement('wallets', id);
-      enqueueSnackbar('Deleted wallet!', { variant: 'success' });
-    }
+    await deleteElement('wallets', id);
+    enqueueSnackbar('Deleted wallet!', { variant: 'success' });
 
     setDeleteModalVisibility(false);
   };
@@ -97,6 +81,8 @@ WalletItem.propTypes = {
   date: PropTypes.string.isRequired,
   sum: PropTypes.number.isRequired,
   walletsLength: PropTypes.number.isRequired,
+  deleteElement: PropTypes.func.isRequired,
+  cleanUp: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

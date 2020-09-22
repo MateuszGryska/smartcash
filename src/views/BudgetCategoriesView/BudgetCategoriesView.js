@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Divider, Typography, CircularProgress } from '@material-ui/core';
-import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
+import { fetchDataByUserId as fetchDataByUserIdAction, clean as cleanAction } from 'actions';
 import { itemTypes } from 'helpers/itemTypes';
-
+import { sectionsInfo } from 'helpers/sectionsInfo';
+import InfoTooltip from 'components/InfoTooltip';
 import {
   BudgetCategoryCard,
   CategoriesModal,
@@ -27,11 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BudgetCategoriesView = ({
-  categories,
-  fetchDataByUserId,
-  fetchData: { error, isLoading },
-}) => {
+const BudgetCategoriesView = ({ categories, fetchDataByUserId, cleanUp, isLoading, error }) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [searchItem, setSearchItem] = useState('');
   const classes = useStyles();
@@ -40,6 +37,12 @@ const BudgetCategoriesView = ({
     fetchDataByUserId(itemTypes.categories);
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
 
   const handleSearchInputChange = (e) => {
     setSearchItem(e.target.value);
@@ -51,12 +54,6 @@ const BudgetCategoriesView = ({
       <div className={classes.loading}>
         <CircularProgress />
       </div>
-    );
-  } else if (typeof error === 'string' || !categories) {
-    renderData = (
-      <Typography align="center" variant="h3">
-        You don&#39;t have any categories! Add new one!
-      </Typography>
     );
   } else if (categories.length > 0) {
     let incomes;
@@ -70,7 +67,7 @@ const BudgetCategoriesView = ({
       });
     }
     renderData = (
-      <div>
+      <>
         <Grid container spacing={4} className={classes.gridContainer}>
           {incomes.length > 0 ? (
             incomes
@@ -102,56 +99,59 @@ const BudgetCategoriesView = ({
             </Typography>
           )}
         </Grid>
-      </div>
+      </>
     );
   } else {
     renderData = (
       <Typography align="center" variant="h3">
-        You don&#39;t have any categories, add new one!
+        {error === 'Could not find a categories for the provided user.'
+          ? "You don't have any categories, add new one!"
+          : error}
       </Typography>
     );
   }
 
   return (
-    <div className={classes.root}>
+    <article className={classes.root}>
       <Toolbar
         handleSearchInputChange={handleSearchInputChange}
         handleOpen={() => setModalVisibility(true)}
       />
       <>
         {renderData}
-        <CategoriesModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
+        <InfoTooltip info={sectionsInfo.budgetCategories} />
+        <CategoriesModal
+          fetchDataByUserId={fetchDataByUserId}
+          open={isModalVisible}
+          handleClose={() => setModalVisibility(false)}
+        />
       </>
-    </div>
+    </article>
   );
 };
 
 BudgetCategoriesView.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchDataByUserId: PropTypes.func.isRequired,
-  fetchData: PropTypes.shape({
-    isLoading: PropTypes.bool,
-    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  }),
+  cleanUp: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 BudgetCategoriesView.defaultProps = {
-  fetchData: {
-    isLoading: false,
-    error: null,
-  },
+  isLoading: false,
+  error: null,
 };
 
 const mapStateToProps = (state) => {
-  const {
-    categories,
-    fetchData: { error, isLoading },
-  } = state.items;
-  return { categories, fetchData: { error, isLoading } };
+  const { categories } = state.items;
+  const { error, isLoading } = state.items.fetchData;
+  return { categories, error, isLoading };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
+  cleanUp: () => dispatch(cleanAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetCategoriesView);

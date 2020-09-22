@@ -1,4 +1,4 @@
-import { itemTypes } from 'actions/types';
+import { itemTypes, authTypes } from 'actions/types';
 
 const initialState = {
   budgetElements: [],
@@ -157,6 +157,29 @@ const updateItemFailure = (state, payload) => {
   };
 };
 
+const cleanUp = (state) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: null,
+    deleteItem: {
+      ...state.deleteItem,
+      error: null,
+      isLoading: false,
+    },
+    fetchData: {
+      ...state.fetchData,
+      error: null,
+      isLoading: false,
+    },
+    updateItem: {
+      ...state.updateItem,
+      error: null,
+      isLoading: false,
+    },
+  };
+};
+
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case itemTypes.ADD_ITEM_START:
@@ -183,6 +206,8 @@ export default (state = initialState, { type, payload }) => {
       return updateItemSuccess(state, payload);
     case itemTypes.UPDATE_ITEM_FAILURE:
       return updateItemFailure(state, payload);
+    case authTypes.CLEAN_UP:
+      return cleanUp(state);
     default:
       return state;
   }

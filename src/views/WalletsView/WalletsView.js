@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import { Toolbar, WalletCard, WalletsModal } from 'views/WalletsView/components';
+import InfoTooltip from 'components/InfoTooltip';
 
-import { fetchDataByUserId as fetchDataByUserIdAction } from 'actions';
+import { fetchDataByUserId as fetchDataByUserIdAction, clean as cleanAction } from 'actions';
 import { itemTypes } from 'helpers/itemTypes';
+import { sectionsInfo } from 'helpers/sectionsInfo';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,15 +24,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
+const WalletsView = ({ wallets, fetchDataByUserId, cleanUp, isLoading, error }) => {
+  const classes = useStyles();
+  const [isModalVisible, setModalVisibility] = useState(false);
+  const [searchItem, setSearchItem] = useState('');
+
   useEffect(() => {
     fetchDataByUserId(itemTypes.wallets);
     // eslint-disable-next-line
   }, []);
 
-  const classes = useStyles();
-  const [isModalVisible, setModalVisibility] = useState(false);
-  const [searchItem, setSearchItem] = useState('');
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
 
   const handleSearchInputChange = (e) => {
     setSearchItem(e.target.value);
@@ -42,12 +50,6 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
       <div className={classes.loading}>
         <CircularProgress />
       </div>
-    );
-  } else if (error !== null || !wallets) {
-    renderData = (
-      <Typography align="center" variant="h3">
-        You don&#39;t have any wallets! Add new one!
-      </Typography>
     );
   } else if (wallets.length > 0) {
     renderData = (
@@ -70,7 +72,9 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
   } else {
     renderData = (
       <Typography align="center" variant="h3">
-        You don&#39;t have any wallets, add new one!
+        {error === 'Could not find a wallets for the provided user.'
+          ? "You don't have any wallets, add new one!"
+          : error}
       </Typography>
     );
   }
@@ -84,7 +88,7 @@ const WalletsView = ({ wallets, fetchDataByUserId, isLoading, error }) => {
 
       <>
         <section className={classes.content}>{renderData}</section>
-
+        <InfoTooltip info={sectionsInfo.budgetWallets} />
         <WalletsModal open={isModalVisible} handleClose={() => setModalVisibility(false)} />
       </>
     </article>
@@ -96,6 +100,7 @@ WalletsView.propTypes = {
   fetchDataByUserId: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  cleanUp: PropTypes.func.isRequired,
 };
 
 WalletsView.defaultProps = {
@@ -104,12 +109,14 @@ WalletsView.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { wallets, error, isLoading } = state.items;
+  const { wallets } = state.items;
+  const { error, isLoading } = state.items.fetchData;
   return { wallets, error, isLoading };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
+  cleanUp: () => dispatch(cleanAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletsView);

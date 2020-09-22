@@ -80,6 +80,7 @@ const Topbar = ({ onSidebarOpen, logout }) => {
 
 Topbar.propTypes = {
   onSidebarOpen: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

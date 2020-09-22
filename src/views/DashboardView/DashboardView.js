@@ -9,6 +9,7 @@ import { BilanceList, WalletsCard, BilanceChart, SmallCard } from 'views/Dashboa
 import {
   fetchDataByUserId as fetchDataByUserIdAction,
   getUserById as getUserByIdAction,
+  clean as cleanAction,
 } from 'actions';
 
 import { itemTypes } from 'helpers/itemTypes';
@@ -30,23 +31,24 @@ const DashboardView = ({
   wallets,
   categories,
   budgetElements,
-  fetchData: { isLoading },
+  cleanUp,
+  isLoading,
   userId,
 }) => {
   useEffect(() => {
     fetchDataByUserId(itemTypes.categories);
     // eslint-disable-next-line
-  }, []);
+  }, [budgetElements.length]);
 
   useEffect(() => {
     fetchDataByUserId(itemTypes.budgetElements);
     // eslint-disable-next-line
-  }, []);
+  }, [budgetElements.length]);
 
   useEffect(() => {
     fetchDataByUserId(itemTypes.wallets);
     // eslint-disable-next-line
-  }, []);
+  }, [budgetElements.length]);
 
   useEffect(() => {
     if (userId) {
@@ -54,6 +56,12 @@ const DashboardView = ({
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
 
   const {
     walletsTotal,
@@ -67,7 +75,7 @@ const DashboardView = ({
 
   const classes = useStyles();
   return (
-    <section className={classes.root}>
+    <article className={classes.root}>
       {isLoading ? (
         <div className={classes.loading}>
           <CircularProgress />
@@ -117,7 +125,7 @@ const DashboardView = ({
           </Grid>
         </Grid>
       )}
-    </section>
+    </article>
   );
 };
 
@@ -128,36 +136,28 @@ DashboardView.propTypes = {
   userId: PropTypes.string.isRequired,
   getUserById: PropTypes.func.isRequired,
   fetchDataByUserId: PropTypes.func.isRequired,
-  fetchData: PropTypes.shape({
-    isLoading: PropTypes.bool,
-    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  }),
+  cleanUp: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 DashboardView.defaultProps = {
   budgetElements: [],
   wallets: [],
   categories: [],
-  fetchData: {
-    isLoading: false,
-    error: null,
-  },
+  isLoading: false,
 };
 
 const mapStateToProps = (state) => {
-  const {
-    wallets,
-    categories,
-    budgetElements,
-    fetchData: { isLoading },
-  } = state.items;
+  const { wallets, categories, budgetElements } = state.items;
+  const { isLoading } = state.items.fetchData;
   const { userId } = state.auth;
-  return { wallets, categories, userId, budgetElements, fetchData: { isLoading } };
+  return { wallets, categories, userId, budgetElements, isLoading };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   fetchDataByUserId: (itemType) => dispatch(fetchDataByUserIdAction(itemType)),
   getUserById: () => dispatch(getUserByIdAction()),
+  cleanUp: () => dispatch(cleanAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardView);
