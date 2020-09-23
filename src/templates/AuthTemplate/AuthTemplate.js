@@ -9,11 +9,14 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
   },
   grid: {
-    height: '100vh',
+    [theme.breakpoints.up('sm')]: {
+      height: '100vh',
+    },
   },
   logoText: {
     fontSize: '48px',
     marginBottom: '50px',
+    [theme.breakpoints.down('sm')]: { marginTop: '50px' },
   },
   children: {
     minHeight: '640px',
