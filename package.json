@@ -14,7 +14,7 @@
     "clsx": "^1.1.0",
     "date-fns": "^2.14.0",
     "formik": "^2.1.4",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "notistack": "^0.9.17",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
